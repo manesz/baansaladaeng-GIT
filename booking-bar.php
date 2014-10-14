@@ -1,0 +1,1 @@
+<div class="col-md-2 wow fadeInRightBig" data-wow-delay="0.8s" style="position: fixed; top: 20%; right: 0; width: 200px; height: 40px; background: #fff; border: 2px #000 solid; border-right: 0px; z-index: 9;"><h4>BOOOKING NOW.</h4></div>

@@ -1,0 +1,374 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>dreams Website Template | Home :: w3layouts</title>
+		<link href="libs/css/bootstrap.css" rel='stylesheet' type='text/css' />
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="libs/js/jquery.min.js"></script>
+		 <!-- Custom Theme files -->
+		 <!---- animated-css ---->
+		<link href="libs/css/animate.css" rel="stylesheet" type="text/css" media="all">
+		<script src="libs/js/wow.min.js"></script>
+		<script>
+		 new WOW().init();
+		</script>
+		<!---- animated-css ---->
+		  <!---- start-smoth-scrolling---->
+		<script type="text/javascript" src="libs/js/move-top.js"></script>
+		<script type="text/javascript" src="libs/js/easing.js"></script>
+		<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				$(".scroll").click(function(event){		
+					event.preventDefault();
+					$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+				});
+			});
+		</script>
+		 <!---- start-smoth-scrolling---->
+		<link href="libs/css/style.css" rel='stylesheet' type='text/css' />
+   		 <!-- Custom Theme files -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+		</script>
+		<!----webfonts--->
+		<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+		<!---//webfonts--->
+		<!----start-top-nav-script---->
+		<script>
+			$(function() {
+				var pull 		= $('#pull');
+					menu 		= $('nav ul');
+					menuHeight	= menu.height();
+				$(pull).on('click', function(e) {
+					e.preventDefault();
+					menu.slideToggle();
+				});
+				$(window).resize(function(){
+	        		var w = $(window).width();
+	        		if(w > 320 && menu.is(':hidden')) {
+	        			menu.removeAttr('style');
+	        		}
+	    		});
+			});
+		</script>
+		<!----//End-top-nav-script---->
+	</head>
+	<body>
+		<div class="bg">
+            <div class="col-md-2 wow fadeInRightBig" data-wow-delay="0.8s" style="position: fixed; top: 20%; right: 0; width: 200px; height: 40px; background: #fff; border: 2px #000 solid; border-right: 0px; z-index: 9;"><h4>BOOOKING NOW.</h4></div>
+
+		    <!----- start-header---->
+			<div id="home" class="header wow fadeInDown navbar-fixed-top inner-shadow" data-wow-delay="0.4s">
+					<div class="top-header">
+						<div class="container">
+						<div class="logo">
+							<a href="#"><img src="libs/images/logo.png" title="dreams" /></a>
+						</div>
+						<!----start-top-nav---->
+						 <nav class="top-nav">
+							<ul class="top-nav">
+								<li><a href="#services" class="scroll">ROOM</a></li>
+								<li><a href="#services" class="scroll">RESERVATION</a></li>
+								<li><a href="#services" class="scroll">PROMITION</a></li>
+								<li><a href="#services" class="scroll">LONG STAY</a></li>
+								<li><a href="#services" class="scroll">GALLERY</a></li>
+								<li><a href="#services" class="scroll">LOCATION</a></li>
+								<li><a href="#services" class="scroll">CONTACT</a></li>
+							</ul>
+							<a href="#" id="pull"><img src="libs/images/menu-icon.png" title="menu" /></a>
+						</nav>
+						<div class="clearfix"> </div>
+					</div>
+				</div>
+			</div>
+
+			<!---- banner ---->
+			<div class="banner wow fadeIn" data-wow-delay="0.5s">
+				<div class="container">
+					<div class="banner-info text-center">
+                        <h4>Welcome to </h4>
+						<h1>Baan Saladaeng</h1><br />
+						<span> </span>
+						<h4>a boutique guesthouse in the centre of Bangkok.</h4>
+					</div>
+				</div>
+			</div>
+		</div><!-- END: .bg -->
+
+        <!--- introduce --->
+        <div id="introduce" class="services">
+            <div class="container">
+                <div class="service-head text-center">
+                    <h2>About Bannsaladang</h2>
+                    <span> </span>
+                </div>
+                <!--- services-grids --->
+                <div class="services-grids">
+                    <div class="col-md-12">
+                        <div class="service-grid wow fadeInDown" data-wow-delay="0.4s">
+                            <p>
+                                Welcome to Baan Saladaeng, a boutique guesthouse in the centre of Bangkok.<br/><br/>
+
+                                Whether you're coming to the city for business, leisure or pleasure, for a few days or for a few weeks, at Baan Saladaeng  you'll always be right in the heart of it all. You’ll find us at the end of a quiet, cosy little soi, just off the tree-lined Soi Saladaeng. We’re just a few minutes walk from the BTS skytrain (Saladaeng Station), the MRTA subway (Silom Station) and the entertainment and shopping district along the Silom Road.<br/><br/>
+
+                                Our guest rooms and suites each have a unique style.  You choose the one that suits you best.<br/><br/>
+
+                                Thai people are famous for the gentle and generous way we care for our guests. When you stay with us we will look after you,  help you plan your day, show you the best Bangkok has to offer.  We've been welcoming guests back for the Baan Saladaeng experience over and over again ever since we opened in 2008.  They love us.  We hope you will too.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                <!--- services-grids --->
+            </div>
+        </div>
+
+        <!---- portfolio-works ---->
+        <div class="portfolio-works">
+            <div class="col-md-4 portfolio-work-grid wow bounceIn" data-wow-delay="0.4s">
+                <div class="portfolio-work-grid-pic">
+                    <img src="libs/images/room-01.jpg" title="name" />
+                </div>
+                <div class="portfolio-work-grid-caption">
+                    <h4>Project title</h4>
+                    <p>Here you can find some of our latest works,  Donec porttitora entum suscipit aenean rhoncus posuere odio in tincidunt. to see the details of these works just click the thumbnails below.</p>
+                </div>
+            </div>
+            <div class="col-md-4 portfolio-work-grid wow bounceIn" data-wow-delay="0.4s">
+                <div class="portfolio-work-grid-pic">
+                    <img src="libs/images/room-02.jpg" title="name" />
+                </div>
+                <div class="portfolio-work-grid-caption">
+                    <h4>Project title</h4>
+                    <p>Here you can find some of our latest works,  Donec porttitora entum suscipit aenean rhoncus posuere odio in tincidunt. to see the details of these works just click the thumbnails below.</p>
+                </div>
+            </div>
+            <div class="col-md-4 portfolio-work-grid wow bounceIn" data-wow-delay="0.4s">
+                <div class="portfolio-work-grid-pic">
+                    <img src="libs/images/room-03.jpg" title="name" />
+                </div>
+                <div class="portfolio-work-grid-caption">
+                    <h4>Project title</h4>
+                    <p>Here you can find some of our latest works,  Donec porttitora entum suscipit aenean rhoncus posuere odio in tincidunt. to see the details of these works just click the thumbnails below.</p>
+                </div>
+            </div>
+            <div class="col-md-4 portfolio-work-grid wow bounceIn" data-wow-delay="0.4s">
+                <div class="portfolio-work-grid-pic">
+                    <img src="libs/images/room-04.jpg" title="name" />
+                </div>
+                <div class="portfolio-work-grid-caption">
+                    <h4>Project title</h4>
+                    <p>Here you can find some of our latest works,  Donec porttitora entum suscipit aenean rhoncus posuere odio in tincidunt. to see the details of these works just click the thumbnails below.</p>
+                </div>
+            </div>
+            <div class="col-md-4 portfolio-work-grid wow bounceIn" data-wow-delay="0.4s">
+                <div class="portfolio-work-grid-pic">
+                    <img src="libs/images/room-08.jpg" title="name" />
+                </div>
+                <div class="portfolio-work-grid-caption">
+                    <h4>Project title</h4>
+                    <p>Here you can find some of our latest works,  Donec porttitora entum suscipit aenean rhoncus posuere odio in tincidunt. to see the details of these works just click the thumbnails below.</p>
+                </div>
+            </div>
+            <div class="col-md-4 portfolio-work-grid wow bounceIn" data-wow-delay="0.4s">
+                <div class="portfolio-work-grid-pic">
+                    <img src="libs/images/room-09.jpg" title="name" />
+                </div>
+                <div class="portfolio-work-grid-caption">
+                    <h4>Project title</h4>
+                    <p>Here you can find some of our latest works,  Donec porttitora entum suscipit aenean rhoncus posuere odio in tincidunt. to see the details of these works just click the thumbnails below.</p>
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+
+        <!-- servies -->
+        <div id="services" class="services">
+            <div class="container">
+                <div class="service-head text-center">
+                    <h2>Our Services</h2>
+                    <span> </span>
+                </div>
+                <!--- services-grids --->
+                <div class="services-grids text-center">
+                    <div class="col-md-4">
+                        <div class="service-grid wow fadeIn" data-wow-delay="0.4s">
+                            <h3><a href="#">Cafe</a></h3>
+                            <p>Proin iaculis purus consequat sem digni ssim. Donec porttitora entum aenean rhoncus posuere odio in.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="service-grid wow fadeIn" data-wow-delay="0.4s">
+                            <h3><a href="#">Post Express</a></h3>
+                            <p>Proin iaculis purus consequat sem digni ssim. Donec porttitora entum aenean rhoncus posuere odio in.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="service-grid wow fadeIn" data-wow-delay="0.4s">
+                            <h3><a href="#">Dress Express</a></h3>
+                            <p>Proin iaculis purus consequat sem digni ssim. Donec porttitora entum aenean rhoncus posuere odio in.</p>
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                <!--- services-grids --->
+            </div>
+        </div>
+
+        <!--- Other Expertise ---->
+        <div id="cafe" class="expertise">
+            <div class="expertice-grids">
+                <div class="col-md-8 expertice-left-grid wow fadeInLeft" data-wow-delay="0.4s">
+                    <div class="expertise-head">
+                        <h3>CAFE</h3>
+                        <p>Proin iaculis purus consequat sem cure  digni ssim. Donec porttitora entum suscipit  aenean rhoncus posuere odio in tincidunt consequat sem cure  digni ssim. </p>
+                    </div>
+                    <a class="leran-more" href="#">Read more</a>
+                </div>
+                <div class="col-md-4 expertice-right-grid wow fadeInRight" data-wow-delay="0.4s"></div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+
+        <!--- portfolio ---->
+        <div id="post-express" class="portfolio">
+            <div class="portfolio-top">
+                <div class="col-md-4 portfolio-top-right-inner wow fadeInRight" data-wow-delay="0.4s">
+                    <div class="portfolio-top-right">
+
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="portfolio-top-left wow fadeInLeft" data-wow-delay="0.4s">
+                        <h3>Post Express</h3>
+                        <p>Proin iaculis purus consequat sem cure digni ssim. Donec porttitora entum suscipit aenean rhoncus posuere odio in tincidunt. Proin iaculis purus consequat sem cure digni ssim. Donec porttitora entum suscipit.</p>
+                        <p>Iaculis purus consequat sem cure digni ssim. Donec porttitora entum suscipit aenean rhoncus posuere odio in tincidunt. Proin iaculis purus consequat.</p>
+                        <div class="portfolio-top-left-grids">
+                            <div class="portfolio-top-left-grid">
+                                <div class="portfolio-top-left-grid-left">
+                                    <span class="p-icon1"> </span>
+                                </div>
+                                <div class="portfolio-top-left-grid-right">
+                                    <h5>Sail Away Your Worries</h5>
+                                    <p>Proin iaculis purus consequat sem cure digni ssim. Donec porttitora entum suscipit aenean rhoncus posuere odio in tincidunt. </p>
+                                </div>
+                                <div class="clearfix"> </div>
+                            </div>
+                            <div class="portfolio-top-left-grid">
+                                <div class="portfolio-top-left-grid-left">
+                                    <span class="p-icon2"> </span>
+                                </div>
+                                <div class="portfolio-top-left-grid-right">
+                                    <h5>All-star support team</h5>
+                                    <p>Proin iaculis purus consequat sem cure digni ssim. Donec porttitora entum suscipit aenean rhoncus posuere odio in tincidunt. </p>
+                                </div>
+                                <div class="clearfix"> </div>
+                            </div>
+                            <div class="portfolio-top-left-grid">
+                                <div class="portfolio-top-left-grid-left">
+                                    <span class="p-icon3"> </span>
+                                </div>
+                                <div class="portfolio-top-left-grid-right">
+                                    <h5>fully Integrated service</h5>
+                                    <p>Proin iaculis purus consequat sem cure digni ssim. Donec porttitora entum suscipit aenean rhoncus posuere odio in tincidunt. </p>
+                                </div>
+                                <div class="clearfix"> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+
+        <div id="dress-express" class="expertise">
+            <div class="expertice-grids">
+                <div class="col-md-8 expertice-left-grid wow fadeInLeft" data-wow-delay="0.4s">
+                    <div class="expertise-head">
+                        <h3>Dress Express</h3>
+                        <p>Proin iaculis purus consequat sem cure  digni ssim. Donec porttitora entum suscipit  aenean rhoncus posuere odio in tincidunt consequat sem cure  digni ssim. </p>
+                    </div>
+                    <a class="leran-more" href="#">Read more</a>
+                </div>
+                <div class="col-md-4 expertice-right-grid wow fadeInRight" data-wow-delay="0.4s"></div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+
+        <!---- contact --->
+        <div id="contact" class="contact">
+            <div class="container">
+            <div class="contact-grids">
+                <div class="col-md-6">
+                    <div class="contact-left wow fadeInRight" data-wow-delay="0.4s">
+                        <h3>Contact Us</h3>
+                        <label>Don't be shy, drop us an email and say hello! We are a really nice bunch of people :)</label>
+                        <div class="contact-left-grids">
+                            <div class="col-md-6">
+                                <div class="contact-left-grid">
+                                    <p><span class="c-mobi"> </span>(416) 555-0000</p>
+                                    <p><span class="c-twitter"> </span><a href="#">@dreams</a></p>
+                                    <p><span class="c-pluse"> </span><a href="#">plus.com/dreams</a></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="contact-right-grid">
+                                    <p><span class="c-msg"> </span><a href="mailto:hello@dreams.com">hello@dreams.com</a></p>
+                                    <p><span class="c-face"> </span><a href="#">facebook.com/dreams</a></p>
+                                    <p><span class="c-pin"> </span><a href="#">pinterest.com/dreams</a></p>
+                                </div>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="contact-right wow fadeInLeft" data-wow-delay="0.4s">
+                        <form>
+                            <input type="text" class="text" value="Name..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name...';}">
+                            <input type="text" class="text" value="Email..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email...';}">
+                            <textarea value="Message:" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Message';}">Message..</textarea>
+                            <input class="wow shake" data-wow-delay="0.3s" type="submit" value="Send Message" />
+                        </form>
+                    </div>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <!--- copy-right ---->
+            <div class="copy-right text-center">
+                <p>Template by <a href="http://w3layouts.com/">W3layouts</a></p>
+                <script type="text/javascript">
+                                $(document).ready(function() {
+                                    /*
+                                    var defaults = {
+                                        containerID: 'toTop', // fading element id
+                                        containerHoverID: 'toTopHover', // fading element hover id
+                                        scrollSpeed: 1200,
+                                        easingType: 'linear'
+                                    };
+                                    */
+
+                                    $().UItoTop({ easingType: 'easeOutQuart' });
+
+                                });
+                            </script>
+                                <a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+            </div>
+            <!--- copy-right ---->
+        </div>
+        </div>
+
+		</div>
+	</body>
+</html>
+
