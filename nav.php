@@ -4,11 +4,11 @@
     <div id="home" class="header wow fadeInDown navbar-fixed-top" data-wow-delay="0.4s" style="background: #fff;">
         <div class="top-header">
             <div class="container">
-                <div class="logo">
-                    <a href="#"><img src="libs/images/logo.png" title="dreams" /></a>
+                <div class="col-md-4 logo">
+                    <a href="index.php"><img src="libs/images/logo-new.png" class="col-md-12" title="dreams" style="max-width: 90%; margin: 0.4em 0;" /></a>
                 </div>
                 <!----start-top-nav---->
-                <nav class="top-nav font-color-111">
+                <nav class="col-md-8 top-nav font-color-111">
                     <ul class="top-nav">
                         <li><a href="category.php" class="">ROOM</a></li>
                         <li><a href="#services" class="">RESERVATION</a></li>

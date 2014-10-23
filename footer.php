@@ -62,5 +62,32 @@
 </div>
 
 </div>
+
+<script>
+    $("#personInfo").hide();
+
+    $('#in').click(function(){
+        $('#checkIn').fadeIn().animate({ opacity: 1, left: "50%" });
+    });
+
+    $('#submitCheckIn').click(function(){
+        var url = 'booking-page.php';
+        var frm = $("#formBooking");
+        var data = frm.serializeArray();
+        $.ajax({
+            type: "POST"
+            , url: url
+            , data: data
+            , dataType: "html"
+            , success: function(data){ $('.resultReloading').html(data); }
+//                , complete: function(){ /*location.reload();*/ $('#loading-image').modal('hide'); $('.modal-backdrop').hide(); }
+        });
+//        $('#checkIn').fadeOut().animate({ opacity: 1, top: "50%" });
+//        $('#submitCheckIn').fadeOut().animate({ opacity: 1, top: "50%" });
+//        $('#checkIn').addClass('fadeOutLeft');
+//        $('#personInfo').show().fade
+    });
+</script>
+
 </body>
 </html>
