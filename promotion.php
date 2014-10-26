@@ -18,38 +18,21 @@
                         <td style="width: 20%">Sep</td>
                         <td style="width: 20%">Oct</td>
                         <td style="width: 20%">Nov-Dec</td>
+                        <td style="width: 20%">REDERVATION</td>
                     </tr>
+                    <?php for($i=1; $i<=6; $i++):?>
                     <tr>
                         <td style="width: 20%">Room 201</td>
                         <td style="width: 20%">1,300 THB</td>
                         <td style="width: 20%">1,249 THB</td>
                         <td style="width: 20%">1,249 THB</td>
                         <td style="width: 20%">1,249 THB</td>
+                        <td style="width: 20%"><a href="booking-page.php"><button class="col-md-12 alpha omega btn-service wow fadeIn" data-wow-delay="0.4s">RESERVATION</button></a></td>
                     </tr>
-                    <tr>
-                        <td style="width: 20%">Room 202 and 203</td>
-                        <td style="width: 20%">1,300 THB</td>
-                        <td style="width: 20%">1,249 THB</td>
-                        <td style="width: 20%">1,249 THB</td>
-                        <td style="width: 20%">1,249 THB</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 20%">Room 204</td>
-                        <td style="width: 20%">1,300 THB</td>
-                        <td style="width: 20%">1,249 THB</td>
-                        <td style="width: 20%">1,249 THB</td>
-                        <td style="width: 20%">1,249 THB</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 20%">All Suites</td>
-                        <td style="width: 20%">1,300 THB</td>
-                        <td style="width: 20%">1,249 THB</td>
-                        <td style="width: 20%">1,249 THB</td>
-                        <td style="width: 20%">1,249 THB</td>
-                    </tr>
+                    <?php endfor; ?>
                 </table>
                 </p>
-                <p class="font-color-999 font-size-10">
+                <p class="font-color-999 font-size-12">
                     *** NOTE  Rates above are net , come with free breakfast for 2 people + Free WI FI<br/>
                     ( Effective on year 2014 only )<br/><br/>
 

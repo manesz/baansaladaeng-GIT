@@ -12,8 +12,10 @@
     <link href="libs/css/bootstrap-image-gallery.css" rel="stylesheet" type="text/css">
     <link href="libs/css/style.css" rel='stylesheet' type='text/css' />
     <link href="libs/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="libs/css/style.css" media="screen" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+
 
     <script src="libs/js/jquery.min.js"></script>
     <script src="libs/js/wow.min.js"></script>
@@ -22,6 +24,9 @@
 <!--    <script type="text/javascript" src="libs/js/bootstrap-image-gallery.js"></script>-->
     <script type="text/javascript" src="libs/js/bootstrap-modal.js"></script>
     <script type="text/javascript" src="libs/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="libs/js/jquery.ui.map.js"></script>
+    <script type="text/javascript" src="libs/js/demo.js"></script>
     <script>
         jQuery(document).ready(function($) {
             $(".scroll").click(function(event){

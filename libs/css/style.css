@@ -760,6 +760,27 @@ a.leran-more:hover{
 .contact-left-grid p span.c-pluse{
 	background-position: 0px -132px;
 }
+.contact-left-grid p span.i-facebook{
+    background: url(../images/icon-facebook.png) no-repeat 0px 0px;
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+    margin-right: 0.3em;
+}
+.contact-left-grid p span.i-pinterest{
+    background: url(../images/icon-pinterest.png) no-repeat 0px 0px;
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+    margin-right: 0.3em;
+}
+.contact-left-grid p span.i-tripadvisor{
+    background: url(../images/icon-tripadvisor.png) no-repeat 0px 0px;
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+    margin-right: 0.3em;
+}
 /*----*/
 .contact-right-grid p,.contact-right-grid p a{
 	color: #FFF;
@@ -1405,12 +1426,14 @@ a.leran-more:hover{
 	}
 }
 
+
+
 /*----Custom Style----*/
 .min-height-540 { min-height: 540px; }
 
 .inner-shadow {
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, black), color-stop(-20%, black), color-stop(100%, transparent));
-    background: -moz-linear-gradient(top, black 0%, transparent 0%, black 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #999), color-stop(-20%, #111), color-stop(100%, transparent));
+    background: -moz-linear-gradient(top, #999 0%, transparent 0%, #111 100%);
 }
 
 nav.font-color-111 ul li a { color: #111; }
@@ -1422,8 +1445,15 @@ nav.font-color-111 ul li a { color: #111; }
 .font-size-10 { font-size: 10px; }
 .font-size-14 { font-size: 14px; }
 
-.margin-bottom-20 { margin-bottom: 20px; }
+.padding-15 { padding: 15px; }
+
+.margin-top-15 {  margin-top: 15px; }
+
 .margin-bottom-10 { margin-bottom: 10px; }
+.margin-bottom-15 { margin-bottom: 15px; }
+.margin-bottom-20 { margin-bottom: 20px; }
+
+.border-1-ddd { border: 1px #ddd solid; }
 
 /*---- Font Size Style----*/
 .font-12 { font-size: 12px; }
@@ -1447,3 +1477,39 @@ nav.font-color-111 ul li a { color: #111; }
     padding-right: 0px;
     margin-right: 0px;
 }
+.booking-bar {
+    position: fixed;
+    top: 25%;
+    right: 0;
+    width: 200px;
+    height: 40px;
+    background: #fff;
+    border: 2px #000 solid;
+    border-right: 0px;
+    z-index: 9;
+}
+button.btn-service {
+    background: #999;
+    border: none;
+    padding: 15px;
+    color: #fafafa;
+}
+button.btn-service:hover {
+    background: #EE2F1B;
+    -webkit-transition: background-color 300ms linear;
+    -moz-transition: background-color 300ms linear;
+    -o-transition: background-color 300ms linear;
+    -ms-transition: background-color 300ms linear;
+    transition: background-color 300ms linear;
+    border: none;
+    padding: 15px;
+    color: #fafafa;
+}
+.service-cafe {
+    width: 100%;
+    height: 200px;
+    display: inline-block;
+    background: url(../images/service-cafe.jpg) no-repeat 100% 0px;
+}
+.service-post { background: url("../images/service-post.jpg")  center; width: 100%; height: 300px; }
+.service-laundry { background: url("../images/service-laundry.jpg")  center; width: 100%; height: 300px; }

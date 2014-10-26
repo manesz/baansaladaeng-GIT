@@ -10,15 +10,17 @@
                         <div class="col-md-6">
                             <div class="contact-left-grid">
                                 <p><span class="c-mobi"> </span>(416) 555-0000</p>
-                                <p><span class="c-twitter"> </span><a href="#">@dreams</a></p>
-                                <p><span class="c-pluse"> </span><a href="#">plus.com/dreams</a></p>
+                                <p><img src="libs/images/icon-twitter.png" style="max-width: 32px;margin-right: 0.3em;"/><a href="#">@dreams</a></p>
+                                <p><img src="libs/images/icon-pinterest.png" style="max-width: 32px;margin-right: 0.3em;"/><a href="#">pinterest.com/dreams</a></p>
+                                <p><img src="libs/images/icon-line-qr.jpg" style="width: 90%; margin-right: 0.3em;"/></p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="contact-right-grid">
                                 <p><span class="c-msg"> </span><a href="mailto:hello@dreams.com">hello@dreams.com</a></p>
-                                <p><span class="c-face"> </span><a href="#">facebook.com/dreams</a></p>
-                                <p><span class="c-pin"> </span><a href="#">pinterest.com/dreams</a></p>
+                                <p><img src="libs/images/icon-facebook.png" style="max-width: 32px;margin-right: 0.3em;"/><a href="#">facebook.com/dreams</a></p>
+                                <p><img src="libs/images/icon-tripadvisor.png" style="max-width: 32px;margin-right: 0.3em;"/><a href="#">plus.com/dreams</a></p>
+                                <p><img src="libs/images/icon-line.png" style="max-width: 32px;margin-right: 0.3em;"/><a href="#">pinterest.com/dreams</a></p>
                             </div>
                         </div>
                         <div class="clearfix"> </div>

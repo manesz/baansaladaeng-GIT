@@ -1,4 +1,4 @@
-<button class="col-md-2 wow fadeInRightBig" data-wow-delay="0.8s" style="position: fixed; top: 20%; right: 0; width: 200px; height: 40px; background: #fff; border: 2px #000 solid; border-right: 0px; z-index: 9;" data-toggle="modal" data-target="#myModal"><h4>BOOOKING NOW.</h4></button>
+<button class="col-md-2 wow fadeInRightBig booking-bar" data-wow-delay="0.8s" style="" data-toggle="modal" data-target="#myModal"><h4>BOOOKING NOW.</h4></button>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="min-height: 500px;">
