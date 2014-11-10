@@ -30,12 +30,17 @@ function render_contact_page()
     $massage = "";
     $tel = "";
     $email = "";
-    $facebook = "";
-    $twitter = "";
-    $line = "";
+    $title_facebook = "";
+    $link_facebook = "";
+    $title_twitter = "";
+    $link_twitter = "";
+    $title_line = "";
+    $link_line = "";
     $qr_code_line = "";
-    $pinterest = "";
-    $tripadvisor = "";
+    $title_pinterest = "";
+    $link_pinterest = "";
+    $title_tripadvisor = "";
+    $link_tripadvisor = "";
     $latitude = "";
     $longitude = "";
     if ($arrayContact) {
@@ -78,28 +83,52 @@ function render_contact_page()
                                    value="<?php echo $email; ?>"/></td>
                     </tr>
                     <tr class="alternate">
-                        <td><label for="facebook">Facebook :</label></td>
-                        <td><input type="text" id="facebook" name="facebook"
-                                   value="<?php echo $facebook; ?>"/></td>
-                        <td><label for="twitter">Twitter :</label></td>
-                        <td><input type="text" id="twitter" name="twitter"
-                                   value="<?php echo $twitter; ?>"/></td>
+                        <td><label for="title_facebook">Title Facebook :</label></td>
+                        <td><input type="text" id="title_facebook" name="title_facebook"
+                                   value="<?php echo $title_facebook; ?>"/></td>
+                        <td><label for="title_twitter">Title Twitter :</label></td>
+                        <td><input type="text" id="title_twitter" name="title_twitter"
+                                   value="<?php echo $title_twitter; ?>"/></td>
                     </tr>
                     <tr class="alternate">
-                        <td><label for="line">Line :</label></td>
-                        <td><input type="text" id="line" name="line"
-                                   value="<?php echo $line; ?>"/></td>
+                        <td><label for="link_facebook">Link Facebook :</label></td>
+                        <td><input type="text" id="link_facebook" name="link_facebook"
+                                   value="<?php echo $link_facebook; ?>"/></td>
+                        <td><label for="link_twitter">Link Twitter :</label></td>
+                        <td><input type="text" id="link_twitter" name="link_twitter"
+                                   value="<?php echo $link_twitter; ?>"/></td>
+                    </tr>
+                    <tr class="alternate">
                         <td><label for="qr_code_line">Url QR Code Line :</label></td>
-                        <td><input type="text" id="qr_code_line" name="qr_code_line"
-                                   value="<?php echo $qr_code_line; ?>"/></td>
+                        <td colspan="3">
+                            <input type="text" id="qr_code_line" name="qr_code_line"
+                                               value="<?php echo $qr_code_line; ?>"/></td>
                     </tr>
                     <tr class="alternate">
-                        <td><label for="pinterest">Pinterest :</label></td>
-                        <td><input type="text" id="pinterest" name="pinterest"
-                                   value="<?php echo $pinterest; ?>"/></td>
-                        <td><label for="tripadvisor">Tripadvisor :</label></td>
-                        <td><input type="text" id="tripadvisor" name="tripadvisor"
-                                   value="<?php echo $tripadvisor; ?>"/></td>
+                        <td><label for="title_line">Title line :</label></td>
+                        <td><input type="text" id="title_line" name="title_line"
+                                   value="<?php echo $title_line; ?>"/></td>
+                        <td><label for="title_pinterest">Title Pinterest :</label></td>
+                        <td><input type="text" id="title_pinterest" name="title_pinterest"
+                                   value="<?php echo $title_pinterest; ?>"/></td>
+                    </tr>
+                    <tr class="alternate">
+                        <td><label for="link_line">Link Line :</label></td>
+                        <td><input type="text" id="link_line" name="link_line"
+                                   value="<?php echo $link_line; ?>"/></td>
+                        <td><label for="link_pinterest">Link Pinterest :</label></td>
+                        <td><input type="text" id="link_pinterest" name="link_pinterest"
+                                   value="<?php echo $link_pinterest; ?>"/></td>
+                    </tr>
+                    <tr class="alternate">
+                        <td><label for="title_tripadvisor">Title Tripadvisor :</label></td>
+                        <td colspan="3"><input type="text" id="title_tripadvisor" name="title_tripadvisor"
+                                   value="<?php echo $title_tripadvisor; ?>"/></td>
+                    </tr>
+                    <tr class="alternate">
+                        <td><label for="link_tripadvisor">Link Tripadvisor :</label></td>
+                        <td colspan="3"><input type="text" id="link_tripadvisor" name="link_tripadvisor"
+                                   value="<?php echo $link_tripadvisor; ?>"/></td>
                     </tr>
                     <tr class="alternate">
                         <td><label for="latitude">Latitude :</label></td>

@@ -5,12 +5,17 @@ $arrayContact = $objClassContact->getContact(1);
 $massage = "";
 $tel = "";
 $email = "";
-$facebook = "";
-$twitter = "";
-$line = "";
+$title_facebook = "";
+$link_facebook = "";
+$title_twitter = "";
+$link_twitter = "";
+$title_line = "";
+$link_line = "";
 $qr_code_line = "";
-$pinterest = "";
-$tripadvisor = "";
+$title_pinterest = "";
+$link_pinterest = "";
+$title_tripadvisor = "";
+$link_tripadvisor = "";
 $latitude = "";
 $longitude = "";
 if ($arrayContact) {
@@ -32,20 +37,20 @@ if ($arrayContact) {
                                 <?php if ($tel): ?>
                                     <p><span class="c-mobi"> </span><?php echo $tel; ?></p>
                                 <?php endif; ?>
-                                <?php if ($twitter): ?>
+                                <?php if ($title_twitter): ?>
                                     <p>
                                         <img
                                             src="<?php echo get_template_directory_uri(); ?>/library/images/icon-twitter.png"
                                             style="max-width: 32px;margin-right: 0.3em;"/><a
-                                            href="#"><?php echo $twitter; ?></a>
+                                            href="<?php echo $link_twitter; ?>"><?php echo $title_twitter; ?></a>
                                     </p>
                                 <?php endif; ?>
-                                <?php if ($pinterest): ?>
+                                <?php if ($title_pinterest): ?>
                                     <p>
                                         <img
                                             src="<?php echo get_template_directory_uri(); ?>/library/images/icon-pinterest.png"
                                             style="max-width: 32px;margin-right: 0.3em;"/><a
-                                            href="#"><?php echo $pinterest; ?></a></p>
+                                            href="<?php echo $link_pinterest; ?>"><?php echo $title_pinterest; ?></a></p>
                                 <?php endif; ?>
                                 <?php if ($qr_code_line): ?>
                                     <p>
@@ -62,29 +67,29 @@ if ($arrayContact) {
                                             href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
                                     </p>
                                 <?php endif; ?>
-                                <?php if ($facebook): ?>
+                                <?php if ($title_facebook): ?>
                                     <p>
                                         <img
                                             src="<?php echo get_template_directory_uri(); ?>/library/images/icon-facebook.png"
                                             style="max-width: 32px;margin-right: 0.3em;"/><a
-                                            href="#"><?php echo $facebook; ?></a></p>
+                                            href="<?php echo $link_facebook; ?>"><?php echo $title_facebook; ?></a></p>
 
                                 <?php endif; ?>
-                                <?php if ($tripadvisor): ?>
+                                <?php if ($title_tripadvisor): ?>
                                     <p>
                                         <img
                                             src="<?php echo get_template_directory_uri(); ?>/library/images/icon-tripadvisor.png"
                                             style="max-width: 32px;margin-right: 0.3em;"/><a
-                                            href="#"><?php echo $tripadvisor; ?></a>
+                                            href="<?php echo $link_tripadvisor; ?>"><?php echo $title_tripadvisor; ?></a>
                                     </p>
 
                                 <?php endif; ?>
-                                <?php if ($line): ?>
+                                <?php if ($title_line): ?>
                                     <p>
                                         <img
                                             src="<?php echo get_template_directory_uri(); ?>/library/images/icon-line.png"
                                             style="max-width: 32px;margin-right: 0.3em;"/><a
-                                            href="#"><?php echo $line; ?></a></p>
+                                            href="<?php echo $link_line; ?>"><?php echo $title_line; ?></a></p>
                                 <?php endif; ?>
                             </div>
                         </div>

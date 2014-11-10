@@ -6,3 +6,4 @@ $objClass->createBookingTable();
 $objClass->createPaymentTable();
 $objClass->createContactTable();
 $objClass->createImageGalleryTable();
+$objClass->createBannerSlideTable();

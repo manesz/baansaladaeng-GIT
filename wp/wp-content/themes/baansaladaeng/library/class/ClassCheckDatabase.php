@@ -65,16 +65,21 @@ class CheckDatabase
         $sql = "
             DROP TABLE IF EXISTS ics_contact;
             CREATE TABLE `ics_contact` (
-            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+              `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `massage` text,
               `tel` varchar(120) DEFAULT NULL,
               `email` varchar(120) DEFAULT NULL,
-              `facebook` varchar(120) DEFAULT NULL,
-              `twitter` varchar(120) DEFAULT NULL,
-              `line` varchar(120) DEFAULT NULL,
+              `title_facebook` varchar(120) DEFAULT NULL,
+              `link_facebook` text,
+              `title_twitter` varchar(120) DEFAULT NULL,
+              `link_twitter` text,
+              `title_line` varchar(120) DEFAULT NULL,
+              `link_line` text,
               `qr_code_line` text,
-              `pinterest` text,
-              `tripadvisor` text,
+              `title_pinterest` varchar(120) DEFAULT NULL,
+              `link_pinterest` text,
+              `title_tripadvisor` varchar(120) DEFAULT NULL,
+              `link_tripadvisor` text,
               `latitude` varchar(50) DEFAULT NULL,
               `longitude` varchar(50) DEFAULT NULL,
               PRIMARY KEY (`id`)
@@ -86,8 +91,28 @@ class CheckDatabase
     public function createImageGalleryTable()
     {
         $sql = "
-            DROP TABLE IF EXISTS ics_contact;
+            DROP TABLE IF EXISTS ics_image_gallery;
             CREATE TABLE `ics_image_gallery` (
+              `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+              `title` varchar(255) DEFAULT NULL,
+              `description` text,
+              `link` text,
+              `sort` int(11) DEFAULT NULL,
+              `image_path` text,
+              `create_datetime` datetime DEFAULT NULL,
+              `update_datetime` datetime DEFAULT NULL,
+              `publish` int(1) DEFAULT '0',
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+        ";
+        dbDelta($sql);
+    }
+
+    public function createBannerSlideTable()
+    {
+        $sql = "
+            DROP TABLE IF EXISTS ics_banner_slide;
+            CREATE TABLE `ics_banner_slide` (
               `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
               `title` varchar(255) DEFAULT NULL,
               `description` text,

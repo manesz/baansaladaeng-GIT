@@ -74,6 +74,7 @@ function credits_meta()
     $size = $custom["size"][0];
     $designer = $custom["designer"][0];
     $price = $custom["price"][0];
+    $recommend = $custom["recommend"][0];
 //    $price = $custom["price"][0];
 //    $designers = $custom["designers"][0];
 //    $developers = $custom["developers"][0];
@@ -119,17 +120,31 @@ function credits_meta()
             } ?>
         </ul>
         <div class="clear"></div>
-        <label for="type">Type:</label>
-        <input name="type" value="<?php echo $type; ?>"/>
-        <div class="clear"></div>
-        <label for="size">Size:</label>
-        <input name="size" value="<?php echo $size; ?>"/> sq.mtrs
-        <div class="clear"></div>
-        <label for="designer">Designer:</label>
-        <input name="designer" value="<?php echo $designer; ?>"/>
-        <div class="clear"></div>
-        <label for="price">Price:</label>
-        <input name="price" value="<?php echo $price; ?>"/> THB/night (Incl Breakfast)
+        <table>
+            <tr>
+                <td>
+                    <label for="type">Type:</label></td>
+                <td>
+                    <input name="type" value="<?php echo $type; ?>"/></td>
+            </tr>
+            <tr>
+                <td><label for="size">Size:</label></td>
+                <td><input name="size" value="<?php echo $size; ?>"/> sq.mtrs</td>
+            </tr>
+            <tr>
+                <td><label for="designer">Designer:</label></td>
+                <td><input name="designer" value="<?php echo $designer; ?>"/></td>
+            </tr>
+            <tr>
+                <td><label for="price">Price:</label></td>
+                <td><input name="price" value="<?php echo $price; ?>"/> THB/night (Incl Breakfast)</td>
+            </tr>
+            <tr>
+                <td><label for="recommend">Recommend:</label></td>
+                <td><input name="recommend" value="1" type="checkbox"
+                        <?php echo $recommend == 1 ? "checked": ""?>/></td>
+            </tr>
+        </table>
     </div>
     </p>
 <?
@@ -144,6 +159,7 @@ function save_details()
     update_post_meta($post->ID, "size", trim($_POST["size"]));
     update_post_meta($post->ID, "designer", trim($_POST["designer"]));
     update_post_meta($post->ID, "price", trim($_POST["price"]));
+    update_post_meta($post->ID, "recommend", trim($_POST["recommend"]));
 //    update_post_meta($post->ID, "designers", $_POST["designers"]);
 //    update_post_meta($post->ID, "developers", $_POST["developers"]);
 //    update_post_meta($post->ID, "producers", $_POST["producers"]);
@@ -174,6 +190,7 @@ function room_edit_columns($columns)
         "size" => "Size",
         "designer" => "Designer",
         "price" => "Price",
+        "recommend" => "Recommend",
         "category" => "Categorys",
         "date" => "Date",
     );
@@ -201,6 +218,9 @@ function room_custom_columns($column)
             break;
         case "price":
             echo $custom["price"][0];
+            break;
+        case "recommend":
+            echo $custom["recommend"][0];
             break;
         case "category":
             echo get_the_term_list($post->ID, 'Category', '', ', ', '');

@@ -1,3 +1,8 @@
+<?php
+
+$classBannerSlide = new BannerSlide($wpdb);
+$arrayBannerSlide = $classBannerSlide->getList();
+?>
 <div class="bg">
 
     <!----- start-header---->
@@ -5,7 +10,9 @@
         <div class="top-header">
             <div class="container">
                 <div class="logo col-md-4">
-                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><img src="<?php echo get_template_directory_uri(); ?>/library/images/logo-new.png" class="col-md-12" title="dreams" style="max-width: 90%; margin: 0.4em 0;" /></a>
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>">
+                        <img src="<?php echo get_template_directory_uri(); ?>/library/images/logo-new.png"
+                             class="col-md-12" title="dreams" style="max-width: 90%; margin: 0.4em 0;" /></a>
                 </div>
                 <!----start-top-nav---->
                 <nav class="top-nav col-md-8">
@@ -31,7 +38,7 @@
 
     <!---- banner ---->
     <div class="banner wow fadeIn" data-wow-delay="0.5s">
-        <div class="container">
+        <div class="">
             <div class="banner-info text-center">
                 <h4>Welcome to </h4>
                 <h1>Baan Saladaeng</h1><br />

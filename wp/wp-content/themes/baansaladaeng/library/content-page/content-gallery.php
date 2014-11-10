@@ -1,7 +1,6 @@
 <?php
 $classImageGallery = new ImageGallery($wpdb);
 $arrayImageGallery = $classImageGallery->getList();
-//var_dump($arrayImageGallery);
 ?>
 <?php get_header(); ?>
 <?php get_template_part('nav'); ?>
