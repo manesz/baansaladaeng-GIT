@@ -22,7 +22,8 @@
 								 * If you want to remove post formats, just delete the post-formats folder and
 								 * replace the function below with the contents of the "format.php" file.
 								*/
-								get_template_part( 'post-formats/format', get_post_format() );
+//								get_template_part( 'post-formats/format', get_post_format() );
+                            get_template_part('library/content-page/content-room-view', get_post_format());
 							?>
 
 						<?php endwhile; ?>

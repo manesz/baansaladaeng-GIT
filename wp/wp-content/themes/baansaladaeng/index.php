@@ -3,7 +3,7 @@
 <?php
 if(is_front_page()):
     get_template_part('page', 'front');
-else:
+/*else:
     if (have_posts()) : while (have_posts()) : the_post();
         if( is_page('Jobs') ){
             // get_template_part( 'post-formats/format-jobs', get_post_format() );
@@ -19,7 +19,7 @@ else:
         }//END: if check not in category name
     endwhile;
     else :
-        echo "
+?>
                 <article id='post-not-found' class='hentry cf'>
                     <header class='article-header'>
                         <h1><?php _e( 'Oops, Post Not Found!', 'bonestheme' ); ?></h1>
@@ -31,8 +31,8 @@ else:
                         <p><?php _e( 'This is the error message in the single.php template.', 'bonestheme' ); ?></p>
                     </footer>
                 </article>
-            ";
-    endif;
+            <?php
+    endif;*/
 
 endif;
 ?>

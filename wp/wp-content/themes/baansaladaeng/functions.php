@@ -12,7 +12,7 @@ sidebars, comments, ect.
 require_once( 'library/bones.php' );
 
 // USE THIS TEMPLATE TO CREATE CUSTOM POST TYPES EASILY
-require_once( 'library/post-type-room.php' );
+//require_once( 'library/post-type-room.php' );
 
 // CUSTOMIZE THE WORDPRESS ADMIN (off by default)
 // require_once( 'library/admin.php' );
@@ -206,9 +206,10 @@ function bones_fonts() {
 add_action('wp_print_styles', 'bones_fonts');
 
 /************* POST TYPE : Rooms *********************/
+/*
 add_action( 'init', 'create_post_type' );
 function create_post_type() {
-    register_post_type( 'ics_room',
+    register_post_type( 'room',
         array(
             'labels' => array(
                 'name' => __( 'Rooms' ),
@@ -219,7 +220,11 @@ function create_post_type() {
             'rewrite' => array('slug' => 'rooms'),
         )
     );
-}
+}*/
+
+require_once("library/menu-control.php");
+require_once("library/check-database.php");
+require_once("library/booking.php");
 
 /************* CUSTOMS : Admin Menus *********************/
 add_action( 'wp_enqueue_scripts', 'load_dashicons_front_end' );

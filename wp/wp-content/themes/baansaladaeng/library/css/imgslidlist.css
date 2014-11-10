@@ -1,0 +1,2 @@
+#imglist-stage{padding:3px 0 3px 3px}#imglist-stage ul{padding:0;margin:0}#imglist-stage ul li{list-style:none;float:left;width:200px;height:200px;overflow:hidden;margin:5px;position:relative}#imglist-stage ul li:hover a.delimgsrc{display:block}#imglist-stage ul li a.delimgsrc{display:none;color:#F00; text-decoration:none; position:absolute; top:3px; right:3px; left:auto;font-size:18px}#imglist-stage ul li a.delimgsrc:hover{color:#F30}#imglist-stage ul li.ui-state-highlights{outline:#999 2px dashed}
+.clear{clear:both}
