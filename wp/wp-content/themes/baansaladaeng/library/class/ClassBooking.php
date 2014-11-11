@@ -12,9 +12,11 @@ class Booking
         $this->wpdb = $wpdb;
     }
 
-    public function bookingList($id = 0)
+    public function bookingList($id = 0, $room_id = 0, $is_checkout = false)
     {
-        $strAnd = $id ? " AND a.id = $id": "";
+        $strAnd = $is_checkout ? "AND a.checkout_time = '0000-00-00 00:00:00'" : "";
+        $strAnd .= $id ? "AND a.id = $id" : "";
+        $strAnd .= $room_id ? "AND a.room_id = $room_id" : "";
         $sql = "
             SELECT
               a.*,
@@ -145,5 +147,52 @@ class Booking
             return $this->wpdb->insert_id;
         }
         return false;
+    }
+
+    function addSessionOrder($post)
+    {
+        session_start();
+        $arrayOrder = @$_SESSION['array_reservation_order'];
+        $roomID = @$_POST['room_id'];
+        $query = new WP_Query(array(
+            'post_type' => 'room',
+            'post__in' => array($roomID)
+        ));
+        $posts = $query->get_posts();
+        $customField = get_post_custom($roomID);
+
+        $roomName = @$posts[0]->post_title;
+        $roomPrice = @$customField['price'][0];
+
+        $arrivalDate = $post['arrival_date'];
+        $departureDate = $post['departure_date'];
+        $timeDiff = abs(strtotime($departureDate) - strtotime($arrivalDate));
+        $numberDays = $timeDiff / 86400;
+        $total = $numberDays * $roomPrice;
+
+        $arrayOrder[] = array(
+            'room_id' => $roomID,
+            'room_name' => $roomName,
+            'arrival_date' => @$arrivalDate,
+            'departure_date' => @$departureDate,
+            'adults' => @$post['adults'],
+            'price' => $roomPrice,
+        );
+        $_SESSION['array_reservation_order'] = $arrayOrder;
+        return true;
+    }
+
+    function deleteSessionOrder($order_id)
+    {
+        session_start();
+        $arrayOrder = @$_SESSION['array_reservation_order'];
+        $newArrayOrder = array();
+        foreach ($arrayOrder as $key => $value) {
+            if ($key != $order_id) {
+                $newArrayOrder[] = $value;
+            }
+        }
+        $_SESSION['array_reservation_order'] = $newArrayOrder;
+        return true;
     }
 }

@@ -7,13 +7,13 @@ $postTypeRoom = new WP_Query(array('post_type' => 'room'));
 
 get_header();
 get_template_part('nav');
-
 ?>
 
     <div class="container" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     <div class="row">
 
-    <h2 class="text-center margin-bottom-20">Reservation</h2><hr/>
+    <h2 class="text-center margin-bottom-20">Reservation</h2>
+    <hr/>
     <div class="col-md-9 wow fadeInRight margin-bottom-20" data-wow-delay="1s">
 
     <!--                <h2 class="col-md-12">Select Rooms <span class="font-color-999 font-size-14">Mediterranean Suite</span> </h2>-->
@@ -25,25 +25,25 @@ get_template_part('nav');
     </ol>
     <hr class=""/>
 
-    <div id="sectionSelectDate">
+    <div id="section_select_date">
         <?php for ($i = 1; $i <= 3; $i++): ?>
             <h2>Room <?php echo $i; ?></h2>
             <div class="col-md-12 alpha">
                 <div class="form-group col-md-6">
                     <h4>Arrival Date</h4>
                     <!--                            <label for="check_in_date">Check in date</label>-->
-                    <input id="check_in_date" name="check_in_date"
+                    <input id="arrival_date" name="arrival_date"
                            value="<?php echo $checkInDate; ?>"
                            class="form-control datePicker"/>
                 </div>
                 <div class="form-group col-md-6">
                     <h4>Departure Date</h4>
                     <!--                            <label for="check_out_date">Check out date</label>-->
-                    <input id="check_out_date" name="check_out_date"
+                    <input id="departure_date" name="departure_date"
                            value="<?php echo $checkOutDate; ?>"
                            class="form-control datePicker"/>
                 </div>
-                <div class="form-group col-md-12">
+                <!--<div class="form-group col-md-12">
                     <h4>Rooms</h4>
                     <select id="room_id" name="room_id" class="form-control">
                         <option value=""></option>
@@ -52,7 +52,7 @@ get_template_part('nav');
                                 <?php echo $roomID == get_the_id() ? "selected" : ""; ?>><?php the_title(); ?></option>
                         <?php endwhile; endif; ?>
                     </select>
-                </div>
+                </div>-->
                 <div class="form-group col-md-12">
                     <h4>Adults</h4>
                     <select id="adult" name="adult" class="form-control">
@@ -61,40 +61,21 @@ get_template_part('nav');
                         <?php endfor; ?>
                     </select>
                 </div>
-            </div>
-        <?php endfor; ?>
-    </div>
-    <div id="sectionRoom">
-        <?php for ($i = 1; $i <= 3; $i++): ?>
-            <div class="col-md-12 alpha bg-fafafa clearfix margin-bottom-20" style="height: 250px;">
-                <div class="col-md-4 alpha omega"><img src="libs/images/room-01.jpg"
-                                                       style="margin: 0px; padding: 0px; width: 100%; height: 250px; overflow: hidden;"/>
-                </div>
-                <div class="col-md-8">
-                    <h4>Room 201 : Black and White Room</h4>
-
-                    <p class="font-12">
-                        Type: Double Queen Size<br/>
-                        Size: 20 sq.mtrs<br/>
-                        Designer: Nattawut Lamlertwittaya<br/>
-                        Price: 1300 THB/night (Incl Breakfast)
-                    </p>
-
-                    <p class="font-12">
-                        Opposites attract. Black and white in perfect harmony. Clean lines keep everything simple in
-                        this room without sacrificing the comfort of course.
-                    </p>
-
-                    <div class="col-md-8 alpha" style=""><h3 style="margin-top: 0px; padding-top: 10px;">PRICE : 1,300
-                            BAHT</h3></div>
-                    <div class="col-md-4 bg-ED2024" style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
-                        CHOOSE
+                <div class="form-group col-md-12">
+                    <div class="col-md-4"
+                         style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
+                        <button id="btn_step1" class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
+                            Next
+                        </button>
                     </div>
                 </div>
             </div>
         <?php endfor; ?>
     </div>
-    <div id="sectionPayment" class="form-group">
+
+    <div id="list_room"></div>
+
+    <div id="section_payment" class="form-group">
         <div class="col-md-12">
 
             <h4>Summary Order:</h4>
@@ -192,7 +173,8 @@ get_template_part('nav');
         </div>
 
     </div>
-    <div id="sectionConfirm">
+
+    <div id="section_confirm_order">
 
         <h4>Summary Order:</h4>
         <hr/>
@@ -305,8 +287,7 @@ get_template_part('nav');
         </div>
         <div class="col-md-12 margin-bottom-10 alpha omega">
             <div class="col-md-12 alpha omega">
-                <bottom type="submit" id="formPaymentCreditCardExpiry" name="formPaymentCreditCardExpiry"
-                        class="btn btn-success form-control col-md-12" value="SUBMIT"/>
+                <input type="button" class="btn btn-success form-control col-md-12" value="SUBMIT">
             </div>
         </div>
     </div>
@@ -316,83 +297,154 @@ get_template_part('nav');
         <h4 class="bg-ED2024" style="background: #ED2024; padding: 15px 0 15px 0; color: #fff; margin: 0px;">THE
             ORDER</h4>
 
-        <ul class="bg-fafafa alpha" style="list-style: none; height: 100%">
-            <?php for ($i = 1; $i <= 2; $i++): ?>
-                <li class="text-left" style="margin-top: 20px; padding: 10px; border-bottom: 1px #999 dashed;">
-                    <h5 class="pull-left" style="margin-top: 0px; font-weight: bold;">ROOM <?php echo $i; ?></h5>
-                    <span class="pull-right"><a href="#">Edit</a></span>
-                    <hr/>
-                    <table style="width: 100%">
-                        <tr>
-                            <td style="width: 80%">Arrival Date :</td>
-                            <td style="width: 20%">23/10/14</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 80%">Departure Date :</td>
-                            <td style="width: 20%">23/10/14</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 80%">Adults :</td>
-                            <td style="width: 20%">2</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 80%">Room 201 :<br/>Black and White Room</td>
-                            <td style="width: 20%">1,300 ฿</td>
-                        </tr>
-                        <tr>
-                            <td style="width: 80%; font-weight: bold;">TOTAL :</td>
-                            <td style="width: 20%; font-weight: bold;">1,300 ฿</td>
-                        </tr>
-                    </table>
-                </li>
-            <?php endfor; ?>
-            <li class="text-left" style="padding: 10px; border-bottom: 1px #999 solid;">
-                <table style="width: 100%">
-                    <tr>
-                        <td style="width: 70%; font-weight: bold;"><h4>SUB TOTAL :</h4></td>
-                        <td style="width: 30%; font-weight: bold;"><h4>2,600 ฿</h4></td>
-                    </tr>
-                </table>
-            </li>
-        </ul>
+        <div id="reservation_order"></div>
     </div>
-
     </div>
     </div>
 
     <script>
         $(document).ready(function () {
-
-            $('#sectionSelectDate').show();
-            $('#sectionRoom').hide();
-            $('#sectionPayment').hide();
-            $('#sectionConfirm').hide();
+            getOrder();
+            $('#section_select_date').show();
+            $('#list_room').hide();
+            $('#section_payment').hide();
+            $('#section_confirm_order').hide();
 
             $('#linkSelectDate').click(function () {
-                $('#sectionSelectDate').show();
-                $('#sectionRoom').hide();
-                $('#sectionPayment').hide();
-                $('#sectionConfirm').hide();
+                $('#section_select_date').fadeIn();
+                $('#list_room').hide();
+                $('#section_payment').hide();
+                $('#section_confirm_order').hide();
             });
             $('#linkSelectRoom').click(function () {
-                $('#sectionSelectDate').hide();
-                $('#sectionRoom').show();
-                $('#sectionPayment').hide();
-                $('#sectionConfirm').hide();
+                $('#section_select_date').hide();
+                $('#list_room').fadeIn();
+                $('#section_payment').hide();
+                $('#section_confirm_order').hide();
             });
-            $('#linkPayment').click(function () {
-                $('#sectionSelectDate').hide();
-                $('#sectionRoom').hide();
-                $('#sectionPayment').show();
-                $('#sectionConfirm').hide();
+            $(document).on("click", "#linkPayment, #btn_payment", function (e) {
+                $("body, html").animate({
+                        scrollTop: $("body").position().top
+                    },
+                    500,
+                    function () {
+                        $('#section_payment').fadeIn();
+                    });
+                $('#section_select_date').hide();
+                $('#list_room').hide();
+                $('#section_confirm_order').hide();
             });
-            $('#linkConfirm').click(function () {
-                $('#sectionSelectDate').hide();
-                $('#sectionRoom').hide();
-                $('#sectionPayment').hide();
-                $('#sectionConfirm').show();
+
+            $(document).on("click", "#linkConfirm", function (e) {
+                $('#section_select_date').hide();
+                $('#list_room').hide();
+                $('#section_payment').hide();
+                $('#section_confirm_order').fadeIn();
+            });
+
+            $(document).on("click", "#btn_step1", function (e) {
+                if ($("#arrival_date").val() == ""){
+                    alert("Please select \"Arrival Date\"");
+                    $("#arrival_date").select();
+                    return false;
+                }
+                else if ($("#departure_date").val() == ""){
+                    alert("Please select \"Departure Date\"");
+                    $("#departure_date").select();
+                    return false;
+                }
+                $('#section_select_date').hide();
+                $('#section_payment').hide();
+                $('#section_confirm_order').hide();
+                getRoom();
+            });
+
+            $(document).on("click", ".btn_choose", function (e) {
+                $("#reservation_order").fadeOut();
+                getOrder();
             });
         });
+
+        function getRoom() {
+            $.ajax({
+                type: "POST",
+                url: '',
+                data: {
+                    booking_post: 'true',
+                    reservation_post: 'get_room',
+                    check_in: $("#arrival_date").val(),
+                    check_out: $("#departure_date").val()
+                },
+                success: function (data) {
+                    $("#list_room").html(data);
+                    $('#list_room').fadeIn();
+                },
+                error: function (result) {
+                    alert("Error:\n" + result.responseText);
+                }
+            });
+        }
+
+        function addOrder(roomID) {
+            $.ajax({
+                type: "POST",
+                url: '',
+                data: {
+                    booking_post: 'true',
+                    reservation_post: 'add_order',
+                    room_id: roomID,
+                    arrival_date: $("#arrival_date").val(),
+                    departure_date: $("#departure_date").val(),
+                    adults: $("#adult").val()
+                },
+                success: function (data) {
+                    if (data == 'success')
+                        getOrder();
+                    else alert('Fail');
+                },
+                error: function (result) {
+                    alert("Error:\n" + result.responseText);
+                }
+            });
+        }
+
+        function getOrder() {
+            $.ajax({
+                type: "POST",
+                url: '',
+                data: {
+                    booking_post: 'true',
+                    reservation_post: 'get_order'
+                },
+                success: function (data) {
+                    $("#reservation_order").html(data).fadeIn();
+                },
+                error: function (result) {
+                    alert("Error:\n" + result.responseText);
+                }
+            });
+        }
+
+        function deleteOrder(orderID) {
+            if (confirm('Do you want delete room ' + (orderID + 1) + " ?"))
+                $.ajax({
+                    type: "POST",
+                    url: '',
+                    data: {
+                        booking_post: 'true',
+                        reservation_post: 'delete_order',
+                        order_id: orderID
+                    },
+                    success: function (data) {
+                        if (data == 'success')
+                            getOrder();
+                        else alert('Fail');
+                    },
+                    error: function (result) {
+                        alert("Error:\n" + result.responseText);
+                    }
+                });
+        }
     </script>
 
 <?php get_footer(); ?>

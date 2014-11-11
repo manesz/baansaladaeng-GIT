@@ -21,7 +21,8 @@ $arrayImageGallery = get_post_meta($postID, 'room_image_gallery', true);
 $getMonth = @$_POST['rmonth'] ? $_POST['rmonth'] : date('m');
 $getYear = @$_POST['ryear'] ? $_POST['ryear'] : date('Y');
 $getReservationMonth = $getYear . "-" . $getMonth . '-' . 1;
-$objCalendar = $classBooking->getBookingListByMonth($getMonth, $getYear);
+//$objCalendar = $classBooking->getBookingListByMonth($getMonth, $getYear);
+$objEventCalendar = $classBooking->bookingList(0, $postID);
 $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booking_icon.png';
 ?>
 <!-- Fullcalendar -->
@@ -51,7 +52,7 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
     }
 
     /*.fc-week0 .fc-last,.fc-week1, .fc-week2, .fc-week3, .fc-week4, .fc-week5 .fc-first:hover {*/
-        /*cursor: pointer;*/
+    /*cursor: pointer;*/
     /*}*/
 </style>
 <script>
@@ -64,7 +65,6 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
     var y = date.getFullYear();
     var countClick = 0;
     $jConflict(document).ready(function () {
-        // Calendar (fullcalendar)
         if ($jConflict('.calendar').length > 0) {
             $jConflict('.calendar').fullCalendar({
                 header: {
@@ -78,29 +78,79 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
 //                    today: 'Today',
 //                    month: 'Month'
 //                },
-                editable: false/*,
-                 events: [
-                 {
-                 title: 'จองแล้ว',
-                 start: new Date(y, m, 1),
+                editable: false,
+                /*events: [
+                    {
+                        title: 'จองแล้ว',
+                        start: new Date(y, m, 1),
+                        end: new Date(y, m, 2),
                  backgroundColor: '#ED1317'
-                 //                        url: 'http://google.com/'
-                 }
-                 ]*/
+                        //                        url: 'http://google.com/'
+                    }
+                ],*/
+                selectable: true,
+//                selectHelper: true,
+                select: function (start, end, allDay) {
+//                    var title = prompt('Event Title:');
+//                    if (title) {
+                        $jConflict('.calendar').fullCalendar('renderEvent',
+                            {
+                                title: '',
+                                start: start,
+                                end: end,
+//                                allDay: true,
+                                backgroundColor: '#ED1317'
+                            },
+                            true // make the event "stick"
+                        );
+                        /**
+                         * ajax call to store event in DB
+                         */
+                        /*jQuery.post(
+                            "event/new" // your url
+                            , { // re-use event's data
+                                title: title,
+                                start: start,
+                                end: end,
+                                allDay: allDay
+                            }
+                        );*/
+//                    }
+//                    calendar.fullCalendar('unselect');
+                },
+                eventClick: function(calEvent, jsEvent, view){
+                    /**
+                     * calEvent is the event object, so you can access it's properties
+                     */
+                    if(confirm("Really delete event " + calEvent.title + " ?")){
+                        // delete event in backend
+//                        jQuery.post(
+//                            "/vacation/deleteEvent"
+//                            , { "id": calEvent.id }
+//                        );
+                        // delete in frontend
+
+                    }alert(calEvent.id)
+                    calendar.fullCalendar('removeEvents', calEvent.id);
+                    }
             });
             $jConflict('.calendar').fullCalendar('gotoDate', y, m, d);
             $jConflict(".fc-button-effect").remove();
-            <?php foreach($objCalendar as $key => $value): ?>
-            $jConflict('#calendar_<?php echo $value->room_id; ?>').fullCalendar('addEventSource',
+            <?php foreach($objEventCalendar as $key => $value):
+                    $dateCheckIn = date('Y, m, d', strtotime($value->checkin_time));
+                    $dateCheckOut = date('Y, m, d', strtotime($value->checkout_time));
+            ?>
+            $jConflict('.calendar').fullCalendar('addEventSource',
                 [
                     {
-                        title: 'จองแล้ว',
-                        start: new Date(y, m, <?php echo date('d' , strtotime($value->booking_date)); ?>),
+                        title: '',
+                        start: new Date(<?php echo $dateCheckIn; ?>),
+                        end: new Date(<?php echo $dateCheckOut; ?>),
                         backgroundColor: '#ED1317'
                     }
                 ]);
-            $jConflict('#calendar_<?php echo $value->room_id; ?>').fullCalendar('refetchEvents');
             <?php endforeach;?>
+            $jConflict('.calendar').fullCalendar('refetchEvents');
             /*$jConflict(".fc-button-next .fc-button-content").html("<i class='icon-chevron-right'></i>");
              $jConflict(".fc-button-prev .fc-button-content").html("<i class='icon-chevron-left'></i>");
              $jConflict(".fc-button-today").addClass('fc-corner-right');
@@ -117,15 +167,15 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
 //                alert(dayNumber + " " + strMonthYear)
                 var strDate = dayNumber + " " + strMonthYear;
                 if (!checkEvent) {
-//                    if (countClick < 2) {
-//                        countClick++;
+                    if (countClick < 2) {
+                        countClick++;
                         $jConflict(".fc-day-content div", this).addClass('check-booking-true');
-                    addBookingDate(strDate);
-//                    }
+                        addBookingDate(strDate);
+                    }
                 } else {
-//                    if (countClick > 0) {
-//                        countClick--;
-//                    }
+                    if (countClick > 0) {
+                        countClick--;
+                    }
                     $jConflict(".fc-day-content div", this).removeClass('check-booking-true');
                     removeBookingDate(strDate);
                 }
@@ -153,13 +203,17 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
 
     function removeBookingDate(strDate) {
         var newArrayBookingDate = [];
-        for(var i =0;i< array_booking_date.length;i++) {
+        for (var i = 0; i < array_booking_date.length; i++) {
             var strOldDate = array_booking_date[i];
-            if(strOldDate != strDate) {
+            if (strOldDate != strDate) {
                 newArrayBookingDate.push(strOldDate);
             }
         }
         array_booking_date = newArrayBookingDate;
+    }
+
+    function checkMatchDateBooking(date) {
+
     }
 </script>
 <div class="container">
@@ -211,7 +265,7 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
 
             <div class="col-md-4 col-xs-12 text-center" style="">
 
-                <form class="form" method="post" action="<?php echo network_site_url('/'). "reservation"; ?>">
+                <form class="form" method="post" action="<?php echo network_site_url('/') . "reservation"; ?>">
                     <input type="hidden" value="true" name="booking_post"/>
                     <input type="hidden" value="1" name="step"/>
                     <input type="hidden" value="<?php echo $postID; ?>" name="room_id"/>
@@ -221,7 +275,6 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
                 </form>
             </div>
         </div>
-
         <div class="portfolio-works col-md-12 margin-bottom-20">
             <div class="col-md-4 portfolio-work-grid wow bounceIn" data-wow-delay="0.4s">
                 <div class="portfolio-work-grid-pic">
