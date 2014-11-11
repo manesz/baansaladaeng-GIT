@@ -9,7 +9,7 @@ $bookingPost = @$_POST['booking_post'];
 if ($bookingPost == 'true') {
     $step = @$_POST['step'];
     switch ($step) {
-       case "1" : require_once("content-page/content-booking.php"); break;
+       case "1" : require_once("content-page/content-reservation.php"); break;
     }
 //    $result = $objClass->bookingAdd($_POST);
 //    if ($result) {
@@ -21,6 +21,6 @@ if ($bookingPost == 'true') {
 //        }
 //    }
 //    echo "fail";
-    exit;
+   // exit;
 }
 //------------------------- End Add Booking----------------------------//

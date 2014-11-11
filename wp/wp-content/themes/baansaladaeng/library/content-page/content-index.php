@@ -8,6 +8,7 @@ if ($arrayContact) {
 $latitude = @$latitude ? $latitude : "13.72631";
 $longitude = @$longitude ? $longitude : "100.537379";
 
+get_header();
 get_template_part('nav', 'front'); ?>
 <?php get_template_part('booking', 'bar'); ?>
 

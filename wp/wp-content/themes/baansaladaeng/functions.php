@@ -222,7 +222,7 @@ function create_post_type() {
     );
 }*/
 
-require_once("library/check-database.php");
+//require_once("library/check-database.php");
 require_once("library/menu-control.php");
 require_once("library/booking.php");
 

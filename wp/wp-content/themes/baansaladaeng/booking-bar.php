@@ -32,7 +32,7 @@ $postTypeRoom = new WP_Query(array('post_type' => 'room'));
                         class="sr-only">Close</span></button>
             </div>
             <div id="content_booking">
-                <form id="formBooking" class="form" method="post">
+                <form id="formBooking" class="form" method="post" action="<?php echo network_site_url('/'). "reservation"; ?>">
                     <input type="hidden" value="true" name="booking_post"/>
                     <input type="hidden" value="1" name="step"/>
 
@@ -41,18 +41,19 @@ $postTypeRoom = new WP_Query(array('post_type' => 'room'));
                             <div class="form-group col-md-6">
                                 <h4>Check In</h4>
                                 <!--                            <label for="check_in_date">Check in date</label>-->
-                                <input id="check_in_date" name="check_in_date" class=" form-control datePicker"/>
+                                <input id="check_in_date" name="check_in_date" class="form-control datePicker"/>
                             </div>
                             <div class="form-group col-md-6">
                                 <h4>Check Out</h4>
                                 <!--                            <label for="check_out_date">Check out date</label>-->
-                                <input id="check_out_date" name="check_out_date" class=" form-control datePicker"/>
+                                <input id="check_out_date" name="check_out_date" class="form-control datePicker"/>
                             </div>
                             <div class="form-group col-md-12">
                                 <h4>Rooms</h4>
                                 <select id="room_id" name="room_id" class="form-control">
+                                    <option value="">--Select Room--</option>
                                     <?php if ($postTypeRoom->have_posts()): while ($postTypeRoom->have_posts()) : $postTypeRoom->the_post(); ?>
-                                        <option value="">--Select Room--</option>
+
                                         <option value="<?php echo get_the_id(); ?>"
                                             ><?php the_title(); ?></option>
                                     <?php endwhile; endif; ?>

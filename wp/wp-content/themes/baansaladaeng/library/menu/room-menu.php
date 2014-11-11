@@ -42,11 +42,18 @@ function room_register()
 //        'show_in_menu' => 'ics_theme_settings',
 //        "show_in_nav_menus" => true,
 //        "show_in_admin_bar" => true,
+
+        'taxonomy' => array('category', /*'post_tag'*/),
     );
 
     register_post_type('room', $args);
 //    add_submenu_page('edit.php?post_type=room', 'WP Backgrounds Pro', "", "");
-
+    register_taxonomy( 'room-category',
+        'Rooms',
+        array (
+            'hierarchical' => true,
+            'label' => __('Rooms Categories'
+            )));  // portfolio categories
 }
 
 function admin_init()

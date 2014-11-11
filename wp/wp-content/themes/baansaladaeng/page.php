@@ -1,5 +1,3 @@
-<?php get_header(); ?>
-<?php get_template_part('nav'); ?>
 <?php
 
 if (have_posts()) :

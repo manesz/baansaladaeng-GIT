@@ -210,14 +210,17 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
             </p>
 
             <div class="col-md-4 col-xs-12 text-center" style="">
-                <a href="<?php echo the_permalink(); ?>" class="col-md-12 col-xs-12">
+
+                <form class="form" method="post" action="<?php echo network_site_url('/'). "reservation"; ?>">
+                    <input type="hidden" value="true" name="booking_post"/>
+                    <input type="hidden" value="1" name="step"/>
+                    <input type="hidden" value="<?php echo $postID; ?>" name="room_id"/>
+                    <input type="hidden" value="" name="check_in_date"/>
+                    <input type="hidden" value="" name="check_out_date"/>
                     <button class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">RESERVATION</button>
-                </a>
+                </form>
             </div>
         </div>
-        <form id="form_reservation">
-
-        </form>
 
         <div class="portfolio-works col-md-12 margin-bottom-20">
             <div class="col-md-4 portfolio-work-grid wow bounceIn" data-wow-delay="0.4s">

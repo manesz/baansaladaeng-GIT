@@ -1,8 +1,8 @@
-<?php get_header(); ?>
 
 <?php
 if(is_front_page()):
-    get_template_part('page', 'front');
+//    get_template_part('page', 'front');
+    get_template_part("library/content-page/content-index", get_post_format());
 /*else:
     if (have_posts()) : while (have_posts()) : the_post();
         if( is_page('Jobs') ){

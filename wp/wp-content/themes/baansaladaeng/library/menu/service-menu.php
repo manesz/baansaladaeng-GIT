@@ -37,7 +37,7 @@ function service_register()
         'rewrite' => true,
         'capability_type' => 'post',
         'hierarchical' => false,
-        'menu_position' => 6,
+        'menu_position' => 7,
         'supports' => array('title', 'editor', 'thumbnail'),
 //        'show_in_menu' => 'ics_theme_settings',
 //        "show_in_nav_menus" => true,
