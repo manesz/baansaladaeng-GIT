@@ -34,7 +34,7 @@ class Booking_List extends WP_List_Table
                 'id' => $value->id,
                 'count' => $key + 1,
                 'room_name' => "<a href='$permalink' target='_blank'>$value->room_name</a>",
-                'booking_date' => $value->booking_date,
+//                'booking_date' => $value->booking_date,
                 'name' => "$value->middle_name $value->last_name",
                 'passport_no' => $value->passport_no,
                 'email' => $value->email,
@@ -57,7 +57,7 @@ class Booking_List extends WP_List_Table
         echo '.wp-list-table .column-id { width: 5%; }';
         echo '.wp-list-table .column-count { width: 2%; }';
         echo '.wp-list-table .column-room_name { width: 10%; }';
-        echo '.wp-list-table .column-booking_date { width: 10%; }';
+//        echo '.wp-list-table .column-booking_date { width: 10%; }';
         echo '.wp-list-table .column-name { width: 10%; }';
         echo '.wp-list-table .column-passport_no { width: 10%; }';
         echo '.wp-list-table .column-email { width: 10%; }';
@@ -78,7 +78,7 @@ class Booking_List extends WP_List_Table
         switch ($column_name) {
             case 'count':
             case 'room_name':
-            case 'booking_date':
+//            case 'booking_date':
             case 'name':
             case 'passport_no':
             case 'email':
@@ -96,8 +96,8 @@ class Booking_List extends WP_List_Table
     {
         $sortable_columns = array(
 //            'count' => array('count', true),
-            'room_name' => array('booking_date', true),
-            'booking_date' => array('booking_date', true),
+            'room_name' => array('room_name', true),
+//            'booking_date' => array('booking_date', true),
             'name' => array('name', true),
             'passport_no' => array('passport_no', false),
             'email' => array('email', false),
@@ -115,7 +115,7 @@ class Booking_List extends WP_List_Table
             'cb' => '<input type="checkbox" />',
             'count' => __('#', 'mylisttable'),
             'room_name' => __('Room Name', 'mylisttable'),
-            'booking_date' => __('Booking Date', 'mylisttable'),
+//            'booking_date' => __('Booking Date', 'mylisttable'),
             'name' => __('Name', 'mylisttable'),
             'passport_no' => __('Passport', 'mylisttable'),
             'email' => __('Email', 'mylisttable'),

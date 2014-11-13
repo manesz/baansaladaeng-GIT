@@ -4,6 +4,9 @@ session_start();
 $arrayOrder = @$_SESSION['array_reservation_order'];
 $subTotal = 0;
 ?>
+<script>
+    var count_order = <?php echo count($arrayOrder); ?>;
+</script>
 <ul class="bg-fafafa alpha" style="list-style: none; height: 100%">
     <?php
     if ($arrayOrder) : foreach ($arrayOrder as $key => $value):
@@ -29,7 +32,8 @@ $subTotal = 0;
         ?>
         <li class="text-left" style="margin-top: 20px; padding: 10px; border-bottom: 1px #999 dashed;">
             <h5 class="pull-left" style="margin-top: 0px; font-weight: bold;">ROOM <?php echo $key + 1; ?></h5>
-            <span class="pull-right"><a href="#" onclick="deleteOrder(<?php echo $key; ?>);return false;" ">Delete</a></span>
+            <span class="pull-right"><a href="#"
+                                        onclick="deleteOrder(<?php echo $key; ?>);return false;" ">Delete</a></span>
             <hr/>
             <table style="width: 100%">
                 <tr>
@@ -64,10 +68,12 @@ $subTotal = 0;
             </tr>
         </table>
     </li>
-    <div class="col-md-12 margin-bottom-10 alpha omega">
-        <div class="col-md-12 alpha omega">
-            <input id="btn_payment" type="button"
-                   class="btn btn-success form-control col-md-12" value="Payment">
+    <?php if ($arrayOrder): ?>
+        <div class="col-md-12 margin-bottom-10 alpha omega">
+            <div class="col-md-12 alpha omega">
+                <input type="button"
+                       class="btn btn-success form-control col-md-12 btn_payment" value="Payment">
+            </div>
         </div>
-    </div>
+    <?php endif; ?>
 </ul>

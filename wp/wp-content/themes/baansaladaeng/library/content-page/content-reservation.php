@@ -1,14 +1,19 @@
 <?php
+session_start();
+$arrayOrder = @$_SESSION['array_reservation_order'];
 $checkInDate = @$_POST['check_in_date'] ? $_POST['check_in_date'] : '';
 $checkOutDate = @$_POST['check_out_date'] ? $_POST['check_out_date'] : '';
-$roomID = @$_POST['room_id'] ? $_POST['room_id'] : '';
-$postTypeRoom = new WP_Query(array('post_type' => 'room'));
+$roomID = @$_POST['room_id'] ? $_POST['room_id'] : '0';
 
 
 get_header();
 get_template_part('nav');
 ?>
-
+    <script>
+        var room_id = <?php echo $roomID; ?>;
+    </script>
+    <script type="text/javascript"
+            src="<?php bloginfo('template_directory'); ?>/library/js/reservation.js"></script>
     <div class="container" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     <div class="row">
 
@@ -19,159 +24,210 @@ get_template_part('nav');
     <!--                <h2 class="col-md-12">Select Rooms <span class="font-color-999 font-size-14">Mediterranean Suite</span> </h2>-->
     <ol class="breadcrumb" style="padding: 15px 0 15px 15px;">
         <li><a id="linkSelectDate" href="#">SELECT DATES</a></li>
-        <li><a id="linkSelectRoom" href="#">ROOM SELECTION</a></li>
+        <?php if (!$roomID): ?>
+            <li><a id="linkSelectRoom" href="#">ROOM SELECTION</a></li>
+        <?php endif; ?>
         <li><a id="linkPayment" href="#">PAYMENT</a></li>
         <li><a id="linkConfirm" href="#">CONFIRM</a></li>
     </ol>
     <hr class=""/>
 
     <div id="section_select_date">
-        <?php for ($i = 1; $i <= 3; $i++): ?>
-            <h2>Room <?php echo $i; ?></h2>
-            <div class="col-md-12 alpha">
-                <div class="form-group col-md-6">
-                    <h4>Arrival Date</h4>
-                    <!--                            <label for="check_in_date">Check in date</label>-->
-                    <input id="arrival_date" name="arrival_date"
-                           value="<?php echo $checkInDate; ?>"
-                           class="form-control datePicker"/>
-                </div>
-                <div class="form-group col-md-6">
-                    <h4>Departure Date</h4>
-                    <!--                            <label for="check_out_date">Check out date</label>-->
-                    <input id="departure_date" name="departure_date"
-                           value="<?php echo $checkOutDate; ?>"
-                           class="form-control datePicker"/>
-                </div>
-                <!--<div class="form-group col-md-12">
+        <h2>Room <?php echo count($arrayOrder) + 1; ?></h2>
+
+        <div class="col-md-12 alpha">
+            <div class="form-group col-md-6">
+                <h4>Arrival Date</h4>
+                <!--                            <label for="check_in_date">Check in date</label>-->
+                <input id="arrival_date" name="arrival_date"
+                       value="<?php echo $checkInDate; ?>"
+                       class="form-control datePicker"/>
+            </div>
+            <div class="form-group col-md-6">
+                <h4>Departure Date</h4>
+                <!--                            <label for="check_out_date">Check out date</label>-->
+                <input id="departure_date" name="departure_date"
+                       value="<?php echo $checkOutDate; ?>"
+                       class="form-control datePicker"/>
+            </div>
+            <?php if ($roomID): ?>
+                <div class="form-group col-md-12">
                     <h4>Rooms</h4>
-                    <select id="room_id" name="room_id" class="form-control">
-                        <option value=""></option>
-                        <?php if ($postTypeRoom->have_posts()): while ($postTypeRoom->have_posts()) : $postTypeRoom->the_post(); ?>
-                            <option value="<?php echo get_the_id(); ?>"
-                                <?php echo $roomID == get_the_id() ? "selected" : ""; ?>><?php the_title(); ?></option>
-                        <?php endwhile; endif; ?>
-                    </select>
-                </div>-->
-                <div class="form-group col-md-12">
-                    <h4>Adults</h4>
-                    <select id="adult" name="adult" class="form-control">
-                        <?php for ($i = 1; $i <= 6; $i++): ?>
-                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                        <?php endfor; ?>
-                    </select>
+                    <?php
+                    $postTypeRoom = new WP_Query(array('post_type' => 'room', 'post__in ' => array($roomID)));
+                    if ($postTypeRoom->have_posts()): while ($postTypeRoom->have_posts()) : $postTypeRoom->the_post(); ?>
+                        <input id="room_name" name="room_name"
+                               type="text" maxlength="50" class="form-control col-md-12" value="<?php the_title(); ?>"/>
+                    <?php endwhile; endif; ?>
                 </div>
-                <div class="form-group col-md-12">
-                    <div class="col-md-4"
-                         style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
-                        <button id="btn_step1" class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
-                            Next
-                        </button>
-                    </div>
+            <?php endif; ?>
+            <div class="form-group col-md-12">
+                <h4>Adults</h4>
+                <select id="adult" name="adult" class="form-control">
+                    <?php for ($i = 1; $i <= 6; $i++): ?>
+                        <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                    <?php endfor; ?>
+                </select>
+            </div>
+            <div class="form-group col-md-12">
+                <?php if ($roomID):?>
+                <div class="col-md-4"
+                     style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
+                    <button onclick="window.location.href='<?php echo network_site_url('/'); ?>reservation'"
+                            class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
+                        Cancel
+                    </button>
+                </div><div class="col-md-1"></div>
+                <?php endif; ?>
+                <div class="col-md-4"
+                     style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
+                    <button onclick="return step1Click();"
+                            class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
+                        Next
+                    </button>
                 </div>
             </div>
-        <?php endfor; ?>
+        </div>
     </div>
 
     <div id="list_room"></div>
 
     <div id="section_payment" class="form-group">
-        <div class="col-md-12">
+        <form id="payment_post">
+            <div class="col-md-12">
 
-            <h4>Summary Order:</h4>
-            <hr/>
-            <table class="table table-responsive table-striped table-bordered">
-                <tr>
-                    <td>Room:</td>
-                    <td>
-                        1. Room 201 :Black and White Room<br/>
-                        2. Room 202 : Black and White Room
-                    </td>
-                </tr>
-                <tr>
-                    <td>Arrival Date:</td>
-                    <td>2 September 2014</td>
-                </tr>
-                <tr>
-                    <td>Sub Total:</td>
-                    <td>2.600 bath</td>
-                </tr>
-            </table>
-        </div>
-        <div class="col-md-12">
+                <h4>Summary Order:</h4>
+                <hr/>
+                <div id="summary_order"></div>
+            </div>
+            <div class="col-md-12" id="payment_info">
 
-            <h4>Payment Information:</h4>
-            <hr/>
-            <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="formPaymentName">Name</label></div>
-                <div class="col-md-9 alpha omega"><input id="formPaymentName" name="formPaymentName" type="text"
-                                                         class="form-control col-md-12"/></div>
-            </div>
-            <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="formPaymentMiddleName">Middle Name</label></div>
-                <div class="col-md-9 alpha omega"><input id="formPaymentMiddleName" name="formPaymentMiddleName"
-                                                         type="text" class="form-control col-md-12"/></div>
-            </div>
-            <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="formPaymentLastName">Last Name</label></div>
-                <div class="col-md-9 alpha omega"><input id="formPaymentLastName" name="formPaymentLastName" type="text"
-                                                         class="form-control col-md-12"/></div>
-            </div>
-            <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="formPaymentDOB">Date of Birth</label></div>
-                <div class="col-md-9 alpha omega"><input id="formPaymentDOB" name="formPaymentDOB" type="text"
-                                                         class="form-control col-md-12"/></div>
-            </div>
-            <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="formPaymentPassspotNo">Passspot No.</label></div>
-                <div class="col-md-9 alpha omega"><input id="formPaymentPassspotNo" name="formPaymentPassspotNo"
-                                                         type="text" class="form-control col-md-12"/></div>
-            </div>
-            <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="formPaymentNationality">Nationality</label></div>
-                <div class="col-md-9 alpha omega"><input id="formPaymentNationality" name="formPaymentNationality"
-                                                         type="text" class="form-control col-md-12"/></div>
-            </div>
-            <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="formPaymentEmail">Email</label></div>
-                <div class="col-md-9 alpha omega"><input id="formPaymentEmail" name="formPaymentEmail" type="text"
-                                                         class="form-control col-md-12"/></div>
-            </div>
-            <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="formPaymentTime">Estimated arrival Time</label></div>
-                <div class="col-md-9 alpha omega"><input id="formPaymentTime" name="formPaymentTime" type="text"
-                                                         class="form-control col-md-12"/></div>
-            </div>
-            <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="formPaymentTel">Tel/Mobile Number</label></div>
-                <div class="col-md-9 alpha omega"><input id="formPaymentTel" name="formPaymentTel" type="text"
-                                                         class="form-control col-md-12"/></div>
-            </div>
-            <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="formPaymentPersonNo">No. of Person</label></div>
-                <div class="col-md-9 alpha omega"><input id="formPaymentPersonNo" name="formPaymentPersonNo" type="text"
-                                                         class="form-control col-md-12"/></div>
-            </div>
-            <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for=""></label></div>
-                <div class="col-md-9 alpha omega"><input id="formPaymentPickup" name="formPaymentPickup" type="checkbox"
-                                                         style="margin-right: 20px;"/>Need Airport Pickup (THB 1,200 one
-                    way)
+                <h4>Payment Information:</h4>
+                <hr/>
+                <div class="col-md-12 margin-bottom-10 alpha omega">
+                    <div class="col-md-3 alpha"><label for="payment_name">Name <font color="#FF0000">*</font></label>
+                    </div>
+                    <div class="col-md-9 alpha omega">
+                        <input id="payment_name" name="payment_name" type="text" maxlength="50"
+                               class="form-control col-md-12"/></div>
                 </div>
-            </div>
-            <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="formPaymentNote">Note (if any)</label></div>
-                <div class="col-md-9 alpha omega"><textarea id="formPaymentNote" name="formPaymentNote"
-                                                            class="form-control col-md-12" rows="10"></textarea></div>
-            </div>
-            <div class="col-md-12 margin-bottom-10 alpha">
-                <button type="submit" class="col-md-12 btn btn-success btn-lg" style="border-radius: 0;" value="SUBMIT">
-                    SUBMIT
-                </button>
-            </div>
+                <div class="col-md-12 margin-bottom-10 alpha omega">
+                    <div class="col-md-3 alpha"><label for="payment_middle_name">Middle Name</label></div>
+                    <div class="col-md-9 alpha omega"><input id="payment_middle_name" name="payment_middle_name"
+                                                             type="text" maxlength="50" class="form-control col-md-12"/></div>
+                </div>
+                <div class="col-md-12 margin-bottom-10 alpha omega">
+                    <div class="col-md-3 alpha"><label for="payment_last_name">Last Name <font color="#FF0000">*</font></label>
+                    </div>
+                    <div class="col-md-9 alpha omega"><input id="payment_last_name" name="payment_last_name" type="text" maxlength="50"
+                                                             class="form-control col-md-12"/></div>
+                </div>
+                <div class="col-md-12 margin-bottom-10 alpha omega">
+                    <div class="col-md-3 alpha"><label for="payment_dob">Date of Birth <font
+                                color="#FF0000">*</font></label></div>
+                    <div class="col-md-9 alpha omega">
+                        <select id="payment_date_of_birth_1" name="payment_date_of_birth_1">
+                            <option value="">Date</option>
+                            <?php for ($i = 1; $i <= 31; $i++): ?>
+                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                            <?php endfor; ?>
+                        </select>&nbsp;/&nbsp;
+                        <select id="payment_date_of_birth_2" name="payment_date_of_birth_2">
+                            <option value="">Month</option>
+                            <?php for ($i = 1; $i <= 12; $i++): ?>
+                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                            <?php endfor; ?>
+                        </select>&nbsp;/&nbsp;
+                        <select id="payment_date_of_birth_3" name="payment_date_of_birth_3">
+                            <option value="">Year</option>
+                            <?php for ($i = date("Y") - 95; $i <= date("Y") - 12; $i++): ?>
+                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12 margin-bottom-10 alpha omega">
+                    <div class="col-md-3 alpha"><label for="payment_passport_no">Passport No. <font
+                                color="#FF0000">*</font></label></div>
+                    <div class="col-md-9 alpha omega"><input id="payment_passport_no" name="payment_passport_no"
+                                                             type="text" maxlength="50" class="form-control col-md-12"/></div>
+                </div>
+                <div class="col-md-12 margin-bottom-10 alpha omega">
+                    <div class="col-md-3 alpha"><label for="payment_nationality">Nationality <font
+                                color="#FF0000">*</font></label></div>
+                    <div class="col-md-9 alpha omega"><input id="payment_nationality" name="payment_nationality"
+                                                             type="text" maxlength="50" class="form-control col-md-12"/></div>
+                </div>
+                <div class="col-md-12 margin-bottom-10 alpha omega">
+                    <div class="col-md-3 alpha"><label for="payment_email">Email <font color="#FF0000">*</font></label>
+                    </div>
+                    <div class="col-md-9 alpha omega"><input id="payment_email" name="payment_email" type="text" maxlength="50"
+                                                             class="form-control col-md-12"/></div>
+                </div>
+                <div class="col-md-12 margin-bottom-10 alpha omega">
+                    <div class="col-md-3 alpha"><label for="payment_est_arrival1">Estimated arrival Time <font
+                                color="#FF0000">*</font></label></div>
+                    <div class="col-md-9 alpha omega">
+                        <select id="payment_est_arrival1" name="payment_est_arrival1" class="">
+                            <option value="">--</option>
+                            <?php for ($i = 1; $i <= 12; $i++): ?>
+                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                            <?php endfor; ?>
+                        </select>&nbsp;:&nbsp;
+                        <select id="payment_est_arrival2" name="payment_est_arrival2" class="">
+                            <option value="">--</option>
+                            <option value="00">00</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="45">45</option>
+                        </select>&nbsp;:&nbsp;
+                        <select id="payment_est_arrival3" name="payment_est_arrival3" class="">
+                            <option value="">----</option>
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12 margin-bottom-10 alpha omega">
+                    <div class="col-md-3 alpha"><label for="payment_tel">Tel/Mobile Number</label></div>
+                    <div class="col-md-9 alpha omega"><input id="payment_tel" name="payment_tel" type="text" maxlength="50"
+                                                             class="form-control col-md-12"/></div>
+                </div>
+                <div class="col-md-12 margin-bottom-10 alpha omega">
+                    <div class="col-md-3 alpha"><label for="payment_no_of_person">No. of Person <font
+                                color="#FF0000">*</font></label></div>
+                    <div class="col-md-9 alpha omega">
+                        <select id="payment_no_of_person" name="payment_no_of_person" class="col-md-6">
+                            <option value="">---- Select ----</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select></div>
+                </div>
+                <div class="col-md-12 margin-bottom-10 alpha omega">
+                    <div class="col-md-3 alpha"><label for=""></label></div>
+                    <div class="col-md-9 alpha omega">
+                        <input id="payment_need_airport_pickup" name="payment_need_airport_pickup"
+                               type="checkbox"
+                               onclick="this.value=$(this).prop('checked')?1:0;"
+                               style="margin-right: 20px;"/>Need Airport Pickup (THB 1,200 one way)
+                    </div>
+                </div>
+                <div class="col-md-12 margin-bottom-10 alpha omega">
+                    <div class="col-md-3 alpha"><label for="payment_note">Note (if any)</label></div>
+                    <div class="col-md-9 alpha omega"><textarea id="payment_note" name="payment_note"
+                                                                class="form-control col-md-12" rows="10"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-12 margin-bottom-10 alpha">
+                    <button type="submit" class="col-md-12 btn btn-success btn-lg"
+                            style="border-radius: 0;">
+                        SUBMIT
+                    </button>
+                </div>
 
-        </div>
-
+            </div>
+        </form>
     </div>
 
     <div id="section_confirm_order">
@@ -180,116 +236,117 @@ get_template_part('nav');
         <hr/>
         <table class="table table-responsive table-striped table-bordered">
             <tr>
-                <td>Room:</td>
-                <td>
-                    1. Room 201 :Black and White Room<br/>
-                    2. Room 202 : Black and White Room
-                </td>
-            </tr>
-            <tr>
-                <td>Arrival Date:</td>
-                <td>2 September 2014</td>
-            </tr>
-            <tr>
-                <td>Sub Total:</td>
-                <td>2.600 bath</td>
-            </tr>
-            <tr>
                 <td>Name:</td>
-                <td></td>
+                <td id="confirm_name"></td>
             </tr>
             <tr>
                 <td>Middle Name:</td>
-                <td></td>
+                <td id="confirm_middle_name"></td>
             </tr>
             <tr>
                 <td>Last Name:</td>
-                <td></td>
+                <td id="confirm_last_name"></td>
             </tr>
             <tr>
                 <td>Date of Birth:</td>
-                <td></td>
+                <td id="confirm_dob"></td>
             </tr>
             <tr>
-                <td>Password No.:</td>
-                <td></td>
+                <td>Passport No.:</td>
+                <td id="confirm_passport_no"></td>
             </tr>
             <tr>
                 <td>Nationality:</td>
-                <td></td>
+                <td id="confirm_nationality"></td>
             </tr>
             <tr>
                 <td>Email:</td>
-                <td></td>
+                <td id="confirm_email"></td>
             </tr>
             <tr>
                 <td>Estimated Arrival Time:</td>
-                <td></td>
+                <td id="confirm_time"></td>
             </tr>
             <tr>
                 <td>Tel/Mobile No.:</td>
-                <td></td>
+                <td id="confirm_tel"></td>
             </tr>
             <tr>
                 <td>No. of Person:</td>
-                <td></td>
+                <td id="confirm_no_of_person"></td>
             </tr>
             <tr>
                 <td>require airport pickup:</td>
-                <td>(Yes)</td>
+                <td id="confirm_need_airport_pickup"></td>
             </tr>
             <tr>
                 <td>Note:</td>
-                <td></td>
+                <td id="confirm_note"></td>
             </tr>
         </table>
+        <form id="form_credit_card_payment">
+            <h4>Credit Card Payment:</h4>
+            <hr/>
+            <div class="col-md-12 margin-bottom-10 alpha omega">
+                <div class="col-md-3 alpha">
+                    <label for="card_type">Card Type <font color="#FF0000">*</font></label>
+                </div>
+                <div class="col-md-9 alpha omega">
+                    <select id="card_type" name="card_type" class="form-control col-md-12">
+                        <option value="">---- Select Card ----</option>
+                        <option value="Visa">Visa</option>
+                        <option value="Master Card">Master Card</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12 margin-bottom-10 alpha omega">
+                <div class="col-md-3 alpha"><label for="card_holder_name">Card Holder's Name <font color="#FF0000">*</font></label></div>
+                <div class="col-md-9 alpha omega">
+                    <input type="text" maxlength="50" id="card_holder_name" name="card_holder_name"
+                           class="form-control col-md-12"/>
+                </div>
+            </div>
+            <div class="col-md-12 margin-bottom-10 alpha omega">
+                <div class="col-md-3 alpha"><label for="card_number">Card No. <font color="#FF0000">*</font></label></div>
+                <div class="col-md-9 alpha omega">
+                    <input type="text" maxlength="50" id="card_number" name="card_number"
+                           class="form-control col-md-12"/>
+                </div>
+            </div>
+            <div class="col-md-12 margin-bottom-10 alpha omega">
+                <div class="col-md-3 alpha"><label for="tree_digit_id">3-Digit ID# <font color="#FF0000">*</font></label></div>
+                <div class="col-md-9 alpha omega">
+                    <input type="text" maxlength="3" id="tree_digit_id" name="tree_digit_id"
+                           class="form-control col-md-12"/>
+                    <span style="font-size: 10px; color: red;"></span>
+                </div>
+            </div>
+            <div class="col-md-12 margin-bottom-10 alpha omega">
+                <div class="col-md-3 alpha"><label for="card_expiry_date">Card Expiry Date <font color="#FF0000">*</font></label></div>
+                <div class="col-md-9 alpha omega">
 
-        <h4>Credit Card Payment:</h4>
-        <hr/>
-        <div class="col-md-12 margin-bottom-10 alpha">
-            <div class="col-md-3 alpha"><label for="formPaymentCreditCardType">Card Type</label></div>
-            <div class="col-md-9 alpha">
-                <select id="formPaymentCreditCardType" name="formPaymentCreditCardType" class="form-control col-md-12">
-                    <option>---- Select Card ----</option>
-                    <option>Visa</option>
-                    <option>Master Card</option>
-                </select>
+                    <select id="card_expiry_date1" name="card_expiry_date1">
+                        <option value="">-- Month --</option>
+                        <?php for ($i = 1; $i <= 12; $i++): ?>
+                            <option value="<?php echo strlen($i) == 1 ? "0$i" : $i; ?>"><?php echo $i; ?></option>
+                        <?php endfor; ?>
+                    </select>&nbsp;/&nbsp;
+                    <select id="card_expiry_date2" name="card_expiry_date2">
+                        <option value="">-- Year --</option>
+                        <?php for ($i = date('Y'); $i <= (date("Y") + 20); $i++): ?>
+                            <option value="<?php
+                            $strY = substr($i, 2);
+                            echo $strY = strlen($strY) == 1 ? "0$strY" : $strY; ?>"><?php echo $i; ?></option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="col-md-12 margin-bottom-10 alpha omega">
-            <div class="col-md-3 alpha"><label for="formPaymentCreditCardHolder">Card Holder's Name</label></div>
-            <div class="col-md-9 alpha omega">
-                <input type="text" id="formPaymentCreditCardHolder" name="formPaymentCreditCardHolder"
-                       class="form-control col-md-12"/>
+            <div class="col-md-12 margin-bottom-10 alpha omega">
+                <div class="col-md-12 alpha omega">
+                    <input type="submit" class="btn btn-success form-control col-md-12" value="SUBMIT">
+                </div>
             </div>
-        </div>
-        <div class="col-md-12 margin-bottom-10 alpha omega">
-            <div class="col-md-3 alpha"><label for="formPaymentCreditCardNo">Card No.</label></div>
-            <div class="col-md-9 alpha omega">
-                <input type="text" id="formPaymentCreditCardNo" name="formPaymentCreditCardNo"
-                       class="form-control col-md-12"/>
-            </div>
-        </div>
-        <div class="col-md-12 margin-bottom-10 alpha omega">
-            <div class="col-md-3 alpha"><label for="formPaymentCreditCard3Ditgit">3-Digit ID#</label></div>
-            <div class="col-md-9 alpha omega">
-                <input type="text" id="formPaymentCreditCard3Ditgit" name="formPaymentCreditCard3Ditgit"
-                       class="form-control col-md-12"/>
-                <span style="font-size: 10px; color: red;"></span>
-            </div>
-        </div>
-        <div class="col-md-12 margin-bottom-10 alpha omega">
-            <div class="col-md-3 alpha"><label for="formPaymentCreditCardExpiry">Card Expiry Date</label></div>
-            <div class="col-md-9 alpha omega">
-                <input type="text" id="formPaymentCreditCardExpiry" name="formPaymentCreditCardExpiry"
-                       class="form-control col-md-12"/>
-            </div>
-        </div>
-        <div class="col-md-12 margin-bottom-10 alpha omega">
-            <div class="col-md-12 alpha omega">
-                <input type="button" class="btn btn-success form-control col-md-12" value="SUBMIT">
-            </div>
-        </div>
+        </form>
     </div>
 
     </div>
@@ -301,150 +358,5 @@ get_template_part('nav');
     </div>
     </div>
     </div>
-
-    <script>
-        $(document).ready(function () {
-            getOrder();
-            $('#section_select_date').show();
-            $('#list_room').hide();
-            $('#section_payment').hide();
-            $('#section_confirm_order').hide();
-
-            $('#linkSelectDate').click(function () {
-                $('#section_select_date').fadeIn();
-                $('#list_room').hide();
-                $('#section_payment').hide();
-                $('#section_confirm_order').hide();
-            });
-            $('#linkSelectRoom').click(function () {
-                $('#section_select_date').hide();
-                $('#list_room').fadeIn();
-                $('#section_payment').hide();
-                $('#section_confirm_order').hide();
-            });
-            $(document).on("click", "#linkPayment, #btn_payment", function (e) {
-                $("body, html").animate({
-                        scrollTop: $("body").position().top
-                    },
-                    500,
-                    function () {
-                        $('#section_payment').fadeIn();
-                    });
-                $('#section_select_date').hide();
-                $('#list_room').hide();
-                $('#section_confirm_order').hide();
-            });
-
-            $(document).on("click", "#linkConfirm", function (e) {
-                $('#section_select_date').hide();
-                $('#list_room').hide();
-                $('#section_payment').hide();
-                $('#section_confirm_order').fadeIn();
-            });
-
-            $(document).on("click", "#btn_step1", function (e) {
-                if ($("#arrival_date").val() == ""){
-                    alert("Please select \"Arrival Date\"");
-                    $("#arrival_date").select();
-                    return false;
-                }
-                else if ($("#departure_date").val() == ""){
-                    alert("Please select \"Departure Date\"");
-                    $("#departure_date").select();
-                    return false;
-                }
-                $('#section_select_date').hide();
-                $('#section_payment').hide();
-                $('#section_confirm_order').hide();
-                getRoom();
-            });
-
-            $(document).on("click", ".btn_choose", function (e) {
-                $("#reservation_order").fadeOut();
-                getOrder();
-            });
-        });
-
-        function getRoom() {
-            $.ajax({
-                type: "POST",
-                url: '',
-                data: {
-                    booking_post: 'true',
-                    reservation_post: 'get_room',
-                    check_in: $("#arrival_date").val(),
-                    check_out: $("#departure_date").val()
-                },
-                success: function (data) {
-                    $("#list_room").html(data);
-                    $('#list_room').fadeIn();
-                },
-                error: function (result) {
-                    alert("Error:\n" + result.responseText);
-                }
-            });
-        }
-
-        function addOrder(roomID) {
-            $.ajax({
-                type: "POST",
-                url: '',
-                data: {
-                    booking_post: 'true',
-                    reservation_post: 'add_order',
-                    room_id: roomID,
-                    arrival_date: $("#arrival_date").val(),
-                    departure_date: $("#departure_date").val(),
-                    adults: $("#adult").val()
-                },
-                success: function (data) {
-                    if (data == 'success')
-                        getOrder();
-                    else alert('Fail');
-                },
-                error: function (result) {
-                    alert("Error:\n" + result.responseText);
-                }
-            });
-        }
-
-        function getOrder() {
-            $.ajax({
-                type: "POST",
-                url: '',
-                data: {
-                    booking_post: 'true',
-                    reservation_post: 'get_order'
-                },
-                success: function (data) {
-                    $("#reservation_order").html(data).fadeIn();
-                },
-                error: function (result) {
-                    alert("Error:\n" + result.responseText);
-                }
-            });
-        }
-
-        function deleteOrder(orderID) {
-            if (confirm('Do you want delete room ' + (orderID + 1) + " ?"))
-                $.ajax({
-                    type: "POST",
-                    url: '',
-                    data: {
-                        booking_post: 'true',
-                        reservation_post: 'delete_order',
-                        order_id: orderID
-                    },
-                    success: function (data) {
-                        if (data == 'success')
-                            getOrder();
-                        else alert('Fail');
-                    },
-                    error: function (result) {
-                        alert("Error:\n" + result.responseText);
-                    }
-                });
-        }
-    </script>
 
 <?php get_footer(); ?>
