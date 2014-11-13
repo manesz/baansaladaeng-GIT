@@ -53,7 +53,7 @@ $(document).on("submit", "#form_credit_card_payment", function (e) {
         success: function (data) {
             if (data == 'success') {
                 alert("Success\nCheck your email.");
-                window.location.reload();
+                window.location.href = web_url + 'reservation';
             } else {
                 alert(data);
             }
@@ -241,7 +241,7 @@ function addOrder(roomID) {
             },
             success: function (data) {
                 if (data == 'success') {
-                    window.location.reload();
+                    window.location.href = web_url + "reservation";
                 }
                 else alert('Fail');
                 check_add_room = false;
@@ -335,7 +335,7 @@ function deleteOrder(orderID) {
                 },
                 success: function (data) {
                     if (data == 'success')
-                        getOrder();
+                        window.location.reload();
                     else alert('Fail');
                     check_delete_room = false;
                 },

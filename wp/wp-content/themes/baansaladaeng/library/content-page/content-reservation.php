@@ -11,6 +11,7 @@ get_template_part('nav');
 ?>
     <script>
         var room_id = <?php echo $roomID; ?>;
+        var web_url = '<?php echo network_site_url('/'); ?>';
     </script>
     <script type="text/javascript"
             src="<?php bloginfo('template_directory'); ?>/library/js/reservation.js"></script>
@@ -56,7 +57,7 @@ get_template_part('nav');
                     <?php
                     $postTypeRoom = new WP_Query(array('post_type' => 'room', 'post__in ' => array($roomID)));
                     if ($postTypeRoom->have_posts()): while ($postTypeRoom->have_posts()) : $postTypeRoom->the_post(); ?>
-                        <input id="room_name" name="room_name"
+                        <input id="room_name" name="room_name" disabled
                                type="text" maxlength="50" class="form-control col-md-12" value="<?php the_title(); ?>"/>
                     <?php endwhile; endif; ?>
                 </div>
@@ -70,20 +71,21 @@ get_template_part('nav');
                 </select>
             </div>
             <div class="form-group col-md-12">
-                <?php if ($roomID):?>
-                <div class="col-md-4"
-                     style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
-                    <button onclick="window.location.href='<?php echo network_site_url('/'); ?>reservation'"
-                            class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
-                        Cancel
-                    </button>
-                </div><div class="col-md-1"></div>
+                <?php if ($roomID): ?>
+                    <div class="col-md-4"
+                         style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
+                        <button onclick="window.location.href='<?php echo network_site_url('/'); ?>reservation'"
+                                class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
+                            Cancel
+                        </button>
+                    </div>
+                    <div class="col-md-1"></div>
                 <?php endif; ?>
                 <div class="col-md-4"
                      style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
                     <button onclick="return step1Click();"
                             class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
-                        Next
+                        <?php echo $roomID ? "Booking Now" : "Next"; ?>
                     </button>
                 </div>
             </div>
@@ -114,12 +116,14 @@ get_template_part('nav');
                 <div class="col-md-12 margin-bottom-10 alpha omega">
                     <div class="col-md-3 alpha"><label for="payment_middle_name">Middle Name</label></div>
                     <div class="col-md-9 alpha omega"><input id="payment_middle_name" name="payment_middle_name"
-                                                             type="text" maxlength="50" class="form-control col-md-12"/></div>
+                                                             type="text" maxlength="50" class="form-control col-md-12"/>
+                    </div>
                 </div>
                 <div class="col-md-12 margin-bottom-10 alpha omega">
                     <div class="col-md-3 alpha"><label for="payment_last_name">Last Name <font color="#FF0000">*</font></label>
                     </div>
-                    <div class="col-md-9 alpha omega"><input id="payment_last_name" name="payment_last_name" type="text" maxlength="50"
+                    <div class="col-md-9 alpha omega"><input id="payment_last_name" name="payment_last_name" type="text"
+                                                             maxlength="50"
                                                              class="form-control col-md-12"/></div>
                 </div>
                 <div class="col-md-12 margin-bottom-10 alpha omega">
@@ -150,18 +154,21 @@ get_template_part('nav');
                     <div class="col-md-3 alpha"><label for="payment_passport_no">Passport No. <font
                                 color="#FF0000">*</font></label></div>
                     <div class="col-md-9 alpha omega"><input id="payment_passport_no" name="payment_passport_no"
-                                                             type="text" maxlength="50" class="form-control col-md-12"/></div>
+                                                             type="text" maxlength="50" class="form-control col-md-12"/>
+                    </div>
                 </div>
                 <div class="col-md-12 margin-bottom-10 alpha omega">
                     <div class="col-md-3 alpha"><label for="payment_nationality">Nationality <font
                                 color="#FF0000">*</font></label></div>
                     <div class="col-md-9 alpha omega"><input id="payment_nationality" name="payment_nationality"
-                                                             type="text" maxlength="50" class="form-control col-md-12"/></div>
+                                                             type="text" maxlength="50" class="form-control col-md-12"/>
+                    </div>
                 </div>
                 <div class="col-md-12 margin-bottom-10 alpha omega">
                     <div class="col-md-3 alpha"><label for="payment_email">Email <font color="#FF0000">*</font></label>
                     </div>
-                    <div class="col-md-9 alpha omega"><input id="payment_email" name="payment_email" type="text" maxlength="50"
+                    <div class="col-md-9 alpha omega"><input id="payment_email" name="payment_email" type="text"
+                                                             maxlength="50"
                                                              class="form-control col-md-12"/></div>
                 </div>
                 <div class="col-md-12 margin-bottom-10 alpha omega">
@@ -190,7 +197,8 @@ get_template_part('nav');
                 </div>
                 <div class="col-md-12 margin-bottom-10 alpha omega">
                     <div class="col-md-3 alpha"><label for="payment_tel">Tel/Mobile Number</label></div>
-                    <div class="col-md-9 alpha omega"><input id="payment_tel" name="payment_tel" type="text" maxlength="50"
+                    <div class="col-md-9 alpha omega"><input id="payment_tel" name="payment_tel" type="text"
+                                                             maxlength="50"
                                                              class="form-control col-md-12"/></div>
                 </div>
                 <div class="col-md-12 margin-bottom-10 alpha omega">
@@ -300,21 +308,24 @@ get_template_part('nav');
                 </div>
             </div>
             <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="card_holder_name">Card Holder's Name <font color="#FF0000">*</font></label></div>
+                <div class="col-md-3 alpha"><label for="card_holder_name">Card Holder's Name <font
+                            color="#FF0000">*</font></label></div>
                 <div class="col-md-9 alpha omega">
                     <input type="text" maxlength="50" id="card_holder_name" name="card_holder_name"
                            class="form-control col-md-12"/>
                 </div>
             </div>
             <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="card_number">Card No. <font color="#FF0000">*</font></label></div>
+                <div class="col-md-3 alpha"><label for="card_number">Card No. <font color="#FF0000">*</font></label>
+                </div>
                 <div class="col-md-9 alpha omega">
                     <input type="text" maxlength="50" id="card_number" name="card_number"
                            class="form-control col-md-12"/>
                 </div>
             </div>
             <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="tree_digit_id">3-Digit ID# <font color="#FF0000">*</font></label></div>
+                <div class="col-md-3 alpha"><label for="tree_digit_id">3-Digit ID# <font
+                            color="#FF0000">*</font></label></div>
                 <div class="col-md-9 alpha omega">
                     <input type="text" maxlength="3" id="tree_digit_id" name="tree_digit_id"
                            class="form-control col-md-12"/>
@@ -322,7 +333,8 @@ get_template_part('nav');
                 </div>
             </div>
             <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-3 alpha"><label for="card_expiry_date">Card Expiry Date <font color="#FF0000">*</font></label></div>
+                <div class="col-md-3 alpha"><label for="card_expiry_date">Card Expiry Date <font
+                            color="#FF0000">*</font></label></div>
                 <div class="col-md-9 alpha omega">
 
                     <select id="card_expiry_date1" name="card_expiry_date1">

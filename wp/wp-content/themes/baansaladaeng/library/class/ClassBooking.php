@@ -37,7 +37,7 @@ class Booking
             WHERE 1
               AND b.`publish` = 1
               $strAnd
-            ORDER BY b.create_time DESC
+            #ORDER BY a.id DESC
         ";
 
         $myrows = $this->wpdb->get_results($sql);
