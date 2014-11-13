@@ -46,6 +46,7 @@
                                           action="<?php echo network_site_url('/') . "reservation"; ?>">
                                         <input type="hidden" value="true" name="booking_post"/>
                                         <input type="hidden" value="1" name="step"/>
+                                        <input type="hidden" value="<?php the_title(); ?>" name="room_name"/>
                                         <input type="hidden" value="<?php echo $postID; ?>" name="room_id"/>
                                         <input type="hidden" value="" name="check_in_date"/>
                                         <input type="hidden" value="" name="check_out_date"/>

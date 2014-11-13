@@ -4,6 +4,7 @@ $arrayOrder = @$_SESSION['array_reservation_order'];
 $checkInDate = @$_POST['check_in_date'] ? $_POST['check_in_date'] : '';
 $checkOutDate = @$_POST['check_out_date'] ? $_POST['check_out_date'] : '';
 $roomID = @$_POST['room_id'] ? $_POST['room_id'] : '0';
+$roomName = @$_POST['room_name'] ? $_POST['room_name'] : '';
 
 
 get_header();
@@ -12,6 +13,7 @@ get_template_part('nav');
     <script>
         var room_id = <?php echo $roomID; ?>;
         var web_url = '<?php echo network_site_url('/'); ?>';
+        var count_order = <?php echo count($arrayOrder);?>;
     </script>
     <script type="text/javascript"
             src="<?php bloginfo('template_directory'); ?>/library/js/reservation.js"></script>
@@ -54,12 +56,9 @@ get_template_part('nav');
             <?php if ($roomID): ?>
                 <div class="form-group col-md-12">
                     <h4>Rooms</h4>
-                    <?php
-                    $postTypeRoom = new WP_Query(array('post_type' => 'room', 'post__in ' => array($roomID)));
-                    if ($postTypeRoom->have_posts()): while ($postTypeRoom->have_posts()) : $postTypeRoom->the_post(); ?>
-                        <input id="room_name" name="room_name" disabled
-                               type="text" maxlength="50" class="form-control col-md-12" value="<?php the_title(); ?>"/>
-                    <?php endwhile; endif; ?>
+                    <input id="room_name" name="room_name" disabled
+                               type="text" maxlength="50" class="form-control col-md-12"
+                               value="<?php echo $roomName; ?>"/>
                 </div>
             <?php endif; ?>
             <div class="form-group col-md-12">

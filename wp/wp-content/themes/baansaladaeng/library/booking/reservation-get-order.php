@@ -5,7 +5,7 @@ $arrayOrder = @$_SESSION['array_reservation_order'];
 $subTotal = 0;
 ?>
 <script>
-    var count_order = <?php echo count($arrayOrder); ?>;
+    count_order = <?php echo count($arrayOrder); ?>;
 </script>
 <ul class="bg-fafafa alpha" style="list-style: none; height: 100%">
     <?php

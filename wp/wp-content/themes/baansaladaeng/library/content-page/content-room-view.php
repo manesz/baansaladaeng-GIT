@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+$arrayOrder = @$_SESSION['array_reservation_order'];
 if (!class_exists('Booking')) {
     require_once("../class/ClassBooking.php");
 }
@@ -56,23 +58,41 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
     /*}*/
 </style>
 <script>
-var webUrl = "<?php echo get_site_url(); ?>/";
-var $jConflict = jQuery.noConflict();
+    var webUrl = "<?php echo get_site_url(); ?>/";
+    var $jConflict = jQuery.noConflict();
     var obj_event =
         [
-        <?php foreach($objEventCalendar as $key => $value):
-        $dateCheckIn = date('Y, m, d', strtotime($value->check_in_date));
-        $dateCheckOut = date('Y, m, d', strtotime($value->check_out_date));
-        ?>
-        {
-            title: 'X',
-            start: '<?php echo $dateCheckIn; ?>',
-            end: '<?php echo $dateCheckOut; ?>',
-            backgroundColor: '#ED1317'
+            <?php foreach($objEventCalendar as $key => $value):
+            $dateCheckIn = date('Y, m, d', strtotime($value->check_in_date));
+            $dateCheckOut = date('Y, m, d', strtotime($value->check_out_date));
+            ?>
+            {
+                title: 'X',
+                start: '<?php echo $dateCheckIn; ?>',
+                end: '<?php echo $dateCheckOut; ?>',
+                backgroundColor: '#ED1317'
 //                    allDay: true
-        //url: 'http://google.com/'
-    },
-        <?php endforeach; ?>
+                //url: 'http://google.com/'
+            },
+            <?php endforeach; ?>
+            <?php foreach($arrayOrder as $key => $value):
+            $arrivalDate = @$value['arrival_date'];
+            $arrivalDateConvert = DateTime::createFromFormat('d/m/Y', $arrivalDate);
+            $departureDate = @$value['departure_date'];
+            $departureDateConvert = DateTime::createFromFormat('d/m/Y', $arrivalDate);
+            $dateCheckIn = date('Y, m, d', strtotime($arrivalDateConvert->format('Y-m-d')));
+            $dateCheckOut = date('Y, m, d', strtotime($departureDateConvert->format('Y-m-d')));
+            ?>
+            {
+                title: 'X',
+                start: '<?php echo $dateCheckIn; ?>',
+                end: '<?php echo $dateCheckOut; ?>',
+                backgroundColor: '#ED1317'
+//                    allDay: true
+                //url: 'http://google.com/'
+            },
+            <?php endforeach; ?>
+
         ]
 
 
@@ -131,15 +151,18 @@ var $jConflict = jQuery.noConflict();
                     <div class="calendar" id="calendar"></div>
                 </div>
                 <div class="col-md-4">
-                <form id="form_room_submit" method="post" action="<?php echo network_site_url('/') . "reservation"; ?>">
-                    <input type="hidden" value="true" name="booking_post"/>
-                    <input type="hidden" value="1" name="step"/>
-                    <input type="hidden" value="<?php echo $postID; ?>" name="room_id"/>
-                    <input type="hidden" value="" id="check_in_date" name="check_in_date"/>
-                    <input type="hidden" value="" id="check_out_date" name="check_out_date"/>
-                    <button class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">RESERVATION</button>
-                </form>
-            </div>
+                    <form id="form_room_submit" method="post"
+                          action="<?php echo network_site_url('/') . "reservation"; ?>">
+                        <input type="hidden" value="true" name="booking_post"/>
+                        <input type="hidden" value="1" name="step"/>
+                        <input type="hidden" value="<?php echo $postID; ?>" name="room_id"/>
+                        <input type="hidden" value="<?php the_title(); ?>" name="room_name"/>
+                        <input type="hidden" value="" id="check_in_date" name="check_in_date"/>
+                        <input type="hidden" value="" id="check_out_date" name="check_out_date"/>
+                        <button class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">RESERVATION
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
