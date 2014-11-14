@@ -69,6 +69,15 @@ get_template_part('nav');
                     <?php endfor; ?>
                 </select>
             </div>
+            <div class="col-md-12 margin-bottom-10 alpha omega">
+                <div class="col-md-3 alpha"><label for=""></label></div>
+                <div class="col-md-9 alpha omega">
+                    <input id="need_airport_pickup" name="need_airport_pickup"
+                           type="checkbox"
+                           onclick="this.value=$(this).prop('checked')?1:0;"
+                           style="margin-right: 20px;"/>Need Airport Pickup (THB 1,200 one way)
+                </div>
+            </div>
             <div class="form-group col-md-12">
                 <?php if ($roomID): ?>
                     <div class="col-md-4"
@@ -210,15 +219,6 @@ get_template_part('nav');
                             <option value="1">1</option>
                             <option value="2">2</option>
                         </select></div>
-                </div>
-                <div class="col-md-12 margin-bottom-10 alpha omega">
-                    <div class="col-md-3 alpha"><label for=""></label></div>
-                    <div class="col-md-9 alpha omega">
-                        <input id="payment_need_airport_pickup" name="payment_need_airport_pickup"
-                               type="checkbox"
-                               onclick="this.value=$(this).prop('checked')?1:0;"
-                               style="margin-right: 20px;"/>Need Airport Pickup (THB 1,200 one way)
-                    </div>
                 </div>
                 <div class="col-md-12 margin-bottom-10 alpha omega">
                     <div class="col-md-3 alpha"><label for="payment_note">Note (if any)</label></div>

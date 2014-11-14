@@ -13,6 +13,7 @@ class Booking_List extends WP_List_Table
 {
 
     var $booking_data = null;
+
     function __construct()
     {
         global $status, $page, $wpdb;
@@ -27,22 +28,23 @@ class Booking_List extends WP_List_Table
 
         $classBooking = new Booking($wpdb);
         $this->booking_data = array();
-        $result = $classBooking->bookingList();
+        $result = $classBooking->bookingList(0, 0, true);
         foreach ($result as $key => $value) {
-            $permalink = get_permalink( $value->room_id );
+            $permalink = get_permalink($value->room_id);
             $this->booking_data[] = array(
                 'id' => $value->id,
                 'count' => $key + 1,
                 'room_name' => "<a href='$permalink' target='_blank'>$value->room_name</a>",
 //                'booking_date' => $value->booking_date,
-                'name' => "$value->middle_name $value->last_name",
+                'name' => "$value->name $value->last_name",
                 'passport_no' => $value->passport_no,
                 'email' => $value->email,
                 'tel' => $value->tel,
-                'no_of_person' => $value->no_of_person,
+                'adults' => $value->adults,
                 'need_airport_pickup' => $value->need_airport_pickup ? '<input type="checkbox" checked disabled />'
-            :'<input type="checkbox" disabled />',
-                'create_time' => $value->create_time,
+                        : '<input type="checkbox" disabled />',
+                'pm_create_time' => $value->pm_create_time,
+                'edit' => '<a href="?page=booking-list&booking-edit=true&id=' . $value->payment_id . '">Edit</a>'
             );
         }
 
@@ -53,19 +55,54 @@ class Booking_List extends WP_List_Table
         $page = (isset($_GET['page'])) ? esc_attr($_GET['page']) : false;
         if ('booking_list' != $page)
             return;
-        echo '<style type="text/css">';
-        echo '.wp-list-table .column-id { width: 5%; }';
-        echo '.wp-list-table .column-count { width: 2%; }';
-        echo '.wp-list-table .column-room_name { width: 10%; }';
-//        echo '.wp-list-table .column-booking_date { width: 10%; }';
-        echo '.wp-list-table .column-name { width: 10%; }';
-        echo '.wp-list-table .column-passport_no { width: 10%; }';
-        echo '.wp-list-table .column-email { width: 10%; }';
-        echo '.wp-list-table .column-tel { width: 10%; }';
-        echo '.wp-list-table .column-no_of_person { width: 10%; }';
-        echo '.wp-list-table .column-need_airport_pickup { width: 10%; }';
-        echo '.wp-list-table .column-create_time { width: 10%; }';
-        echo '</style>';
+        ?>
+        <style type="text/css">
+            .wp-list-table .column-id {
+                width: 1%;
+            }
+
+            .wp-list-table .column-count {
+                width: 2%;
+            }
+
+            .wp-list-table .column-room_name {
+                width: 10%;
+            }
+
+            /*.wp-list-table .column-booking_date { width: 10%; }*/
+            .wp-list-table .column-name {
+                width: 10%;
+            }
+
+            .wp-list-table .column-passport_no {
+                width: 10%;
+            }
+
+            .wp-list-table .column-email {
+                width: 15%;
+            }
+
+            .wp-list-table .column-tel {
+                width: 10%;
+            }
+
+            .wp-list-table .column-adults {
+                width: 5%;
+            }
+
+            .wp-list-table .column-need_airport_pickup {
+                width: 5%;
+            }
+
+            .wp-list-table .column-pm_create_time {
+                width: 10%;
+            }
+
+            .wp-list-table .column-edit {
+                width: 5%;
+            }
+        </style>
+    <?php
     }
 
     function no_items()
@@ -83,9 +120,10 @@ class Booking_List extends WP_List_Table
             case 'passport_no':
             case 'email':
             case 'tel':
-            case 'no_of_person':
+            case 'adults':
             case 'need_airport_pickup':
-            case 'create_time':
+            case 'pm_create_time':
+            case 'edit':
                 return $item[$column_name];
             default:
                 return print_r($item, true); //Show the whole array for troubleshooting purposes
@@ -102,9 +140,9 @@ class Booking_List extends WP_List_Table
             'passport_no' => array('passport_no', false),
             'email' => array('email', false),
 //            'tel' => array('tel', false),
-//            'no_of_person' => array('no_of_person', false),
+//            'adults' => array('adults', false),
 //            'need_airport_pickup' => array('need_airport_pickup', false),
-            'create_time' => array('create_time', true),
+            'pm_create_time' => array('pm_create_time', true),
         );
         return $sortable_columns;
     }
@@ -120,9 +158,10 @@ class Booking_List extends WP_List_Table
             'passport_no' => __('Passport', 'mylisttable'),
             'email' => __('Email', 'mylisttable'),
             'tel' => __('Tel', 'mylisttable'),
-            'no_of_person' => __('Person', 'mylisttable'),
+            'adults' => __('Adults', 'mylisttable'),
             'need_airport_pickup' => __('Pickup', 'mylisttable'),
-            'create_time' => __('Create time', 'mylisttable'),
+            'pm_create_time' => __('Create time', 'mylisttable'),
+            'edit' => __('Edit', 'mylisttable'),
         );
         return $columns;
     }
@@ -130,13 +169,13 @@ class Booking_List extends WP_List_Table
     function usort_reorder($a, $b)
     {
         // If no sort, default to title
-        $orderby = (!empty($_GET['orderby'])) ? $_GET['orderby'] : 'create_time';
+        $orderby = (!empty($_GET['orderby'])) ? $_GET['orderby'] : 'pm_create_time';
         // If no order, default to asc
         $order = (!empty($_GET['order'])) ? $_GET['order'] : 'desc';
         // Determine sort order
         $result = strcmp($a[$orderby], $b[$orderby]);
         // Send final sort direction to usort
-        return ($order === 'desc') ? $result : -$result;
+        return ($order === 'asc') ? $result : -$result;
     }
 
     function column_booktitle($item)
@@ -146,7 +185,7 @@ class Booking_List extends WP_List_Table
             'delete' => sprintf('<a href="?page=%s&action=%s&book=%s">Delete</a>', $_REQUEST['page'], 'delete', $item['id']),
         );
 
-        return sprintf('%1$s %2$s', $item['create_time'], $this->row_actions($actions));
+        return sprintf('%1$s %2$s', $item['pm_create_time'], $this->row_actions($actions));
     }
 
     function get_bulk_actions()
@@ -184,6 +223,251 @@ class Booking_List extends WP_List_Table
             'per_page' => $per_page //WE have to determine how many items to show on a page
         ));
         $this->items = $this->found_data;
+    }
+
+    function bookingEditTemplate()
+    {
+        global $webSiteName;
+        global $wpdb;
+        $classBooking = new Booking($wpdb);
+        $paymentID = @$_GET['id'];
+        $objDataBooking = $classBooking->bookingList($paymentID);
+        $arrayRoomName = array();
+        $subTotal = 0;
+        foreach ($objDataBooking as $key => $value) {
+            $needAirPortPickup = $value->need_airport_pickup;
+            $subTotal += $value->total;
+            $strRoomName = $key + 1 . ". " . $value->room_name . " / " . number_format($value->price) .
+                " ฿ | " . date("d/m/Y", strtotime($value->check_in_date)) .
+                " - " . date("d/m/Y", strtotime($value->check_out_date)) . " | ";
+            $strRoomName .= '<input type="checkbox" class="need_airport_pickup" onclick="postNeedAirportPickup(this, ' . $value->booking_id . ');" ';
+            $strRoomName .= $needAirPortPickup ? ' value="1" checked/>' : ' value="0" />';
+            $strRoomName .= " Need Airport Pickup (THB 1,200 one way)";
+//            $strRoomName .= "</br>Adults: <input type='text' value='$value->adults' /></br>";
+            $arrayRoomName[] = $strRoomName;
+        }
+        extract((array)$objDataBooking[0])
+        ?>
+        <script type="text/javascript"
+                src="<?php bloginfo('template_directory'); ?>/library/js/booking_edit.js"></script>
+        <input type="hidden" value="<?php bloginfo('template_directory'); ?>/library/js/jquery.min.js" id="getjqpath"/>
+        </pre>
+        <div class="wrap">
+        <form id="frm_booking" method="post" onsubmit="return false;">
+        <input type="hidden" name="booking_post" value="true"/>
+        <input type="hidden" name="reservation_post" value="edit_booking"/>
+        <input type="hidden" name="payment_id" value="<?php echo $payment_id; ?>"/>
+        <input type="hidden" id="booking_id" name="booking_id" value="0"/>
+        <input type="hidden" id="payment_need_airport_pickup" name="payment_need_airport_pickup" value=""/>
+
+        <div class="wrap">
+        <div id="icon-themes" class="icon32"><br/></div>
+
+        <h2><?php _e(@$webSiteName . ' theme controller', 'wp_toc'); ?></h2>
+
+        <p><?php echo @$webSiteName; ?> business website theme &copy; developer by
+            <a href="http://www.ideacorners.com"
+               target="_blank">IdeaCorners Developer</a></p>
+        <!-- If we have any error by submiting the form, they will appear here -->
+        <?php settings_errors('tab1-errors'); ?>
+        <h2>Booking Edit</h2>
+
+        <div class="tb-insert">
+            <table class="wp-list-table widefat" cellspacing="0" width="100%">
+                <tbody id="the-list-edit">
+                <tr class="alternate">
+                    <td><label for="">Room :</label></td>
+                    <td colspan="3"><?php echo $arrayRoomName ? implode('<br/>', $arrayRoomName) : "No data"; ?></td>
+                </tr>
+                <tr class="alternate">
+                    <td><label for="">Sub total :</label></td>
+                    <td colspan="3"><?php echo number_format($subTotal); ?> ฿</td>
+                </tr>
+                <tr class="alternate">
+                    <td><label for="payment_name">Name :<font color="#FF0000">*</font></label></td>
+                    <td><input type="text" id="payment_name" name="payment_name"
+                               value="<?php echo $name; ?>"/></td>
+                    <td><label for="payment_middle_name">Middle Name :</label></td>
+                    <td><input type="text" id="payment_middle_name" name="payment_middle_name"
+                               value="<?php echo $middle_name; ?>"/></td>
+                </tr>
+                <tr class="alternate">
+                    <td><label for="payment_last_name">Last Name :<font color="#FF0000">*</font></label></td>
+                    <td><input type="text" id="payment_last_name" name="payment_last_name"
+                               value="<?php echo $last_name; ?>"/></td>
+                    <td><label for="payment_date_of_birth_1">Date of Birth :<font color="#FF0000">*</font></label></td>
+                    <td>
+                        <?php
+                        $dobDate = date('d', strtotime($date_of_birth));
+                        $dobMonth = date('m', strtotime($date_of_birth));
+                        $dobYear = date('Y', strtotime($date_of_birth));
+                        ?>
+                        <select id="payment_date_of_birth_1" name="payment_date_of_birth_1">
+                            <option value="">Date</option>
+                            <?php for ($i = 1; $i <= 31; $i++): ?>
+                                <option <?php echo $i == $dobDate ? 'selected' : ''; ?>
+                                    value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                            <?php endfor; ?>
+                        </select>&nbsp;/&nbsp;
+                        <select id="payment_date_of_birth_2" name="payment_date_of_birth_2">
+                            <option value="">Month</option>
+                            <?php for ($i = 1; $i <= 12; $i++): ?>
+                                <option <?php echo $i == $dobMonth ? 'selected' : ''; ?>
+                                    value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                            <?php endfor; ?>
+                        </select>&nbsp;/&nbsp;
+                        <select id="payment_date_of_birth_3" name="payment_date_of_birth_3">
+                            <option value="">Year</option>
+                            <?php for ($i = date("Y") - 95; $i <= date("Y") - 12; $i++): ?>
+                                <option <?php echo $i == $dobYear ? 'selected' : ''; ?>
+                                    value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr class="alternate">
+                    <td><label for="payment_passport_no">Passport No. :<font color="#FF0000">*</font></label></td>
+                    <td><input type="text" id="payment_passport_no" name="payment_passport_no"
+                               value="<?php echo $passport_no; ?>"/></td>
+                    <td><label for="payment_nationality">Nationality :<font color="#FF0000">*</font></label></td>
+                    <td><input type="text" id="payment_nationality" name="payment_nationality"
+                               value="<?php echo $nationality; ?>"/>
+                    </td>
+                </tr>
+                <tr class="alternate">
+                    <td><label for="payment_email">Email :<font color="#FF0000">*</font></label></td>
+                    <td><input type="text" id="payment_email" name="payment_email"
+                               value="<?php echo $email; ?>"/></td>
+                    <td><label for="payment_date_of_birth_1">Estimated arrival Time :<font
+                                color="#FF0000">*</font></label></td>
+                    <td>
+                        <?php
+                        $expEst = explode(':', $estimated_arrival_time);
+                        $estArrival1 = $expEst[0];
+                        $estArrival2 = $expEst[1];
+                        $estArrival3 = $expEst[2];
+                        ?>
+                        <select id="payment_est_arrival1" name="payment_est_arrival1" class="">
+                            <option value="">--</option>
+                            <?php for ($i = 1; $i <= 12; $i++): ?>
+                                <option <?php echo $i == $estArrival1 ? 'selected' : ''; ?>
+                                    value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                            <?php endfor; ?>
+                        </select>&nbsp;:&nbsp;
+                        <select id="payment_est_arrival2" name="payment_est_arrival2" class="">
+                            <option value="">--</option>
+                            <option <?php echo '00' == $estArrival2 ? 'selected' : ''; ?>
+                                value="00">00
+                            </option>
+                            <option <?php echo '15' == $estArrival2 ? 'selected' : ''; ?>
+                                value="15">15
+                            </option>
+                            <option <?php echo '30' == $estArrival2 ? 'selected' : ''; ?>
+                                value="30">30
+                            </option>
+                            <option <?php echo '45' == $estArrival2 ? 'selected' : ''; ?>
+                                value="45">45
+                            </option>
+                        </select>&nbsp;:&nbsp;
+                        <select id="payment_est_arrival3" name="payment_est_arrival3" class="">
+                            <option value="">----</option>
+                            <option <?php echo 'AM' == $estArrival3 ? 'selected' : ''; ?>
+                                value="AM">AM
+                            </option>
+                            <option <?php echo 'PM' == $estArrival3 ? 'selected' : ''; ?>
+                                value="PM">PM
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr class="alternate">
+                    <td><label for="payment_tel">Tel/Mobile Number :</label></td>
+                    <td><input type="text" id="payment_tel" name="payment_tel"
+                               value="<?php echo $tel; ?>"/></td>
+                    <td><label for="payment_no_of_person">No. of Person :<font color="#FF0000">*</font></label></td>
+                    <td><select id="payment_no_of_person" name="payment_no_of_person">
+                            <option value="">---- Select ----</option>
+                            <option <?php echo $no_of_person == 0 ? "selected" : ""; ?> value="0">0</option>
+                            <option <?php echo $no_of_person == 1 ? "selected" : ""; ?> value="1">1</option>
+                            <option <?php echo $no_of_person == 2 ? "selected" : ""; ?> value="2">2</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr class="alternate">
+                    <td><label for="payment_note">Note :</label></td>
+                    <td colspan="3"><textarea id="payment_note" name="payment_note"
+                                              style="margin: 0px; width: 236px; height: 71px;"><?php echo $note; ?></textarea>
+                    </td>
+                </tr>
+                <tr class="alternate">
+                    <td></td>
+                    <td colspan="3"><h3>Credit Card Payment</h3></td>
+                </tr>
+                <tr class="alternate">
+                    <td><label for="card_type">Card Type :<font color="#FF0000">*</font></label></td>
+                    <td>
+                        <select id="card_type" name="card_type" class="form-control col-md-12">
+                            <option value="">---- Select Card ----</option>
+                            <option <?php echo $card_type == "Visa" ? "selected" : ""; ?> value="Visa">Visa</option>
+                            <option <?php echo $card_type == "Master Card" ? "selected" : ""; ?> value="Master Card">
+                                Master Card
+                            </option>
+                        </select>
+                    </td>
+                    <td><label for="card_holder_name">Card Holder's Name :<font color="#FF0000">*</font></label></td>
+                    <td><input type="text" id="card_holder_name" name="card_holder_name"
+                               value="<?php echo $card_holder_name; ?>"/></td>
+                </tr>
+                <tr class="alternate">
+                    <td><label for="card_number">Card No. :<font color="#FF0000">*</font></label></td>
+                    <td>
+                        <input type="text" id="card_number" name="card_number"
+                               value="<?php echo $card_number; ?>"/>
+                    </td>
+                    <td><label for="tree_digit_id">3-Digit ID# :<font color="#FF0000">*</font></label></td>
+                    <td><input type="text" id="tree_digit_id" name="tree_digit_id"
+                               value="<?php echo $tree_digit_id; ?>" maxlength="3"/></td>
+                </tr>
+                </tbody>
+                <tr class="alternate">
+                    <td><label for="card_number">Card Expiry Date :<font color="#FF0000">*</font></label></td>
+                    <td colspan="3">
+                        <?php
+                        $expCardExp = explode("/", $card_expiry_date);
+                        $card_expiry_date1 = $expCardExp[0];
+                        $card_expiry_date2 = $expCardExp[1];
+                        ?>
+                        <select id="card_expiry_date1" name="card_expiry_date1">
+                            <option value="">-- Month --</option>
+                            <?php for ($i = 1; $i <= 12; $i++):
+                                $strMonthCardExp = strlen($i) == 1 ? "0$i" : $i;
+                                ?>
+                                <option <?php echo $card_expiry_date1 == $strMonthCardExp ? "selected" : ""; ?>
+                                    value="<?php echo $strMonthCardExp ?>"><?php echo $i; ?></option>
+                            <?php endfor; ?>
+                        </select>&nbsp;/&nbsp;
+                        <select id="card_expiry_date2" name="card_expiry_date2">
+                            <option value="">-- Year --</option>
+                            <?php for ($i = date('Y'); $i <= (date("Y") + 20); $i++): ?>
+                                <option value="<?php
+                                $strY = substr($i, 2);
+                                echo $strY = strlen($strY) == 1 ? "0$strY" : $strY; ?>"
+                                    <?php echo $card_expiry_date2 == $strY ? "selected" : ""; ?>
+                                    ><?php echo $i; ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <input type="button" class="button-primary" value="Back"
+                   onclick="window.location.href='?page=booking-list';"> &nbsp;
+            <input type="submit" class="button-primary" value="Save">
+        </div>
+        </div>
+        </form>
+        </div>
+    <?php
     }
 
 } //class

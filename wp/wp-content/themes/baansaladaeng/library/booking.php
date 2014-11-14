@@ -36,6 +36,7 @@ if ($_POST) {
                 exit;
                 break;
             case "add_order" :
+//                $objClassBooking->sendEmail(1);
                 if ($objClassBooking->addSessionOrder($_POST))
                     echo "success";
                 else echo "fail";
@@ -53,6 +54,21 @@ if ($_POST) {
                     $_POST['payment_id'] = $result;
                     $result = $objClassBooking->bookingAdd($_POST);
                     if ($result) {
+                        $result = $objClassBooking->sendEmail($result);
+                        if ($result) {
+                            echo 'success';
+                            exit;
+                        }
+                    }
+                }
+                echo $result;
+                exit;
+                break;
+            case 'edit_booking' :
+                $result = $objClassBooking->paymentEdit($_POST);
+                if ($result == true) {
+                    $result = $objClassBooking->bookingEdit($_POST);
+                    if ($result == true) {
                         echo 'success';
                         exit;
                     }

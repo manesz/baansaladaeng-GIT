@@ -28,10 +28,17 @@ $subTotal = 0;
 $arrayRoomName = array();
 $arrayArrivalDate = array();
 if ($arrayOrder) : foreach ($arrayOrder as $key => $value):
+    $needAirportPickup = @$value['need_airport_pickup'];
     $arrivalDate = @$value['arrival_date'];
     $arrivalDateConvert = DateTime::createFromFormat('d/m/Y', $arrivalDate);
-    $arrayRoomName[] = $key + 1 . ". " . $value['room_name'];
-    $arrayArrivalDate[] = convertMonth($arrivalDateConvert->format('Y-m-d'));
+    $departureDate = @$value['departure_date'];
+    $departureDateConvert = DateTime::createFromFormat('d/m/Y', $departureDate);
+
+    $strRoomName = $key + 1 . ". " . $value['room_name'] . " | ";
+    $strRoomName .= $needAirportPickup ? "<i>Need Airport Pickup(Yes)</i>" : "<i>Need Airport Pickup(No)</i>";
+    $arrayRoomName[] = $strRoomName;
+    $arrayArrivalDate[] = convertMonth($arrivalDateConvert->format('Y-m-d')) . " - " .
+        convertMonth($departureDateConvert->format('Y-m-d'));
     $price = @$value['price'];
     $roomID = @$value['room_id'];
     $roomName = @$value['room_name'];
@@ -40,13 +47,12 @@ if ($arrayOrder) : foreach ($arrayOrder as $key => $value):
     $priceFormat = number_format($price);
 
 
-    $departureDate = @$value['departure_date'];
-    $departureDateConvert = DateTime::createFromFormat('d/m/Y', $departureDate);
     $timeDiff = abs(strtotime($departureDateConvert->format('Y-m-d')) -
         strtotime($arrivalDateConvert->format('Y-m-d')));
     $numberDays = $timeDiff / 86400;
     $numberDays = ceil($numberDays);
     $total = ($numberDays + 1) * $price;
+    $total += $needAirportPickup ? 1200 : 0;
     $totalFormat = number_format($total);
     $subTotal += $total;
 
@@ -61,7 +67,7 @@ endif; ?>
         </td>
     </tr>
     <tr class="confirm_summary_order">
-        <td>Arrival Date:</td>
+        <td>Date:</td>
         <td><?php echo $arrayArrivalDate ? implode('<br/>', $arrayArrivalDate) : "No data"; ?></td>
     </tr>
     <tr class="confirm_summary_order">

@@ -18,6 +18,7 @@ $subTotal = 0;
         $priceFormat = number_format($price);
 
 
+        $needAirportPickup = @$value['need_airport_pickup'];
         $arrivalDate = @$value['arrival_date'];
         $arrivalDateConvert = DateTime::createFromFormat('d/m/Y', $arrivalDate);
         $departureDate = @$value['departure_date'];
@@ -27,8 +28,10 @@ $subTotal = 0;
         $numberDays = $timeDiff / 86400;
         $numberDays = ceil($numberDays);
         $total = ($numberDays + 1) * $price;
+        $total += $needAirportPickup ? 1200 : 0;
         $totalFormat = number_format($total);
         $subTotal += $total;
+
         ?>
         <li class="text-left" style="margin-top: 20px; padding: 10px; border-bottom: 1px #999 dashed;">
             <h5 class="pull-left" style="margin-top: 0px; font-weight: bold;">ROOM <?php echo $key + 1; ?></h5>
@@ -51,6 +54,10 @@ $subTotal = 0;
                 <tr>
                     <td style="width: 80%"><?php echo $roomName; ?></td>
                     <td style="width: 20%"><?php echo $priceFormat; ?> ฿</td>
+                </tr>
+                <tr>
+                    <td style="width: 80%">Need Airport Pickup</br>(THB 1,200 one way) :</td>
+                    <td style="width: 20%"><?php echo $needAirportPickup ? "Yes" : "No"; ?></td>
                 </tr>
                 <tr>
                     <td style="width: 80%; font-weight: bold;">TOTAL :</td>

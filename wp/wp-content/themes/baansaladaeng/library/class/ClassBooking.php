@@ -12,17 +12,21 @@ class Booking
         $this->wpdb = $wpdb;
     }
 
-    public function bookingList($id = 0, $room_id = 0, $is_checkout = false)
+    public function bookingList($payment_id = 0, $booking_id = 0, $group_payment_id = false)
     {
-        $strAnd = $is_checkout ? "AND a.checkout_time = '0000-00-00 00:00:00'" : "";
-        $strAnd .= $id ? "AND a.id = $id" : "";
-        $strAnd .= $room_id ? "AND b.room_id = $room_id" : "";
+//        $strAnd = $is_checkout ? "AND a.checkout_time = '0000-00-00 00:00:00'" : "";
+        $strAnd = $payment_id ? "AND a.id = $payment_id" : "";
+        $strAnd .= $booking_id ? "AND b.id = $booking_id" : "";
+        $strGroup = $group_payment_id ? " GROUP BY a.id" : "";
+//        $strAnd .= $room_id ? "AND b.room_id = $room_id" : "";
         $sql = "
             SELECT
               a.*,
               b.`id` AS booking_id,
+              a.`id` AS payment_id,
               b.*,
-              c.post_title AS room_name
+              c.post_title AS room_name,
+              a.create_time AS pm_create_time
             FROM
               `$this->tablePayment` a
               INNER JOIN `$this->tableBooking` b
@@ -37,9 +41,8 @@ class Booking
             WHERE 1
               AND b.`publish` = 1
               $strAnd
-            #ORDER BY a.id DESC
+            $strGroup
         ";
-
         $myrows = $this->wpdb->get_results($sql);
         return $myrows;
     }
@@ -139,6 +142,7 @@ class Booking
             $roomID = @$value['room_id'];
             $price = @$value['price'];
             $arrivalDate = @$value['arrival_date'];
+            $needAirportPickup = @$value['need_airport_pickup'];
             $arrivalDateConvert = DateTime::createFromFormat('d/m/Y', $arrivalDate);
             $departureDate = @$value['departure_date'];
             $departureDateConvert = DateTime::createFromFormat('d/m/Y', $departureDate);
@@ -147,6 +151,8 @@ class Booking
             $numberDays = $timeDiff / 86400;
             $numberDays = ceil($numberDays);
             $total = ($numberDays + 1) * $price; //return "$total $price";
+            $total += $needAirportPickup ? 1200 : 0;
+
             $result = $this->wpdb->insert(
                 $this->tableBooking,
                 array(
@@ -154,6 +160,7 @@ class Booking
                     'payment_id' => $payment_id,
                     'check_in_date' => $arrivalDateConvert->format('Y-m-d'),
                     'check_out_date' => $departureDateConvert->format('Y-m-d'),
+                    'need_airport_pickup' => $needAirportPickup,
                     'price' => $price,
                     'total' => $total,
                     'create_time' => date('Y-m-d H:i:s'),
@@ -167,6 +174,7 @@ class Booking
                     '%s',
                     '%d',
                     '%d',
+                    '%d',
                     '%s',
                     '%s',
                     '%d'
@@ -177,6 +185,75 @@ class Booking
             }
         }
         $_SESSION['array_reservation_order'] = array();
+        return $payment_id;
+    }
+
+    public function bookingEdit($data)
+    {
+        extract($data);
+        if (!@$booking_id)
+            return true;
+
+        $result = $this->updateBookingTotal($booking_id, @$payment_need_airport_pickup);
+        if (!$result) {
+            return 'booking update total fail';
+        }
+        return true;
+    }
+
+    public function paymentEdit($data)
+    {
+        extract($data);
+        $date_of_birth = "$payment_date_of_birth_3-$payment_date_of_birth_2-$payment_date_of_birth_1";
+        $estimated_arrival_time = "$payment_est_arrival1:$payment_est_arrival2:$payment_est_arrival3";
+        $card_expiry_date = "$card_expiry_date1/$card_expiry_date2";
+        $result = $this->wpdb->update(
+            $this->tablePayment,
+            array(
+                'name' => @$payment_name,
+                'middle_name' => @$payment_middle_name,
+                'last_name' => @$payment_last_name,
+                'date_of_birth' => @$date_of_birth,
+                'passport_no' => @$payment_passport_no,
+                'nationality' => @$payment_nationality,
+                'email' => @$payment_email,
+                'estimated_arrival_time' => @$estimated_arrival_time,
+                'tel' => @$payment_tel,
+                'no_of_person' => @$payment_no_of_person,
+                'note' => @$payment_note,
+                'card_type' => @$card_type,
+                'card_holder_name' => @$card_holder_name,
+                'card_number' => @$card_number,
+                'tree_digit_id' => @$tree_digit_id,
+                'card_expiry_date' => @$card_expiry_date,
+                'update_time' => date('Y-m-d H:i:s'),
+                'publish' => 1
+            ),
+            array('id' => $payment_id),
+            array(
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%d',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%d',
+            ),
+            array('%d')
+        );
+        if (!$result) {
+            return "payment fail";
+        }
         return true;
     }
 
@@ -200,7 +277,6 @@ class Booking
                 'estimated_arrival_time' => @$estimated_arrival_time,
                 'tel' => @$payment_tel,
                 'no_of_person' => @$payment_no_of_person,
-                'need_airport_pickup' => @$payment_need_airport_pickup,
                 'note' => @$payment_note,
                 'card_type' => @$card_type,
                 'card_holder_name' => @$card_holder_name,
@@ -221,7 +297,6 @@ class Booking
                 '%s',
                 '%s',
                 '%d',
-                '%d',
                 '%s',
                 '%s',
                 '%s',
@@ -237,6 +312,40 @@ class Booking
             return $this->wpdb->insert_id;
         }
         return false;
+    }
+
+    public function updateBookingTotal($booking_id, $need_airport_pickup_new)
+    {
+        $objData = $this->bookingList(0, $booking_id);
+        if ($objData) {
+            extract((array)$objData[0]);
+            $needAirportPickUpBath = @$need_airport_pickup_new ? 1200 : 0;
+            $timeDiff = abs(strtotime($check_in_date) - strtotime($check_out_date));
+            $numberDays = $timeDiff / 86400;
+            $numberDays = ceil($numberDays);
+            $total = ($numberDays + 1) * $price;
+            $total = $total + $needAirportPickUpBath;
+            $result = $this->wpdb->update(
+                $this->tableBooking,
+                array(
+                    'total' => $total,
+                    'need_airport_pickup' => $need_airport_pickup_new,
+                    'update_time' => date('Y-m-d H:i:s'),
+                ),
+                array('id' => $booking_id),
+                array(
+                    '%d',
+                    '%s',
+                    '%s'
+                ),
+                array('%d')
+            );
+            if (!$result) {
+                return false;
+            }
+
+        }
+        return true;
     }
 
     function addSessionOrder($post)
@@ -256,6 +365,7 @@ class Booking
 
         $arrivalDate = $post['arrival_date'];
         $departureDate = $post['departure_date'];
+        $needAirportPickup = $post['need_airport_pickup'];
         $timeDiff = abs(strtotime($departureDate) - strtotime($arrivalDate));
         $numberDays = $timeDiff / 86400;
         $total = $numberDays * $roomPrice;
@@ -267,6 +377,7 @@ class Booking
             'departure_date' => @$departureDate,
             'adults' => @$post['adults'],
             'price' => $roomPrice,
+            'need_airport_pickup' => $needAirportPickup,
         );
         $_SESSION['array_reservation_order'] = $arrayOrder;
         return true;
@@ -283,6 +394,12 @@ class Booking
             }
         }
         $_SESSION['array_reservation_order'] = $newArrayOrder;
+        return true;
+    }
+
+    function sendEmail($payment_id)
+    {
+        wp_mail('ruxchuk@gmail.com', 'The subject', '<p>The <em>HTML</em> message</p>');
         return true;
     }
 }

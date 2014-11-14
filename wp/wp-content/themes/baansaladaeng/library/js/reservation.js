@@ -237,7 +237,8 @@ function addOrder(roomID) {
                 room_id: roomID,
                 arrival_date: $("#arrival_date").val(),
                 departure_date: $("#departure_date").val(),
-                adults: $("#adult").val()
+                adults: $("#adult").val(),
+                need_airport_pickup: $("#need_airport_pickup").val()
             },
             success: function (data) {
                 if (data == 'success') {

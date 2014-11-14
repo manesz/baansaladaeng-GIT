@@ -8,6 +8,8 @@
 
 
 //------------------------------- Booking List--------------------------------//
+
+add_action('admin_menu', 'my_add_booking_menu_items');
 function my_add_booking_menu_items()
 {
 //    $hook = add_menu_page(
@@ -44,20 +46,22 @@ function add_options()
 
 //add_action('admin_menu', 'my_add_booking_menu_items');
 
-add_action('admin_menu', 'my_add_booking_menu_items');
 
 function render_booking_page_list()
 {
     global $myListTable;
-    echo '</pre><div class="wrap"><h2>Booking List</h2>';
-    $myListTable->prepare_items();
-    ?>
-    <form method="post">
-        <input type="hidden" name="page" value="ttest_list_table">
-    <?php
-    $myListTable->search_box('search', 'search_id');
-
-  $myListTable->display();
-  echo '</form></div>';
+    if ($_GET['booking-edit'] == 'true') {
+        $myListTable->bookingEditTemplate();
+    } else {
+        echo '</pre><div class="wrap"><h2>Booking List</h2>';
+        $myListTable->prepare_items();
+        ?>
+        <form method="post">
+            <input type="hidden" name="page" value="ttest_list_table">
+        <?php
+        $myListTable->search_box('search', 'search_id');
+        $myListTable->display();
+        echo '</form></div>';
+    }
 }
 //------------------------------- End Booking List--------------------------------//
