@@ -35,8 +35,8 @@ class Booking_List extends WP_List_Table
             if ($checkTimeOut && !$value->paid) {
                 $strShowPaidField = "Time Out";
             } else {
-                $strShowPaidField = $value->paid ? '<input type="checkbox" checked disabled />'
-                    : '<input type="checkbox" disabled />';
+                $strShowPaidField = $value->paid ? '<input type="checkbox" checked onclick="return setApprove(this, '.$value->payment_id.');" />'
+                    : '<input type="checkbox" onclick="return setApprove(this, '.$value->payment_id.');" />';
             }
 
             $this->booking_data[] = array(
@@ -45,12 +45,13 @@ class Booking_List extends WP_List_Table
                 'room_name' => "<a href='$permalink' target='_blank'>$value->room_name</a>",
 //                'booking_date' => $value->booking_date,
                 'name' => "$value->name $value->last_name",
-                'passport_no' => $value->passport_no,
+//                'passport_no' => $value->passport_no,
                 'email' => $value->email,
                 'tel' => $value->tel,
                 'adults' => $value->adults,
-                'need_airport_pickup' => $value->need_airport_pickup ? '<input type="checkbox" checked disabled />'
-                        : '<input type="checkbox" disabled />',
+                'need_airport_pickup' => $value->need_airport_pickup ? 'YES' : 'NO',
+//                'price'=>number_format($value->total),
+//                'total'=>0,
                 'paid' => $strShowPaidField,
                 'pm_create_time' => $value->pm_create_time,
                 'edit' => '<a href="?page=booking-list&booking-edit=true&id=' . $value->payment_id . '">Edit</a>'
@@ -62,7 +63,7 @@ class Booking_List extends WP_List_Table
     function admin_header()
     {
         $page = (isset($_GET['page'])) ? esc_attr($_GET['page']) : false;
-        if ('booking_list' != $page)
+        if ('booking-list' != $page)
             return;
         ?>
         <style type="text/css">
@@ -71,7 +72,7 @@ class Booking_List extends WP_List_Table
             }
 
             .wp-list-table .column-count {
-                width: 2%;
+                width: 1%;
             }
 
             .wp-list-table .column-room_name {
@@ -80,10 +81,6 @@ class Booking_List extends WP_List_Table
 
             /*.wp-list-table .column-booking_date { width: 10%; }*/
             .wp-list-table .column-name {
-                width: 10%;
-            }
-
-            .wp-list-table .column-passport_no {
                 width: 10%;
             }
 
@@ -96,14 +93,14 @@ class Booking_List extends WP_List_Table
             }
 
             .wp-list-table .column-adults {
-                width: 5%;
+                width: 4%;
             }
 
             .wp-list-table .column-need_airport_pickup {
-                width: 5%;
+                width: 4%;
             }
             .wp-list-table .column-paid {
-                width: 3%;
+                width: 5%;
             }
 
             .wp-list-table .column-pm_create_time {
@@ -114,6 +111,8 @@ class Booking_List extends WP_List_Table
                 width: 5%;
             }
         </style>
+        <script type="text/javascript"
+                src="<?php bloginfo('template_directory'); ?>/library/js/booking_edit.js"></script>
     <?php
     }
 
@@ -129,7 +128,7 @@ class Booking_List extends WP_List_Table
             case 'room_name':
 //            case 'booking_date':
             case 'name':
-            case 'passport_no':
+//            case 'passport_no':
             case 'email':
             case 'tel':
             case 'adults':
@@ -150,7 +149,7 @@ class Booking_List extends WP_List_Table
             'room_name' => array('room_name', true),
 //            'booking_date' => array('booking_date', true),
             'name' => array('name', true),
-            'passport_no' => array('passport_no', false),
+//            'passport_no' => array('passport_no', false),
             'email' => array('email', false),
 //            'tel' => array('tel', false),
 //            'adults' => array('adults', false),
@@ -168,7 +167,7 @@ class Booking_List extends WP_List_Table
             'room_name' => __('Room Name', 'mylisttable'),
 //            'booking_date' => __('Booking Date', 'mylisttable'),
             'name' => __('Name', 'mylisttable'),
-            'passport_no' => __('Passport', 'mylisttable'),
+//            'passport_no' => __('Passport', 'mylisttable'),
             'email' => __('Email', 'mylisttable'),
             'tel' => __('Tel', 'mylisttable'),
             'adults' => __('Adults', 'mylisttable'),
@@ -484,7 +483,7 @@ class Booking_List extends WP_List_Table
             <td>
                 <input type="checkbox" id="paid" name="paid"
                        value="<?php echo $paid; ?>" <?php echo $paid ? "checked" : ""; ?>
-                       onclick="this.value=$(this).prop('checked')?1:0;"/>
+                       onclick="return setApprove(this, <?php echo $payment_id; ?>);"/>
             </td>
             <td colspan="3"><label for="time_left">Time Left :</label>
 

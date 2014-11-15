@@ -66,10 +66,12 @@ if ($_REQUEST) {
                 exit;
                 break;
             case 'booking_send_email' :
-                function wp_mail_set_content_type(){
+                function wp_mail_set_content_type()
+                {
                     return "text/html";
                 }
-                add_filter( 'wp_mail_content_type','wp_mail_set_content_type' );
+
+                add_filter('wp_mail_content_type', 'wp_mail_set_content_type');
                 ob_start();
                 require_once("booking/send_email.php");
                 $message = ob_get_contents();
@@ -80,6 +82,13 @@ if ($_REQUEST) {
                     echo $message;
                     exit;
                 }
+                exit;
+                break;
+            case 'approve_booking' :
+                $result = $objClassBooking->approveBookingRoom($_REQUEST);
+                if ($result)
+                    echo "success";
+                else echo "fail";
                 exit;
                 break;
         }

@@ -7,40 +7,6 @@ if (!window.jQuery) {
 }
 var $ = jQuery.noConflict();
 $(document).ready(function () {
-    /* $("#frm_booking").submit(function(){
-     //        alert($(this).serialize())
-     if (!validateFormPayment(this))
-     return false;
-
-     if (!validateFormCreditCard(this))
-     return false;
-     return false;
-
-     $.ajax({
-     type: "POST",
-     cache: false,
-     url: '',
-     data: $(this).serialize(),
-     success: function (data) {
-     if (data == "fail") {
-     alert("เกิดข้อผิดพลาด");
-     } else {
-     alert("Save Success.");
-     //                    window.location.reload();
-     }
-     }
-     })
-     .done(function () {
-     //alert("second success");
-     })
-     .fail(function () {
-     alert("เกิดข้อผิดพลาด");
-     })
-     .always(function () {
-     //alert("finished");
-     });
-     return false;
-     });*/
 });
 
 function postNeedAirportPickup(elm, bookingID) {
@@ -83,6 +49,44 @@ $(document).on("submit", "#frm_booking", function (e) {
         });
     return false;
 });
+function setApprove(elm, paymentID) {
+    this.value = $(elm).prop('checked') ? 1 : 0;
+    var setPaid = this.value;
+    if (setPaid) {
+        if (!confirm('Approve customer payment.')){
+            return false;
+        }
+    } else {
+        if (!confirm('Cancel approve customer payment.')){
+            return false;
+        }
+    }
+    $.ajax({
+        type: "POST",
+        cache: false,
+        url: '',
+        data: {
+            booking_post: 'true',
+            reservation_post: 'approve_booking',
+            payment_id: paymentID,
+            set_paid: setPaid
+        },
+        success: function (data) {
+            if (data != "success") {
+                alert(data);
+            }
+        }
+    })
+        .done(function () {
+            //alert("second success");
+        })
+        .fail(function () {
+            alert("เกิดข้อผิดพลาด");
+        })
+        .always(function () {
+            //alert("finished");
+        });
+}
 
 function validateFormPayment(elm) {
     var charCheck = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

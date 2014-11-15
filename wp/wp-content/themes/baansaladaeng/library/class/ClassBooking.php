@@ -479,6 +479,32 @@ class Booking
             return false;
         return true;
     }
+    function approveBookingRoom($post)
+    {
+        extract($post);
+        if (!$payment_id && is_user_logged_in())
+            return false;
+        $current_user = wp_get_current_user();
+        $objDataPayment = $this->bookingList($payment_id);
+        $oldSetPaid = $objDataPayment[0]->set_paid_by;
+        $currentUserName = "paid=$set_paid:".$current_user->user_login;
+        $result = $this->wpdb->update(
+            $this->tablePayment,
+            array(
+                'update_time' => date_i18n('Y-m-d H:i:s'),
+                'paid_time' => date_i18n('Y-m-d H:i:s'),
+                'set_paid_by' => $oldSetPaid ? $oldSetPaid . "," . $currentUserName: $currentUserName,
+                'paid' => $set_paid
+            ),
+            array('id' => $payment_id),
+            array('%s','%s','%s', '%d'),
+            array('%d')
+
+        );
+        if (!$result)
+            return false;
+        return true;
+    }
 
     function deleteSessionOrder($order_id)
     {

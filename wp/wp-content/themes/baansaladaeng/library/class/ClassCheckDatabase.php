@@ -37,6 +37,7 @@ class CheckDatabase
             DROP TABLE IF EXISTS ics_payment;
             CREATE TABLE `ics_payment` (
               `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+              `order_id` text,
               `card_type` varchar(120) DEFAULT NULL,
               `card_holder_name` varchar(120) DEFAULT NULL,
               `card_number` varchar(120) DEFAULT NULL,
@@ -53,6 +54,10 @@ class CheckDatabase
               `tel` varchar(50) DEFAULT NULL,
               `no_of_person` int(11) DEFAULT NULL,
               `note` text,
+              `timeout` int(4) DEFAULT '6',
+              `paid` tinyint(2) DEFAULT '0',
+              `paid_time` datetime DEFAULT NULL,
+              `set_paid_by` text,
               `create_time` datetime DEFAULT NULL,
               `update_time` datetime DEFAULT NULL,
               `publish` tinyint(4) DEFAULT '0',
