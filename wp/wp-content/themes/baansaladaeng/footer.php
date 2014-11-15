@@ -162,7 +162,7 @@ if ($arrayContact) {
                                     alert("Send success.\nThank you.");
                                     $("#send_name").val("");
                                     $("#send_email").val("");
-                                    $("#send_message").text("");
+                                    $("#send_message").val("");
                                 }
                                 send_mail_contact_us = false;
                             }
