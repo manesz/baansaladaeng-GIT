@@ -7,6 +7,7 @@ if (!window.jQuery) {
 }
 var $ = jQuery.noConflict();
 $(document).ready(function () {
+    oneSecondFunction();
 });
 
 function postNeedAirportPickup(elm, bookingID) {
@@ -49,6 +50,27 @@ $(document).on("submit", "#frm_booking", function (e) {
         });
     return false;
 });
+
+function oneSecondFunction() {
+    $(".clock").each(function(){
+        var getDateCreate = $(this).attr('date-create');
+        var getTimeLeft = $(this).attr("timeout");
+        var getPaid = $(this).attr("paid");
+        var dateNow = new Date();
+        var dateCreate = new Date(getDateCreate);
+        var strToTime = getTimeLeft * 60 * 60;
+        var diff = Math.round(dateNow.getTime() / 1000 - dateCreate.getTime() / 1000);
+        diff = strToTime - diff;
+        if (diff < 0 || getPaid == '1') {
+            diff = 0;
+        }
+        var clock = $(this).FlipClock(diff, {
+            countdown: true,
+            clockFace: 'HourCounter'
+        });
+    });
+}
+
 function setApprove(elm, paymentID) {
     this.value = $(elm).prop('checked') ? 1 : 0;
     var setPaid = this.value;

@@ -35,10 +35,13 @@ class Booking_List extends WP_List_Table
             if ($checkTimeOut && !$value->paid) {
                 $strShowPaidField = "Time Out";
             } else {
-                $strShowPaidField = $value->paid ? '<input type="checkbox" checked onclick="return setApprove(this, '.$value->payment_id.');" />'
-                    : '<input type="checkbox" onclick="return setApprove(this, '.$value->payment_id.');" />';
+                $strShowPaidField = $value->paid ? '<input type="checkbox" checked onclick="return setApprove(this, ' .
+                    $value->payment_id . ');" />'
+                    : '<input type="checkbox" onclick="return setApprove(this, ' . $value->payment_id .
+                    ');" />';
             }
-
+            $strShowTime = '<div class="clock" date-create="'.
+                $value->create_time.'" timeout="'.$value->timeout.'" paid="'.$value->paid. '"></div>';
             $this->booking_data[] = array(
                 'id' => $value->id,
                 'count' => $key + 1,
@@ -51,7 +54,7 @@ class Booking_List extends WP_List_Table
                 'adults' => $value->adults,
                 'need_airport_pickup' => $value->need_airport_pickup ? 'YES' : 'NO',
 //                'price'=>number_format($value->total),
-//                'total'=>0,
+                'timeout' => $strShowTime,
                 'paid' => $strShowPaidField,
                 'pm_create_time' => $value->pm_create_time,
                 'edit' => '<a href="?page=booking-list&booking-edit=true&id=' . $value->payment_id . '">Edit</a>'
@@ -99,6 +102,10 @@ class Booking_List extends WP_List_Table
             .wp-list-table .column-need_airport_pickup {
                 width: 4%;
             }
+
+            .wp-list-table .column-timeout {
+                width: 10%;
+            }
             .wp-list-table .column-paid {
                 width: 5%;
             }
@@ -110,9 +117,16 @@ class Booking_List extends WP_List_Table
             .wp-list-table .column-edit {
                 width: 5%;
             }
+            .clock {
+                zoom: 0.3;
+                -moz-transform: scale(0.5)
+            }
         </style>
         <script type="text/javascript"
                 src="<?php bloginfo('template_directory'); ?>/library/js/booking_edit.js"></script>
+
+        <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/library/css/flip-clock/flipclock.css">
+        <script src="<?php bloginfo('template_directory'); ?>/library/js/flip-clock/flipclock.js"></script>
     <?php
     }
 
@@ -133,6 +147,7 @@ class Booking_List extends WP_List_Table
             case 'tel':
             case 'adults':
             case 'need_airport_pickup':
+            case 'timeout':
             case 'paid':
             case 'pm_create_time':
             case 'edit':
@@ -172,6 +187,7 @@ class Booking_List extends WP_List_Table
             'tel' => __('Tel', 'mylisttable'),
             'adults' => __('Adults', 'mylisttable'),
             'need_airport_pickup' => __('Pickup', 'mylisttable'),
+            'timeout' => __('Time Out', 'mylisttable'),
             'paid' => __('Approve', 'mylisttable'),
             'pm_create_time' => __('Create time', 'mylisttable'),
             'edit' => __('Edit', 'mylisttable'),
@@ -259,13 +275,14 @@ class Booking_List extends WP_List_Table
 //            $strRoomName .= "</br>Adults: <input type='text' value='$value->adults' /></br>";
             $arrayRoomName[] = $strRoomName;
         }
-        extract((array)$objDataBooking[0])
+        extract((array)$objDataBooking[0]);
         ?>
         <script type="text/javascript"
                 src="<?php bloginfo('template_directory'); ?>/library/js/booking_edit.js"></script>
 
         <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/library/css/flip-clock/flipclock.css">
         <script src="<?php bloginfo('template_directory'); ?>/library/js/flip-clock/flipclock.js"></script>
+
         <input type="hidden" value="<?php bloginfo('template_directory'); ?>/library/js/jquery.min.js" id="getjqpath"/>
         </pre>
         <div class="wrap">
@@ -493,51 +510,24 @@ class Booking_List extends WP_List_Table
                 //                                var interval = setInterval(oneSecondFunction, 1000);
                 var paid = <?php echo $paid; ?>;
                 var time_left_hour = <?php echo $timeout; ?>;
-                var create_time = '<?php echo $pm_create_time; ?>';
+                var create_time = '<?php echo $create_time; ?>';
                 $(function () {
-//                    setTimeout(function () {
-//                        oneSecondFunction()
-//                    }, 1000);
-                    /*var dateNow = new Date();
-                    dateNow = dateNow.getTime();
-                    var h = Math.round(dateNow / 10) - strToTime;
-                    h =  Math.round(h/1000/60/60/10);
-                    var clock = $('.clock').FlipClock(h, {
-                        countdown: true,
-                        clockFace: 'HourCounter'
-                    });*/oneSecondFunction()
+                    oneSecondFunction()
                 });
 
                 function oneSecondFunction() {
-                    var seconds = 1000;
-                    var minutes = seconds * 60;
-                    var hours = minutes * 60;
-                    var days = hours * 24;
-                    var years = days * 365;
                     var dateNow = new Date();
                     var dateCreate = new Date(create_time);
-                    var time = dateNow.getTime() - dateCreate.getTime();
-                    time = (time_left_hour * hours ) - time;
-                    time = Math.round(time/1000);
-                     /*var h = Math.round(time / hours);
-                    var m = Math.round(time / minutes % 60);
-                    var s = Math.round((time / seconds ) % 60);
-//                    s = Math.round(s - (Math.round(s / 100)*100));
-
-
-                    var strShowTimeOut = h + ":" + m + ":" + s;
-                    if (paid)
-                        $("#time_left").val('00:00:00');
-//                    else if (time < 0)
-//                        $("#time_left").val('time out');
-                    else
-                        $("#time_left").val(strShowTimeOut);*/
-
-//                    var clock = $('.clock').FlipClock(time, {
-//                        countdown: true,
-//                        clockFace: 'HourCounter'
-//                    });
-
+                    var strToTime = time_left_hour * 60 * 60;
+                    var diff = Math.round(dateNow.getTime() / 1000 - dateCreate.getTime() / 1000);
+                    diff = strToTime - diff;
+                    if (diff < 0 || paid) {
+                        diff = 0;
+                    }
+                    var clock = $('.clock').FlipClock(diff, {
+                        countdown: true,
+                        clockFace: 'HourCounter'
+                    });
                 }
             </script>
         </tr>

@@ -299,7 +299,7 @@ function checkDateRoom(roomID) {
         success: function (data) {
             if (data == "yes") {
                 addOrder(roomID);
-                $('#section_payment').fadeIn();
+                //$('#section_payment').fadeIn();
             } else {
                 alert(data);
                 $('#section_select_date').fadeIn();
@@ -366,7 +366,7 @@ function deleteOrder(bookingId) {
                 success: function (data) {
                     if (data == 'success')
                         window.location.reload();
-                    else alert('Fail');
+                    else alert(data);
                     check_delete_room = false;
                 },
                 error: function (result) {

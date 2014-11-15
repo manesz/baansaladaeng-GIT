@@ -1,23 +1,30 @@
 <?php
-if( !session_id() )
+if (!session_id())
     session_start();
 $arrayOrder = @$_SESSION['array_reservation_order'];
+$objClassBooking = new Booking($wpdb);
 $checkInDate = @$_POST['check_in_date'] ? $_POST['check_in_date'] : '';
 $checkOutDate = @$_POST['check_out_date'] ? $_POST['check_out_date'] : '';
 $roomID = @$_POST['room_id'] ? $_POST['room_id'] : '0';
 $roomName = @$_POST['room_name'] ? $_POST['room_name'] : '';
+$payment_id = empty($arrayOrder) ? 0 : $arrayOrder['payment_id'];
 
+if ($payment_id) {
+    $objDataBooking = $objClassBooking->bookingList($payment_id);
+    $countOrder = $objDataBooking ? count($objDataBooking) : 0;
+} else
+    $countOrder = 0;
 get_header();
 get_template_part('nav');
 ?>
     <script>
         var room_id = <?php echo $roomID; ?>;
         var web_url = '<?php echo network_site_url('/'); ?>';
-        var count_order = <?php echo count($arrayOrder);?>;
+        var count_order = <?php echo $countOrder;?>;
     </script>
     <script type="text/javascript"
             src="<?php bloginfo('template_directory'); ?>/library/js/reservation.js"></script>
-    <div class="container" >
+    <div class="container">
     <div class="row">
 
     <h2 class="text-center margin-bottom-20">Reservation</h2>
@@ -36,7 +43,7 @@ get_template_part('nav');
     <hr class=""/>
 
     <div id="section_select_date">
-        <h2>Room <?php echo count($arrayOrder) + 1; ?></h2>
+        <h2>Room <?php echo $countOrder + 1; ?></h2>
 
         <div class="col-md-12 alpha">
             <div class="form-group col-md-6">
@@ -57,8 +64,8 @@ get_template_part('nav');
                 <div class="form-group col-md-12">
                     <h4>Rooms</h4>
                     <input id="room_name" name="room_name" disabled
-                               type="text" maxlength="50" class="form-control col-md-12"
-                               value="<?php echo $roomName; ?>"/>
+                           type="text" maxlength="50" class="form-control col-md-12"
+                           value="<?php echo $roomName; ?>"/>
                 </div>
             <?php endif; ?>
             <div class="form-group col-md-12">
