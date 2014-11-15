@@ -1,11 +1,11 @@
 <?php
-session_start();
+if( !session_id() )
+    session_start();
 $arrayOrder = @$_SESSION['array_reservation_order'];
 $checkInDate = @$_POST['check_in_date'] ? $_POST['check_in_date'] : '';
 $checkOutDate = @$_POST['check_out_date'] ? $_POST['check_out_date'] : '';
 $roomID = @$_POST['room_id'] ? $_POST['room_id'] : '0';
 $roomName = @$_POST['room_name'] ? $_POST['room_name'] : '';
-
 
 get_header();
 get_template_part('nav');
@@ -17,7 +17,7 @@ get_template_part('nav');
     </script>
     <script type="text/javascript"
             src="<?php bloginfo('template_directory'); ?>/library/js/reservation.js"></script>
-    <div class="container" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+    <div class="container" >
     <div class="row">
 
     <h2 class="text-center margin-bottom-20">Reservation</h2>
@@ -152,7 +152,7 @@ get_template_part('nav');
                         </select>&nbsp;/&nbsp;
                         <select id="payment_date_of_birth_3" name="payment_date_of_birth_3">
                             <option value="">Year</option>
-                            <?php for ($i = date("Y") - 95; $i <= date("Y") - 12; $i++): ?>
+                            <?php for ($i = date_i18n("Y") - 95; $i <= date_i18n("Y") - 12; $i++): ?>
                                 <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
                             <?php endfor; ?>
                         </select>
@@ -175,9 +175,10 @@ get_template_part('nav');
                 <div class="col-md-12 margin-bottom-10 alpha omega">
                     <div class="col-md-3 alpha"><label for="payment_email">Email <font color="#FF0000">*</font></label>
                     </div>
-                    <div class="col-md-9 alpha omega"><input id="payment_email" name="payment_email" type="text"
-                                                             maxlength="50"
-                                                             class="form-control col-md-12"/></div>
+                    <div class="col-md-9 alpha omega">
+                        <input id="payment_email" name="payment_email" type="text"
+                               maxlength="50"
+                               class="form-control col-md-12"/></div>
                 </div>
                 <div class="col-md-12 margin-bottom-10 alpha omega">
                     <div class="col-md-3 alpha"><label for="payment_est_arrival1">Estimated arrival Time <font
@@ -344,7 +345,7 @@ get_template_part('nav');
                     </select>&nbsp;/&nbsp;
                     <select id="card_expiry_date2" name="card_expiry_date2">
                         <option value="">-- Year --</option>
-                        <?php for ($i = date('Y'); $i <= (date("Y") + 20); $i++): ?>
+                        <?php for ($i = date_i18n('Y'); $i <= (date_i18n("Y") + 20); $i++): ?>
                             <option value="<?php
                             $strY = substr($i, 2);
                             echo $strY = strlen($strY) == 1 ? "0$strY" : $strY; ?>"><?php echo $i; ?></option>

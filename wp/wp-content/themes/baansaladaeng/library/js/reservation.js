@@ -36,7 +36,11 @@ $(document).on("click", '#linkSelectDate, #btn_list_room_back', function () {
     $('#section_payment').hide();
     $('#section_confirm_order').hide();
 });
+
+var data_post_payment = false;
 $(document).on("submit", "#form_credit_card_payment", function (e) {
+    if (data_post_payment)
+        return false;
     if (!validateFormCreditCard(this)) {
         return false;
     }
@@ -51,17 +55,20 @@ $(document).on("submit", "#form_credit_card_payment", function (e) {
         url: '',
         data: data,
         success: function (data) {
-            if (data == 'success') {
-                alert("Success\nCheck your email.");
-                window.location.href = web_url + 'reservation';
+            if (data != 'fail') {
+                postSendEmail(data);
+//                window.location.href = web_url + 'reservation';
             } else {
                 alert(data);
+                data_post_payment = false;
             }
         },
         error: function (result) {
             alert("Error:\n" + result.responseText);
+            data_post_payment = false;
         }
     });
+    data_post_payment = true;
     return false;
 });
 
@@ -94,6 +101,28 @@ $(document).on("submit", "#payment_post", function (e) {
     data_booking = $(this).serialize();
     return false;
 });
+
+function postSendEmail(paymentID) {
+    var email = $("#payment_email").val();
+    $.ajax({
+        type: "POST",
+        url: '',
+        data: {
+            booking_post: 'true',
+            reservation_post: 'booking_send_email',
+            email: email,
+            status_send: 'true',
+            payment_id: paymentID
+        },
+        success: function (data) {
+            alert("Success\nCheck order your email.");
+            window.location.href = web_url + 'reservation';
+        },
+        error: function (result) {
+            alert("Error:\n" + result.responseText);
+        }
+    });
+}
 
 function validateFormCreditCard(elm) {
     if (elm.card_type.value == "") {
@@ -323,16 +352,16 @@ function getSummaryOrder() {
 }
 
 var check_delete_room = false;
-function deleteOrder(orderID) {
+function deleteOrder(bookingId) {
     if (!check_delete_room) {
-        if (confirm('Do you want delete room ' + (orderID + 1) + " ?")) {
+        if (confirm('Do you want delete room ?')) {
             $.ajax({
                 type: "POST",
                 url: '',
                 data: {
                     booking_post: 'true',
-                    reservation_post: 'delete_order',
-                    order_id: orderID
+                    reservation_post: 'delete_room',
+                    booking_id: bookingId
                 },
                 success: function (data) {
                     if (data == 'success')

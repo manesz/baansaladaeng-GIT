@@ -89,8 +89,8 @@ class BannerSlide
                 'sort' => @$gsort,
                 'link' => @$glink,
                 'image_path' => @$pathimg,
-                'create_datetime' => date("Y-m-d H:i:s"),
-                'update_datetime' => date("Y-m-d H:i:s"),
+                'create_datetime' => date_i18n("Y-m-d H:i:s"),
+                'update_datetime' => date_i18n("Y-m-d H:i:s"),
                 'publish' => 1,
             ),
             array(

@@ -1,8 +1,11 @@
 <?php
-
-session_start();
-$arrayOrder = @$_SESSION['array_reservation_order'];
+if (!session_id())
+    session_start();
+$objClassBooking = new Booking($wpdb);
+$sessionGet = @$_SESSION['array_reservation_order'];
 $subTotal = 0;
+$paymentID = empty($sessionGet['payment_id']) ? 0 : $sessionGet['payment_id'];
+$arrayOrder = $paymentID ? $objClassBooking->bookingList($paymentID) : null;
 ?>
 <script>
     count_order = <?php echo count($arrayOrder); ?>;
@@ -10,7 +13,7 @@ $subTotal = 0;
 <ul class="bg-fafafa alpha" style="list-style: none; height: 100%">
     <?php
     if ($arrayOrder) : foreach ($arrayOrder as $key => $value):
-        $roomID = @$value['room_id'];
+        /*$roomID = @$value['room_id'];
         $roomName = @$value['room_name'];
         $checkInDate = "";
         $checkOutDate = "";
@@ -30,26 +33,47 @@ $subTotal = 0;
         $total = ($numberDays + 1) * $price;
         $total += $needAirportPickup ? 1200 : 0;
         $totalFormat = number_format($total);
+        $subTotal += $total;*/
+        $roomID = @$value->room_id;
+        $roomName = @$value->room_name;
+        $checkInDate = "";
+        $checkOutDate = "";
+        $price = @$value->price;
+        $priceFormat = number_format($price);
+
+
+        $needAirportPickup = @$value->need_airport_pickup;
+        $arrivalDate = @$value->check_in_date;
+//        $arrivalDateConvert = DateTime::createFromFormat('d/m/Y', $arrivalDate);
+        $departureDate = @$value->check_out_date;
+//        $departureDateConvert = DateTime::createFromFormat('d/m/Y', $departureDate);
+        $timeDiff = abs(strtotime($value->check_out_date) -
+            strtotime($value->check_in_date));
+        $numberDays = $timeDiff / 86400;
+        $numberDays = ceil($numberDays);
+        $total = ($numberDays + 1) * $price;
+        $total += $needAirportPickup ? 1200 : 0;
+        $totalFormat = number_format($total);
         $subTotal += $total;
 
         ?>
         <li class="text-left" style="margin-top: 20px; padding: 10px; border-bottom: 1px #999 dashed;">
             <h5 class="pull-left" style="margin-top: 0px; font-weight: bold;">ROOM <?php echo $key + 1; ?></h5>
             <span class="pull-right"><a href="#"
-                                        onclick="deleteOrder(<?php echo $key; ?>);return false;" ">Delete</a></span>
+                                        onclick="deleteOrder(<?php echo $value->booking_id; ?>);return false;" ">Delete</a></span>
             <hr/>
             <table style="width: 100%">
                 <tr>
                     <td style="width: 80%">Arrival Date :</td>
-                    <td style="width: 20%"><?php echo $arrivalDate; ?></td>
+                    <td style="width: 20%"><?php echo date_i18n('d/m/y', strtotime($arrivalDate)); ?></td>
                 </tr>
                 <tr>
                     <td style="width: 80%">Departure Date :</td>
-                    <td style="width: 20%"><?php echo $departureDate; ?></td>
+                    <td style="width: 20%"><?php echo date_i18n('d/m/y', strtotime($departureDate)); ?></td>
                 </tr>
                 <tr>
                     <td style="width: 80%">Adults :</td>
-                    <td style="width: 20%"><?php echo @$value['adults']; ?></td>
+                    <td style="width: 20%"><?php echo @$value->adults; ?></td>
                 </tr>
                 <tr>
                     <td style="width: 80%"><?php echo $roomName; ?></td>

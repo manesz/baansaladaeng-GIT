@@ -1,7 +1,4 @@
 <?php
-
-session_start();
-$arrayOrder = @$_SESSION['array_reservation_order'];
 if (!class_exists('Booking')) {
     require_once("../class/ClassBooking.php");
 }
@@ -18,13 +15,8 @@ if (!$urlThumbnail)
     $urlThumbnail = get_template_directory_uri() . "/library/images/no-thumb.png";
 
 $arrayImageGallery = get_post_meta($postID, 'room_image_gallery', true);
+$objEventCalendar = $classBooking->bookingList(0, 0, 0, $postID);
 
-
-$getMonth = @$_POST['rmonth'] ? $_POST['rmonth'] : date('m');
-$getYear = @$_POST['ryear'] ? $_POST['ryear'] : date('Y');
-$getReservationMonth = $getYear . "-" . $getMonth . '-' . 1;
-//$objCalendar = $classBooking->getBookingListByMonth($getMonth, $getYear);
-$objEventCalendar = $classBooking->bookingList(0, $postID);
 $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booking_icon.png';
 ?>
 <!-- Fullcalendar -->
@@ -62,37 +54,22 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
     var $jConflict = jQuery.noConflict();
     var obj_event =
         [
-            <?php foreach($objEventCalendar as $key => $value):
-            $dateCheckIn = date('Y, m, d', strtotime($value->check_in_date));
-            $dateCheckOut = date('Y, m, d', strtotime($value->check_out_date));
-            ?>
-            {
-                title: 'X',
-                start: '<?php echo $dateCheckIn; ?>',
-                end: '<?php echo $dateCheckOut; ?>',
-                backgroundColor: '#ED1317'
-//                    allDay: true
-                //url: 'http://google.com/'
-            },
-            <?php endforeach; ?>
-            <?php foreach($arrayOrder as $key => $value):
-            $arrivalDate = @$value['arrival_date'];
-            $arrivalDateConvert = DateTime::createFromFormat('d/m/Y', $arrivalDate);
-            $departureDate = @$value['departure_date'];
-            $departureDateConvert = DateTime::createFromFormat('d/m/Y', $arrivalDate);
-            $dateCheckIn = date('Y, m, d', strtotime($arrivalDateConvert->format('Y-m-d')));
-            $dateCheckOut = date('Y, m, d', strtotime($departureDateConvert->format('Y-m-d')));
-            ?>
-            {
-                title: 'X',
-                start: '<?php echo $dateCheckIn; ?>',
-                end: '<?php echo $dateCheckOut; ?>',
-                backgroundColor: '#ED1317'
-//                    allDay: true
-                //url: 'http://google.com/'
-            },
-            <?php endforeach; ?>
+            <?php
+            foreach($objEventCalendar as $key => $value):
 
+            if (!$classBooking->checkTimeOut($value->create_time, $value->timeout)):
+            $dateCheckIn = date_i18n('Y, m, d', strtotime($value->check_in_date));
+            $dateCheckOut = date_i18n('Y, m, d', strtotime($value->check_out_date));
+            ?>
+            {
+                title: 'X',
+                start: '<?php echo $dateCheckIn; ?>',
+                end: '<?php echo $dateCheckOut; ?>',
+                backgroundColor: '#ED1317'
+//                    allDay: true
+                //url: 'http://google.com/'
+            },
+            <?php endif; endforeach; ?>
         ]
 
 

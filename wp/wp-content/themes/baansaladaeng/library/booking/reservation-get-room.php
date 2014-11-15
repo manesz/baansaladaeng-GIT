@@ -1,14 +1,45 @@
 <?php
-
+//if (!session_id())
+//    session_start();
+//$arrayOrder = @$_SESSION['array_reservation_order'];
 $objClassBooking = new Booking($wpdb);
-$dateCheckIn = DateTime::createFromFormat('d/m/Y', $_POST['check_in']);
-$dateCheckOut = DateTime::createFromFormat('d/m/Y', $_POST['check_out']);
-$arrayRoom = $objClassBooking->getRoomByDateCheckInCheckOut($dateCheckIn->format('Y-m-d'), $dateCheckOut->format('Y-m-d'));
+$getCheckInDate = $_POST['check_in'];
+$getCheckOutDate = $_POST['check_out'];
+$dateNow = date_i18n("Y-m-d");
+$dateCheckIn = DateTime::createFromFormat('d/m/Y', $getCheckInDate);
+$dateCheckOut = DateTime::createFromFormat('d/m/Y', $getCheckOutDate);
+$arrayRoom = $objClassBooking->getRoomByDateCheckInCheckOut(
+    $dateCheckIn->format('Y-m-d'), $dateCheckOut->format('Y-m-d'));
 
 $arrayRoomID = array();
 foreach ($arrayRoom as $value) {
+    $roomDateCheckIn = $value->date_check_in;
+    $roomDateCheckOut = $value->date_check_out;
+    $timeOut = $value->timeout;
+    $paid = $value->paid;
+    $checkAddToArrayRoom = false;
+    if ($paid) {
+        $checkAddToArrayRoom = true;
+    } else if (!$objClassBooking->checkTimeOut($value->create_time, $value->timeout)) {
+        $checkAddToArrayRoom = true;
+    }
     $arrayRoomID[] = @$value->room_id;
 }
+//var_dump($arrayOrder);
+//foreach ($arrayOrder as $value) {
+//    $arrivalDate = $value['arrival_date'];
+//    $arrivalDate = DateTime::createFromFormat('d/m/Y', $arrivalDate);
+//    $arrivalDate = $arrivalDate->format('Y-m-d');
+//    $departureDate = $value['departure_date'];
+//    $departureDate = DateTime::createFromFormat('d/m/Y', $departureDate);
+//    $departureDate = $departureDate->format('Y-m-d');
+//    if (($dateCheckIn->format('Y-m-d') >= $arrivalDate && $dateCheckIn->format('Y-m-d') <= $departureDate)
+//    || ($dateCheckOut->format('Y-m-d') >= $arrivalDate && $dateCheckOut->format('Y-m-d') <= $departureDate))
+//    {
+//        $arrayRoomID[] = $value['room_id'];
+//    }
+//}
+
 $argc = $arrayRoomID ? array(
     'post__not_in' => $arrayRoomID,
     'post_type' => 'room',
@@ -19,7 +50,7 @@ $argc = $arrayRoomID ? array(
     array('post_type' => 'room');
 
 $loopPostTypeRoom = new WP_Query($argc);
-if ($loopPostTypeRoom->have_posts()):
+if ($loopPostTypeRoom->have_posts() && $dateCheckIn->format('Y-m-d') >= $dateNow && $dateCheckOut->format('Y-m-d') >= $dateNow):
     while ($loopPostTypeRoom->have_posts()) : $loopPostTypeRoom->the_post();
         $postID = get_the_id();
         $urlThumbnail = wp_get_attachment_url(get_post_thumbnail_id($postID));
@@ -79,6 +110,14 @@ if ($loopPostTypeRoom->have_posts()):
 endif;
 
 ?>
-    <div>Sorry, there is no room on the day of your choice.</div>
+    <div align="center">Sorry, there is no room on the day of your choice.</div>
+    <div class="form-group col-md-12">
+        <div class="col-md-4"
+             style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
+            <button id="btn_list_room_back" class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
+                Back
+            </button>
+        </div>
+    </div>
 <?php
 ?>

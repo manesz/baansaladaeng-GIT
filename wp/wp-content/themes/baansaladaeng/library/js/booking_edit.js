@@ -52,11 +52,11 @@ function postNeedAirportPickup(elm, bookingID) {
 $(document).on("submit", "#frm_booking", function (e) {
 
 //        alert($(this).serialize())
-    if (!validateFormPayment(this))
-        return false;
-
-    if (!validateFormCreditCard(this))
-        return false;
+//    if (!validateFormPayment(this))
+//        return false;
+//
+//    if (!validateFormCreditCard(this))
+//        return false;
     $.ajax({
         type: "POST",
         cache: false,

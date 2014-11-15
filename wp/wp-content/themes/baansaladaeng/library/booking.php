@@ -2,19 +2,19 @@
 require_once("class/ClassBooking.php");
 $objClassBooking = new Booking($wpdb);
 require_once("class/ClassBookingListBackend.php");
-if ($_POST) {
+if ($_REQUEST) {
 
 //------------------------- Add Booking----------------------------//
-    $bookingPost = @$_POST['booking_post'];
+    $bookingPost = @$_REQUEST['booking_post'];
     if ($bookingPost == 'true') {
-        $step = @$_POST['step'];
+        $step = @$_REQUEST['step'];
         switch ($step) {
             case "1" :
                 require_once("content-page/content-reservation.php");
                 break;
         }
 
-        $reservation = @$_POST['reservation_post'];
+        $reservation = @$_REQUEST['reservation_post'];
         switch ($reservation) {
             case "get_room" :
                 require_once("booking/reservation-get-room.php");
@@ -29,7 +29,7 @@ if ($_POST) {
                 exit;
                 break;
             case "check_room" :
-                $result = $objClassBooking->checkRoom($_POST);
+                $result = $objClassBooking->checkRoom($_REQUEST);
                 if ($result)
                     echo "yes";
                 else echo "Sorry, there is no room on the day of your choice.";
@@ -37,50 +37,56 @@ if ($_POST) {
                 break;
             case "add_order" :
 //                $objClassBooking->sendEmail(1);
-                if ($objClassBooking->addSessionOrder($_POST))
+                if ($objClassBooking->addSessionOrder($_REQUEST))
                     echo "success";
                 else echo "fail";
                 exit;
                 break;
-            case 'delete_order' :
-                if ($objClassBooking->deleteSessionOrder(@$_POST['order_id']))
+            case 'delete_room' :
+                if ($objClassBooking->deleteBookingRoom(@$_REQUEST['booking_id']))
                     echo "success";
                 else echo "fail";
                 exit;
                 break;
-            case 'add_booking' : //var_dump($_POST);exit;
-                $result = $objClassBooking->paymentAdd($_POST);
-                if ($result == true) {
-                    $_POST['payment_id'] = $result;
-                    $result = $objClassBooking->bookingAdd($_POST);
-                    if ($result) {
-                        $result = $objClassBooking->sendEmail($result);
-                        if ($result) {
-                            echo 'success';
-                            exit;
-                        }
-                    }
-                }
+            case 'add_booking' :
+                $result = $objClassBooking->paymentAdd($_REQUEST);
                 echo $result;
                 exit;
                 break;
             case 'edit_booking' :
-                $result = $objClassBooking->paymentEdit($_POST);
+                $result = $objClassBooking->paymentEdit($_REQUEST);
                 if ($result == true) {
-                    $result = $objClassBooking->bookingEdit($_POST);
+                    $result = $objClassBooking->bookingEdit($_REQUEST);
                     if ($result == true) {
                         echo 'success';
                         exit;
                     }
                 }
-                echo $result;
+                echo "fail";
+                exit;
+                break;
+            case 'booking_send_email' :
+                function wp_mail_set_content_type(){
+                    return "text/html";
+                }
+                add_filter( 'wp_mail_content_type','wp_mail_set_content_type' );
+                ob_start();
+                require_once("booking/send_email.php");
+                $message = ob_get_contents();
+                ob_end_clean();
+                if ($_REQUEST['status_send'] == 'true')
+                    echo $result = $objClassBooking->sendEmail($_REQUEST, $message);
+                else {
+                    echo $message;
+                    exit;
+                }
                 exit;
                 break;
         }
-//    $result = $objClassBooking->bookingAdd($_POST);
+//    $result = $objClassBooking->bookingAdd($_REQUEST);
 //    if ($result) {
-//        $_POST['booking_id'] = $result;
-//        $result = $objClassBooking->paymentAdd($_POST);
+//        $_REQUEST['booking_id'] = $result;
+//        $result = $objClassBooking->paymentAdd($_REQUEST);
 //        if ($result) {
 //            echo $result;
 //            exit;

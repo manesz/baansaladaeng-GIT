@@ -5,8 +5,8 @@
  * Date: 10/10/2557
  * Time: 13:13 น.
  */
-$thisMonth = date('m');
-$thisYear = date('Y');
+$thisMonth = date_i18n('m');
+$thisYear = date_i18n('Y');
 $getMonth = @$_POST['rmonth'];
 $getYear = @$_POST['ryear'];
 

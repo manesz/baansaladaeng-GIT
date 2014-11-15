@@ -48,7 +48,7 @@ $dataCustomerProfile = @$_POST;
     </select> /
     <select name="card_expiry_date2" id="card_expiry_date2">
         <option value="">--Year--</option>
-        <?php for ($i = date('Y'); $i <= date('Y') + 10; $i++): ?>
+        <?php for ($i = date_i18n('Y'); $i <= date_i18n('Y') + 10; $i++): ?>
             <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
         <?php endfor; ?>
     </select> <br/>
