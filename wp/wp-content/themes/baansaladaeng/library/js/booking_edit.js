@@ -115,8 +115,6 @@ function validateFormPayment(elm) {
     var checkEmail = charCheck.test(elm.payment_email.value);
 
     if (elm.payment_name.value == "") {
-        alert(elm.payment_name.value);
-        return false;
         alert("Please add name.");
         elm.payment_name.focus();
         return false;

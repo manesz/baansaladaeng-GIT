@@ -105,4 +105,21 @@ if ($_REQUEST) {
         // exit;
     }
 //------------------------- End Add Booking----------------------------//
+    $getContactUsPost = @$_REQUEST['contact_us_send_email'];
+    if ($getContactUsPost == true) {
+        $sendTo = 'ruxchuk@gmail.com';//email info
+        $subject = "Message contact us:" . $_REQUEST['send_name'];
+        ob_start();
+        $message = $_REQUEST['send_message'];
+        ?>
+        Massage form :<?php echo $_REQUEST['send_name']; ?>(<?php echo $_REQUEST['send_email']; ?>)
+        <?php echo $message;
+        $message = ob_get_contents();
+        ob_end_clean();
+        $result = wp_mail($sendTo, $subject, $message);
+        if ($result)
+            echo 'success';
+        else echo 'fail';
+        exit;
+    }
 }

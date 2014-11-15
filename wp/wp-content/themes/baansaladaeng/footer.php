@@ -50,7 +50,8 @@ if ($arrayContact) {
                                         <img
                                             src="<?php echo get_template_directory_uri(); ?>/library/images/icon-pinterest.png"
                                             style="max-width: 32px;margin-right: 0.3em;"/><a
-                                            href="<?php echo $link_pinterest; ?>"><?php echo $title_pinterest; ?></a></p>
+                                            href="<?php echo $link_pinterest; ?>"><?php echo $title_pinterest; ?></a>
+                                    </p>
                                 <?php endif; ?>
                                 <?php if ($qr_code_line): ?>
                                     <p>
@@ -99,13 +100,10 @@ if ($arrayContact) {
             </div>
             <div class="col-md-6">
                 <div class="contact-right wow fadeInLeft" data-wow-delay="0.4s">
-                    <form>
-                        <input type="text" class="text" value="Name..." onfocus="this.value = '';"
-                               onblur="if (this.value == '') {this.value = 'Name...';}">
-                        <input type="text" class="text" value="Email..." onfocus="this.value = '';"
-                               onblur="if (this.value == '') {this.value = 'Email...';}">
-                        <textarea value="Message:" onfocus="this.value = '';"
-                                  onblur="if (this.value == '') {this.value = 'Message';}">Message..</textarea>
+                    <form id="form_contact_us" method="post">
+                        <input type="text" class="text" placeholder="Name..." id="send_name" name="send_name">
+                        <input type="text" class="text" placeholder="Email..."  id="send_email" name="send_email">
+                        <textarea placeholder="Message.." id="send_message" name="send_message"></textarea>
                         <input class="wow shake" data-wow-delay="0.3s" type="submit" value="Send Message"/>
                     </form>
                 </div>
@@ -116,6 +114,7 @@ if ($arrayContact) {
         <div class="copy-right text-center">
             <p>develop by <a href="http://www.ideacorners.com">Idea Corners Studio Co.,Ltd.</a></p>
             <script type="text/javascript">
+                var send_mail_contact_us = false;
                 $(document).ready(function () {
                     /*
                      var defaults = {
@@ -127,7 +126,59 @@ if ($arrayContact) {
                      */
 
                     $().UItoTop({ easingType: 'easeOutQuart' });
+                    $("#form_contact_us").submit(function () {
+                        if (send_mail_contact_us)
+                            return false;
 
+                        var charCheck = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        var checkEmail = charCheck.test(this.send_email.value);
+                        if (this.send_name.value == "" || this.send_name.value == "Name...") {
+                            alert("Please add your name.");
+                            this.send_name.focus();
+                            return false;
+                        } else if (this.send_email.value == "" || this.send_email.value == "Email..." || !checkEmail) {
+                            alert("Please add your email.");
+                            this.send_email.focus();
+                            return false;
+                        } else if (this.send_message.value == "" || this.send_message.value == "Message..") {
+                            alert("Please add your message.");
+                            this.send_message.focus();
+                            return false;
+                        }
+
+                        var data = $(this).serialize();
+                        data = data + '&' + $.param({
+                            contact_us_send_email: 'true'
+                        });
+                        $.ajax({
+                            type: "POST",
+                            cache: false,
+                            url: '',
+                            data: data,
+                            success: function (data) {
+                                if (data != "success") {
+                                    alert(data);
+                                } else {
+                                    alert("Send success.\nThank you.");
+                                    $("#send_name").val("");
+                                    $("#send_email").val("");
+                                    $("#send_message").text("");
+                                }
+                                send_mail_contact_us = false;
+                            }
+                        })
+                            .done(function () {
+                                //alert("second success");
+                            })
+                            .fail(function () {
+                                alert("เกิดข้อผิดพลาด");
+                            })
+                            .always(function () {
+                                //alert("finished");
+                            });
+                        send_mail_contact_us = true;
+                        return false;
+                    });
                 });
             </script>
             <a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
