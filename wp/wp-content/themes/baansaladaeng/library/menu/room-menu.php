@@ -78,10 +78,12 @@ function credits_meta()
 {
     global $post;
     $custom = get_post_custom($post->ID);
+    $room_plan = $custom["room_plan"][0];
     $type = $custom["type"][0];
     $size = $custom["size"][0];
     $designer = $custom["designer"][0];
     $price = $custom["price"][0];
+    $recommend_price = $custom["recommend_price"][0];
     $recommend = $custom["recommend"][0];
     $facilities = $custom["facilities"][0];
 //    $price = $custom["price"][0];
@@ -92,7 +94,7 @@ function credits_meta()
     <!--    <p><label for="price">Price:</label><br/>-->
     <!--        <input type="text" id="price" name="price" value="--><?php //echo $price; ?><!--"/> ฿</p>-->
 
-    <p><label for="uploadImageButton">Image Gallery:</label><br/>
+    <p><label for="btn_upload_image">Image Gallery:</label><br/>
         <script type="text/javascript"
                 src="<?php bloginfo('template_directory'); ?>/library/js/image-post-metabox.js"></script>
         <link rel="stylesheet" type="text/css"
@@ -101,8 +103,9 @@ function credits_meta()
               href="<?php bloginfo('template_directory'); ?>/library/css/imgslidlist.css"/>
     <div class="misc-pub-section">
         <input type="text" title="Path Image" placeholder="Path Image" size="40" name="pathImg" id="pathImg"><input
-            type="button" value="Upload Image" class="button" id="uploadImageButton">
-        <button id="imgaddlist" class="button-primary"><i class="icon-plus-2"></i> เพิ่มรูป</button>
+            type="button" value="Upload Image" class="button btn_upload_image" id="btn_upload_image"
+            data-tbx-id="pathImg">
+        <button id="imgaddlist" class="button-primary"><i class="icon-plus-2"></i> Add Image</button>
     </div><?php $meta_values = get_post_meta($post->ID, 'room_image_gallery', true); ?>
     <div class="tabs-panel" id="imglist-stage" <?php if (!count($meta_values)){ ?>style="display:none"<?php } ?>>
         <ul id="sortable">
@@ -134,29 +137,58 @@ function credits_meta()
         <div class="clear"></div>
         <table>
             <tr>
+                <td valign="top"><label for="room_plan">Room plan:</label></td>
+                <td>
+                    <input id="room_plan" name="room_plan" value="<?php echo $room_plan; ?>"/>
+                    <input type="button" value="Upload Image" class="button btn_upload_image"
+                           data-tbx-id="room_plan"></br>
+                    <?php if ($room_plan): ?>
+                        <img src="<?php echo $room_plan; ?>" width="250"/>
+                    <?php endif; ?>
+                </td>
+            </tr>
+            <tr>
                 <td>
                     <label for="type">Type:</label></td>
                 <td>
-                    <input name="type" value="<?php echo $type; ?>"/></td>
+                    <select id="type" name="type">
+                        <option value="">-- Select --</option>
+                        <option value="King size" <?php echo $type == "King size" ? "selected" : ""; ?>>King size
+                        </option>
+                        <option value="Queen size" <?php echo $type == "Queen size" ? "selected" : ""; ?>>Queen size
+                        </option>
+                        <option value="Twin" <?php echo $type == "Twin" ? "selected" : ""; ?>>Twin</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td><label for="size">Size:</label></td>
-                <td><input name="size" value="<?php echo $size; ?>"/> sq.mtrs</td>
+                <td><input id="size" name="size" value="<?php echo $size; ?>"/> sq.mtrs</td>
             </tr>
             <tr>
                 <td><label for="designer">Designer:</label></td>
-                <td><input name="designer" value="<?php echo $designer; ?>"/></td>
+                <td><input id="designer" name="designer" value="<?php echo $designer; ?>"/></td>
             </tr>
             <tr>
                 <td><label for="price">Price:</label></td>
-                <td><input name="price" value="<?php echo $price; ?>"/> THB/night (Incl Breakfast)</td>
+                <td><input id="price" name="price" value="<?php echo $price; ?>"
+                           maxlength="15"/> THB/night (Incl Breakfast)
+                </td>
+            </tr>
+            <tr>
+                <td><label for="recommend_price">Recommended Price:</label></td>
+                <td><input id="price" name="recommend_price" maxlength="15"
+                           value="<?php echo $recommend_price; ?>"/> THB/night (Incl Breakfast)
+                </td>
             </tr>
             <tr>
                 <td><label for="recommend">Recommend:</label></td>
-                <td><input name="recommend" value="1" type="checkbox"
+                <td><input id="recommend" name="recommend" value="1" type="checkbox"
                         <?php echo $recommend == 1 ? "checked" : "" ?>/></td>
             </tr>
-            <tr><td colspan="2"></td> </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
             <tr>
                 <?php
                 if (empty($facilities)) {
@@ -216,10 +248,12 @@ function save_details()
 {
     global $post;
 
+    update_post_meta($post->ID, "room_plan", trim($_POST["room_plan"]));
     update_post_meta($post->ID, "type", trim($_POST["type"]));
     update_post_meta($post->ID, "size", trim($_POST["size"]));
     update_post_meta($post->ID, "designer", trim($_POST["designer"]));
     update_post_meta($post->ID, "price", trim($_POST["price"]));
+    update_post_meta($post->ID, "recommend_price", trim($_POST["recommend_price"]));
     update_post_meta($post->ID, "recommend", trim($_POST["recommend"]));
     update_post_meta($post->ID, "facilities", $_POST['facilities']);
 //    update_post_meta($post->ID, "designers", $_POST["designers"]);
@@ -278,11 +312,11 @@ function room_custom_columns($column)
         case "designer":
             echo $custom["designer"][0];
             break;
-        case "price":
-            echo $custom["price"][0];
-            break;
+//        case "price":
+//            echo number_format($custom["price"][0]);
+//            break;
         case "recommend":
-            echo $custom["recommend"][0];
+            echo $custom["recommend"][0] ? '<input type="checkbox" disabled checked/>' : "";
             break;
         case "category":
             echo get_the_term_list($post->ID, 'Category', '', ', ', '');

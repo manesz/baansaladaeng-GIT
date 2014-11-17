@@ -422,6 +422,7 @@ class Booking
 
         $roomName = @$posts[0]->post_title;
         $roomPrice = @$customField['price'][0];
+        $recommend_price = @$customField['recommend_price'][0];
 
 //        $arrivalDate = $post['arrival_date'];
 //        $departureDate = $post['departure_date'];
@@ -454,7 +455,7 @@ class Booking
         }
         $post['payment_id'] = $payment_id;
         $post['room_name'] = $roomName;
-        $post['price'] = $roomPrice;
+        $post['price'] = empty($recommend_price)? $roomPrice: $recommend_price;
         $result = $this->bookingAdd($post);
         if (!$result)
             return false;

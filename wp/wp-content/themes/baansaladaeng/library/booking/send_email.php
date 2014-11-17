@@ -900,6 +900,7 @@ h4 {
                     $size = @$customField["size"][0];
                     $designer = @$customField["designer"][0];
                     $price = number_format(@$customField["price"][0]);
+                    $recommend_price = number_format(@$customField["recommend_price"][0]);
                     ?>
                     <?php if ($countRoom % 2 == 0): ?>
                         <tr>

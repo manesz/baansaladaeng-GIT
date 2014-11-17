@@ -18,8 +18,9 @@ $(document).ready(function () {
         tb_remove();
         window.send_to_editor = storeSendToEditor;
     };
-    $('input#uploadImageButton').click(function () {
-        imageUploader('#pathImg');
+    $('.btn_upload_image').click(function () {
+        var idTbx = $(this).attr("data-tbx-id");
+        imageUploader('#' + idTbx);
         return false;
     });
     $('button#imgaddlist').click(function () {
