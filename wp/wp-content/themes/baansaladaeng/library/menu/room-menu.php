@@ -200,7 +200,7 @@ function credits_meta()
                 <td valign="top"><label for="">Facilities :</label></td>
                 <td><input type="hidden" id="facilities" name="facilities" value="<?php echo $facilities; ?>">
                     <input class="facilities"
-                           type="checkbox" <?php echo @$arrayFacilities[0] ? 'checked' : ""; ?> /> BREAKFAST</br>
+                           type="checkbox" <?php echo @$arrayFacilities[0] ? 'checked' : ""; ?> /> FREE WIFI</br>
                     <input class="facilities"
                            type="checkbox" <?php echo @$arrayFacilities[1] ? 'checked' : ""; ?> /> BREAKFAST</br>
                     <input class="facilities"

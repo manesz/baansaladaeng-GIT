@@ -32,7 +32,7 @@ class Booking_List extends WP_List_Table
         foreach ($result as $key => $value) {
             $permalink = get_permalink($value->room_id);
             $checkTimeOut = $classBooking->checkTimeOut($value->pm_create_time, $value->timeout);
-            var_dump($checkTimeOut);var_dump($value->paid);
+
             if ($checkTimeOut && $value->paid != 1) {
                 $strShowPaidField = "Time Out";
             } else {

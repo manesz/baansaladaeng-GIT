@@ -10,7 +10,8 @@ if ($_REQUEST) {
         $step = @$_REQUEST['step'];
         switch ($step) {
             case "1" :
-                require_once("content-page/content-reservation.php");
+                include_once("content-page/content-reservation.php");
+                exit;
                 break;
         }
 
