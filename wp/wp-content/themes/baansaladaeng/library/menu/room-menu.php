@@ -12,19 +12,19 @@
 function room_register()
 {
     $labels = array(
-        'name'               => _x( 'Rooms', 'post type general name' ),
-        'singular_name'      => _x( 'Room', 'post type singular name' ),
-        'add_new'            => _x( 'Add New', 'book' ),
-        'add_new_item'       => __( 'Add New Room' ),
-        'edit_item'          => __( 'Edit Room' ),
-        'new_item'           => __( 'New Room' ),
+        'name' => _x('Rooms', 'post type general name'),
+        'singular_name' => _x('Room', 'post type singular name'),
+        'add_new' => _x('Add New', 'book'),
+        'add_new_item' => __('Add New Room'),
+        'edit_item' => __('Edit Room'),
+        'new_item' => __('New Room'),
         //'all_items'          => __( 'All Rooms' ),
-        'view_item'          => __( 'View Room' ),
-        'search_items'       => __( 'Search Rooms' ),
-        'not_found'          => __( 'No products found' ),
-        'not_found_in_trash' => __( 'No products found in the Trash' ),
-        'parent_item_colon'  => '',
-        'menu_name'          => 'Rooms'
+        'view_item' => __('View Room'),
+        'search_items' => __('Search Rooms'),
+        'not_found' => __('No products found'),
+        'not_found_in_trash' => __('No products found in the Trash'),
+        'parent_item_colon' => '',
+        'menu_name' => 'Rooms'
     );
 
     $args = array(
@@ -48,12 +48,12 @@ function room_register()
 
     register_post_type('room', $args);
 //    add_submenu_page('edit.php?post_type=room', 'WP Backgrounds Pro', "", "");
-    register_taxonomy( 'room-category',
+    register_taxonomy('room-category',
         'Rooms',
-        array (
+        array(
             'hierarchical' => true,
             'label' => __('Rooms Categories'
-            )));  // portfolio categories
+            ))); // portfolio categories
 }
 
 function admin_init()
@@ -61,6 +61,7 @@ function admin_init()
 //    add_meta_box("price-meta", "Price", "price", "room", "side", "low");
     add_meta_box("credits_meta", "Room Options", "credits_meta", "room", "normal", "low");
 }
+
 /*
 function price()
 {
@@ -82,6 +83,7 @@ function credits_meta()
     $designer = $custom["designer"][0];
     $price = $custom["price"][0];
     $recommend = $custom["recommend"][0];
+    $facilities = $custom["facilities"][0];
 //    $price = $custom["price"][0];
 //    $designers = $custom["designers"][0];
 //    $developers = $custom["developers"][0];
@@ -115,14 +117,17 @@ function credits_meta()
                                class="imagebig thickbox" title="ลากเพื่อเรียงใหม่">
                                 <img src="<?php echo $meta_values[$i] ?>" width="200" alt="image"/></a>
                             <a href="#" class="delimgsrc" title="ลบรูปนี้"><i class="icon-cancel-2"></i></a>
+
                             <div id="image_view<?php echo $i; ?>" style="display:none">
                                 <h2>Image View</h2>
+
                                 <div style="">
                                     <img src="<?php echo $meta_values[$i] ?>" style="width: 100%;"/>
                                 </div>
                             </div>
                         </li>
-                    <?php }
+                    <?php
+                    }
                 }
             } ?>
         </ul>
@@ -149,7 +154,56 @@ function credits_meta()
             <tr>
                 <td><label for="recommend">Recommend:</label></td>
                 <td><input name="recommend" value="1" type="checkbox"
-                        <?php echo $recommend == 1 ? "checked": ""?>/></td>
+                        <?php echo $recommend == 1 ? "checked" : "" ?>/></td>
+            </tr>
+            <tr><td colspan="2"></td> </tr>
+            <tr>
+                <?php
+                if (empty($facilities)) {
+                    $arrayFacilities = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                } else {
+                    $arrayFacilities = explode(',', $facilities);
+                }
+                ?>
+                <td valign="top"><label for="">Facilities :</label></td>
+                <td><input type="hidden" id="facilities" name="facilities" value="<?php echo $facilities; ?>">
+                    <input class="facilities"
+                           type="checkbox" <?php echo @$arrayFacilities[0] ? 'checked' : ""; ?> /> BREAKFAST</br>
+                    <input class="facilities"
+                           type="checkbox" <?php echo @$arrayFacilities[1] ? 'checked' : ""; ?> /> BREAKFAST</br>
+                    <input class="facilities"
+                           type="checkbox" <?php echo @$arrayFacilities[2] ? 'checked' : ""; ?> /> EN-SUITE
+                    BATHROOM</br>
+                    <input class="facilities"
+                           type="checkbox" <?php echo @$arrayFacilities[3] ? 'checked' : ""; ?> /> FLAT SCREEN TV</br>
+                    <input class="facilities"
+                           type="checkbox" <?php echo @$arrayFacilities[4] ? 'checked' : ""; ?> /> MINI BAR</br>
+                    <input class="facilities"
+                           type="checkbox" <?php echo @$arrayFacilities[5] ? 'checked' : ""; ?> />SAFETY DEPOSIT
+                    BOX</br>
+                    <input class="facilities"
+                           type="checkbox" <?php echo @$arrayFacilities[6] ? 'checked' : ""; ?> /> KING SIZE BED</br>
+                    <input class="facilities"
+                           type="checkbox" <?php echo @$arrayFacilities[7] ? 'checked' : ""; ?> /> QUEEN SIZE BED</br>
+                    <input class="facilities"
+                           type="checkbox" <?php echo @$arrayFacilities[8] ? 'checked' : ""; ?> /> TWIN BED</br>
+                    <input class="facilities"
+                           type="checkbox" <?php echo @$arrayFacilities[9] ? 'checked' : ""; ?> /> PRIVATE BALCONY</br>
+
+                    <script>
+                        $(".facilities").click(function () {
+                            var arrFacilities = [];
+                            $(".facilities").each(function () {
+                                if ($(this).prop('checked')) {
+                                    arrFacilities.push(1);
+                                } else {
+                                    arrFacilities.push(0);
+                                }
+                            });
+                            $("#facilities").val(arrFacilities);
+                        });
+                    </script>
+                </td>
             </tr>
         </table>
     </div>
@@ -167,6 +221,7 @@ function save_details()
     update_post_meta($post->ID, "designer", trim($_POST["designer"]));
     update_post_meta($post->ID, "price", trim($_POST["price"]));
     update_post_meta($post->ID, "recommend", trim($_POST["recommend"]));
+    update_post_meta($post->ID, "facilities", $_POST['facilities']);
 //    update_post_meta($post->ID, "designers", $_POST["designers"]);
 //    update_post_meta($post->ID, "developers", $_POST["developers"]);
 //    update_post_meta($post->ID, "producers", $_POST["producers"]);
@@ -256,3 +311,88 @@ add_theme_support('post-thumbnails');
 register_post_type('room', $argc);
 
 //------------------------------- END Room Type Post--------------------------------//
+
+// CALLBACK
+function show_people_box($post)
+{
+    $metas = json_decode(get_post_meta($post->ID, 'people', true));
+    ?>
+    <?php
+    $hiterms = get_terms('people', array('orderby' => 'slug', 'parent' => 0, 'hide_empty' => false));
+
+    ?>
+    <?php foreach ($hiterms as $key => $hiterm) { ?>
+    <h2 style="text-align:center;"><?php echo $hiterm->name; ?></h2>
+    <table width="100%">
+        <?php
+        $args = array(
+            'post_type' => 'people',
+            'orderby' => 'menu_order',
+            'post_parent' => 0,
+            'tax_query' => array(array(
+                'taxonomy' => 'people',
+                'field' => 'id',
+                'terms' => $hiterm->term_id
+            )));
+        ?>
+        <?php
+        $query = new WP_Query($args);
+        while ($query->have_posts()) {
+            $query->the_post();
+            ?>
+            <?php
+            $children = get_children(array('post_type' => 'people', 'post_parent' => get_the_ID()));
+            if ($children) {
+                ?>
+                <tr>
+                    <td><input name="people[name]" type="text"/></td>
+                    <td><input name="people[lastname]" type="text"/></td>
+                    <td><input name="people[email]" type="text"/></td>
+                </tr>
+                <?php
+
+                $args_2 = array('post_type' => 'people', 'post_parent' => get_the_ID());
+                $query_2 = new WP_Query($args_2);
+                while ($query_2->have_posts()) {
+                    $query_2->the_post();
+                    ?>
+                    <tr>
+                        <td><input name="people[name]" type="text"/></td>
+                        <td><input name="people[lastname]" type="text"/></td>
+                        <td><input name="people[email]" type="text"/></td>
+                    </tr>
+                <?php
+                }
+            } else {
+
+                ?>
+                <tr>
+                    <td><input name="people[name]" type="text"/></td>
+                    <td><input name="people[lastname]" type="text"/></td>
+                    <td><input name="people[email]" type="text"/></td>
+                </tr>
+            <?php
+            }
+            ?>
+        <?php
+        }
+        wp_reset_postdata();
+        ?>
+    </table>
+<?php } ?>
+<?php
+}
+
+// SAVE
+add_action('save_post', 'save_people_box');
+function save_people_box()
+{
+
+    foreach ($_POST['people'] as $key => $value) {
+        $peoples[$key] = $value;
+    }
+
+    global $post;
+    update_post_meta($post->ID, 'people', json_encode($peoples));
+
+}
