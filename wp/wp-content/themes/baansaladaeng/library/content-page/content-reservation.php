@@ -24,7 +24,7 @@ get_template_part('nav');
     </script>
     <script type="text/javascript"
             src="<?php bloginfo('template_directory'); ?>/library/js/reservation.js"></script>
-    <div class="container">
+    <div class="container"  style="padding-top: 50px;">
     <div class="row">
 
     <h2 class="text-center margin-bottom-20">Reservation</h2>
