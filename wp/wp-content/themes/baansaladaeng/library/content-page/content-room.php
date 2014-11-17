@@ -73,7 +73,7 @@
                                 Type: <?php echo $type; ?><br/>
                                 Size: <?php echo $size; ?> sq.mtrs<br/>
                                 Designer: <?php echo $designer; ?><br/>
-                                Price: <?php echo $price; ?> THB/night (Incl Breakfast)
+                                Price: <?php echo empty($recommend_price) ? $price : $recommend_price; ?> THB/night (Incl Breakfast)
                             </p>
 
                             <p class="font-12 padding-10" style="">
@@ -143,7 +143,7 @@
                             </p>
 
                             <div class="col-md-8 alpha" style=""><h3 style="margin-top: 0px; padding-top: 10px;">PRICE
-                                    : <?php echo $price; ?> BAHT</h3></div>
+                                    : <?php echo empty($recommend_price) ? $price : $recommend_price; ?> BAHT</h3></div>
                             <!--                            <div class="col-md-4 bg-ED2024" style="text-align: center; padding: 10px 0 10px 0; color: #fff; cursor: pointer;"-->
                             <!--                                onclick="$('form #frm_content_room').submit();">RESERVATION</div>-->
 

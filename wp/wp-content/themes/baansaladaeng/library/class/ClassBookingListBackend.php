@@ -32,14 +32,14 @@ class Booking_List extends WP_List_Table
         foreach ($result as $key => $value) {
             $permalink = get_permalink($value->room_id);
             $checkTimeOut = $classBooking->checkTimeOut($value->pm_create_time, $value->timeout);
-
-            if ($checkTimeOut && $value->paid != 1) {
-                $strShowPaidField = "Time Out";
-            } else {
-                $strShowPaidField = $value->paid ? '<input type="checkbox" checked onclick="return setApprove(this, ' .
+            $paid = $value->paid;
+            if (!$checkTimeOut || $paid){
+                $strShowPaidField = $paid ? '<input type="checkbox" checked onclick="return setApprove(this, ' .
                     $value->payment_id . ');" />'
                     : '<input type="checkbox" onclick="return setApprove(this, ' . $value->payment_id .
                     ');" />';
+            } else  {
+                $strShowPaidField = "Time Out";
             }
             $strShowTime = '<div class="clock" date-create="'.
                 $value->create_time.'" timeout="'.$value->timeout.'" paid="'.$value->paid. '"></div>';
@@ -76,7 +76,7 @@ class Booking_List extends WP_List_Table
             }
 
             .wp-list-table .column-count {
-                width: 1%;
+                width: 2%;
             }
 
             .wp-list-table .column-room_name {
@@ -119,7 +119,7 @@ class Booking_List extends WP_List_Table
                 width: 5%;
             }
             .clock {
-                zoom: 0.3;
+                zoom: 0.23;
                 -moz-transform: scale(0.5)
             }
         </style>
