@@ -50,7 +50,7 @@
                             }
                             ?>
                         </div>
-                        <div class="col-md-8 alpha omega content-thumb">
+                        <div class="col-md-8">
                             <a href="<?php echo the_permalink(); ?>"><h3><?php the_title(); ?></h3></a>
                             <?php //the_excerpt();
 
@@ -71,17 +71,17 @@
                                 echo $the_str;
                                 ?>
                             </p>
-                            <h3 class="col-md-8" style="margin-top: 0px; padding-top: 10px;">PRICE
-                                : <?php echo $price; ?> BAHT</h3>
-                            <form class="form" method="post" action="<?php echo network_site_url('/'). "reservation"; ?>">
+                            <div class="col-md-8 alpha" style=""><h3 style="margin-top: 0px; padding-top: 10px;">PRICE : <?php echo $price; ?> BAHT</h3></div>
+<!--                            <div class="col-md-4 bg-ED2024" style="text-align: center; padding: 10px 0 10px 0; color: #fff; cursor: pointer;"-->
+<!--                                onclick="$('form #frm_content_room').submit();">RESERVATION</div>-->
+
+                            <form id="frm_content_room" class="form" method="post" action="<?php echo network_site_url('/'). "reservation"; ?>">
                                 <input type="hidden" value="true" name="booking_post"/>
                                 <input type="hidden" value="1" name="step"/>
                                 <input type="hidden" value="<?php the_title(); ?>" name="room_name"/>
                                 <input type="hidden" value="<?php echo $postID; ?>" name="room_id"/>
-                                <div class="col-md-4"
-                                     style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
-                                    <button class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">RESERVATION</button>
-                                </div>
+                                <button class="col-md-4 bg-ED2024" style="text-align: center; padding: 10px 0 10px 0; color: #fff;"
+                                                         >RESERVATION</button>
                             </form>
                         </div>
                         <div class="clearfix"></div>
