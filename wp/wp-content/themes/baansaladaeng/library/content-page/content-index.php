@@ -116,14 +116,14 @@ get_template_part('nav', 'front'); ?>
 <!-- JS script -->
 <script type="text/javascript">
     $(function () {
-        demo.add(function () {
+//        $demo.add(function () {
             $('#map_canvas').gmap({'center': '<?php echo $latitude; ?>,<?php echo $longitude; ?>', 'zoom': 15, 'disableDefaultUI': false, 'callback': function () {
                 var self = this;
                 self.addMarker({'position': this.get('map').getCenter() }).click(function () {
-                    self.openInfoWindow({ 'content': 'Hello World!' }, this);
+                    self.openInfoWindow({ 'content': 'Baansaladaeng' }, this);
                 });
             }});
-        }).load();
+//        }).load();
 
         $("#about").load("<?php echo network_site_url('/') . "about?get_content=true"; ?>");
     });
