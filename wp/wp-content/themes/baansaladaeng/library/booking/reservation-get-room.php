@@ -61,6 +61,7 @@ if ($loopPostTypeRoom->have_posts() && $dateCheckIn->format('Y-m-d') >= $dateNow
         $size = @$customField["size"][0];
         $designer = @$customField["designer"][0];
         $price = number_format(@$customField["price"][0]);
+        $recommend_price = number_format(@$customField["recommend_price"][0]);
         ?>
         <div class="col-md-12 alpha bg-fafafa clearfix margin-bottom-20" style="height: 250px;">
             <div class="col-md-4 alpha omega">
@@ -74,7 +75,7 @@ if ($loopPostTypeRoom->have_posts() && $dateCheckIn->format('Y-m-d') >= $dateNow
                     Type: <?php echo $type; ?><br/>
                     Size: <?php echo $size; ?> sq.mtrs<br/>
                     Designer: <?php echo $designer; ?><br/>
-                    Price: <?php echo $price; ?> THB/night (Incl Breakfast)
+                    Price: <?php echo empty($recommend_price)? $price: $recommend_price; ?> THB/night (Incl Breakfast)
                 </p>
 
                 <p class="font-12">

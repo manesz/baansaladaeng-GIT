@@ -32,9 +32,10 @@
 
         <link href="<?php echo get_template_directory_uri(); ?>/library/css/bootstrap.css" rel='stylesheet' type='text/css' />
         <link href="<?php echo get_template_directory_uri(); ?>/library/css/animate.css" rel="stylesheet" type="text/css" media="all">
-        <link href="<?php echo get_template_directory_uri(); ?>/library/css/bootstrap-image-gallery.css" rel="stylesheet" type="text/css">
+		<link href="<?php echo get_template_directory_uri(); ?>/library/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css">
+		<link href="<?php echo get_template_directory_uri(); ?>/library/css/lightbox.css" rel="stylesheet" type="text/css">
         <link href="<?php echo get_template_directory_uri(); ?>/library/css/style.css" rel='stylesheet' type='text/css' />
-        <link href="<?php echo get_template_directory_uri(); ?>/library/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css">
+        
         <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/library/css/style.css" media="screen" type="text/css" />
         <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
@@ -43,12 +44,12 @@
         <script src="<?php echo get_template_directory_uri(); ?>/library/js/wow.min.js"></script>
         <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/move-top.js"></script>
         <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/easing.js"></script>
-        <!--    <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/bootstrap-image-gallery.js"></script>-->
         <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/bootstrap-modal.js"></script>
         <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/bootstrap-datepicker.js"></script>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
         <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/jquery.ui.map.js"></script>
-        <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/demo.js"></script>
+        <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/lightbox.min.js"></script>
+		
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
         <script>
             jQuery(document).ready(function($) {
                 $(".scroll").click(function(event){
