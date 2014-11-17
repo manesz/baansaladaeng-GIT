@@ -32,9 +32,12 @@ $postTypeRoom = new WP_Query(array('post_type' => 'room'));
                         class="sr-only">Close</span></button>
             </div>
             <div id="content_booking">
-                <form id="formBooking" class="form" method="post" action="<?php echo network_site_url('/'). "reservation"; ?>">
+
+                <form id="formBooking" class="form" method="post"
+                      action="<?php echo network_site_url('/'). "reservation"; ?>">
                     <input type="hidden" value="true" name="booking_post"/>
                     <input type="hidden" value="1" name="step"/>
+                    <input type="hidden" value="" name="room_name" id="room_name"/>
 
                     <div class="modal-body">
                         <div id="checkIn">
@@ -50,7 +53,8 @@ $postTypeRoom = new WP_Query(array('post_type' => 'room'));
                             </div>
                             <div class="form-group col-md-12">
                                 <h4>Rooms</h4>
-                                <select id="room_id" name="room_id" class="form-control">
+                                <select id="room_id" name="room_id" class="form-control"
+                                        onchange="$('#room_name').val(this.options[this.selectedIndex].text);">
                                     <option value="">--Select Room--</option>
                                     <?php if ($postTypeRoom->have_posts()): while ($postTypeRoom->have_posts()) : $postTypeRoom->the_post(); ?>
 
