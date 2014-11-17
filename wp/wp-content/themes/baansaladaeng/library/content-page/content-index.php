@@ -27,9 +27,10 @@ get_template_part('nav', 'front'); ?>
 <section class="portfolio-works">
     <?php $loopPostTypeRoom = new WP_Query(array(
         'post_type' => 'room',
-        'posts_per_page' => 6,
+        'posts_per_page' => 12,
         'meta_key' => 'recommend',
-        'meta_value' => '1'
+        'meta_value' => '1',
+		'order' => 'ASC',
     ));
     if ($loopPostTypeRoom->have_posts()):
         while ($loopPostTypeRoom->have_posts()) : $loopPostTypeRoom->the_post();
@@ -39,10 +40,10 @@ get_template_part('nav', 'front'); ?>
             ?>
             <div class="col-md-4 portfolio-work-grid wow bounceIn" data-wow-delay="0.4s">
                 <a href="<?php echo the_permalink(); ?>">
-                    <div class="portfolio-work-grid-pic">
+                    <div class="portfolio-work-grid-pic" style="height: 300px; overflow: hidden;">
                         <img src="<?php echo $urlThumbnail; ?>" title="<?php the_title(); ?>"/>
                     </div>
-                    <div class="portfolio-work-grid-caption">
+                    <div class="portfolio-work-grid-caption" data-wow-delay="">
                         <h4><?php the_title(); ?></h4>
 
                         <p><?php

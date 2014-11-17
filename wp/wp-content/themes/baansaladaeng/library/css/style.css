@@ -437,7 +437,8 @@ a.leran-more:hover{
 	display: none;
 	position: absolute;
 	top: 0;
-	background: rgba(153, 153, 153, 0.8);
+	/* background: rgba(153, 153, 153, 0.8); */
+	background: rgba(238,47,27,0.8);
 	text-align: center;
 	padding: 6em 2em 0em 2em;
 	bottom: 0;
@@ -1447,6 +1448,7 @@ nav.font-color-111 ul li a { color: #111; }
 .font-size-14 { font-size: 14px; }
 
 .padding-15 { padding: 15px; }
+.padding-10 { padding: 10px; }
 
 .margin-top-15 {  margin-top: 15px; }
 

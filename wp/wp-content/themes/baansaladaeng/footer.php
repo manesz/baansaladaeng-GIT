@@ -112,7 +112,7 @@ if ($arrayContact) {
         </div>
         <!--- copy-right ---->
         <div class="copy-right text-center">
-            <p>develop by <a href="http://www.ideacorners.com">Idea Corners Studio Co.,Ltd.</a></p>
+            <p style="font-size: 12px;">modify by <a href="http://www.ideacorners.com">Idea Corners Studio Co.,Ltd.</a></p>
             <script type="text/javascript">
                 var send_mail_contact_us = false;
                 $(document).ready(function () {

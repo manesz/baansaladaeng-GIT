@@ -12,15 +12,23 @@
         <div class="services-grids">
             <div class="col-md-12">
                 <div class="service-grid wow fadeInDown" data-wow-delay="0.4s">
-                    <p>
-                        Welcome to Baan Saladaeng, a boutique guesthouse in the centre of Bangkok.<br/><br/>
+				<?php 
+					// WP_Query arguments
+					$args = array (
+						'pagename'	=> 'about-bannsaladang',
+					);
 
-                        Whether you're coming to the city for business, leisure or pleasure, for a few days or for a few weeks, at Baan Saladaeng  you'll always be right in the heart of it all. You’ll find us at the end of a quiet, cosy little soi, just off the tree-lined Soi Saladaeng. We’re just a few minutes walk from the BTS skytrain (Saladaeng Station), the MRTA subway (Silom Station) and the entertainment and shopping district along the Silom Road.<br/><br/>
+					// The Query
+					$query = new WP_Query( $args );
 
-                        Our guest rooms and suites each have a unique style.  You choose the one that suits you best.<br/><br/>
-
-                        Thai people are famous for the gentle and generous way we care for our guests. When you stay with us we will look after you,  help you plan your day, show you the best Bangkok has to offer.  We've been welcoming guests back for the Baan Saladaeng experience over and over again ever since we opened in 2008.  They love us.  We hope you will too.
-                    </p>
+					if( $query->have_posts() ):
+						while ( $query->have_posts() ) : $query->the_post();
+							the_content();
+						endwhile;
+					else :
+						echo "<h1>No Data.</h1>";
+					endif;
+				?>
                     <div class="text-center">
                         <img src="<?php echo get_template_directory_uri(); ?>/library/images/trip-advisor3.JPG" style="height: 250px; width: auto;"/>
                         <img src="<?php echo get_template_directory_uri(); ?>/library/images/booking-score.jpg" style="height: 250px; width: auto;"/>

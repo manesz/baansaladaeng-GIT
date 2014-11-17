@@ -11,6 +11,7 @@ $type = @$customField["type"][0];
 $size = @$customField["size"][0];
 $designer = @$customField["designer"][0];
 $price = number_format(@$customField["price"][0]);
+$recommend_price = number_format(@$customField["recommend_price"][0]);
 if (!$urlThumbnail)
     $urlThumbnail = get_template_directory_uri() . "/library/images/no-thumb.png";
 
@@ -29,6 +30,8 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
 <!-- FullCalendar -->
 <script
     src="<?php bloginfo('template_directory'); ?>/library/js/fullcalendar/fullcalendar.min.js"></script>
+
+
 <style>
     .span6 {
         width: 48.717948717948715%;
@@ -56,8 +59,12 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
         [
             <?php
             foreach($objEventCalendar as $key => $value):
-
-            if (!$classBooking->checkTimeOut($value->create_time, $value->timeout)):
+            $getPaid = $value->paid;
+            $checkAddEvent = true;
+            if ($classBooking->checkTimeOut($value->create_time, $value->timeout) && $getPaid == 0) {
+                $checkAddEvent = false;
+            }
+            if ($checkAddEvent) {
             $dateCheckIn = date_i18n('Y, m, d', strtotime($value->check_in_date));
             $dateCheckOut = date_i18n('Y, m, d', strtotime($value->check_out_date));
             ?>
@@ -69,36 +76,39 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
 //                    allDay: true
                 //url: 'http://google.com/'
             },
-            <?php endif; endforeach; ?>
-        ]
+            <?php } endforeach; ?>
+        ];
 
-
+    // $jConflict(document).ready(function () {
+        // $jConflict(".fancybox").fancybox();
+    // });
 </script>
 <script type="text/javascript"
         src="<?php bloginfo('template_directory'); ?>/library/js/booking_room.js"></script>
-<div class="container">
+		
+<div class="container" style="padding-top: 50px;">
     <div class="row">
         <!--            <h2 class="col-md-12">Room 601 <span class="font-color-999 font-size-14">Mediterranean Suite</span></h2>-->
-        <h2 class="col-md-12"><?php the_title(); ?></h2>
+        <h2 class="col-md-12" style="border-bottom: 1px #ddd dashed; padding-bottom: 10px;"><?php the_title(); ?></h2>
         <hr class=""/>
-        <div class="portfolio-works col-md-12 margin-bottom-20">
+        <div id="links" class="portfolio-works col-md-12 margin-bottom-20">
             <?php if ($arrayImageGallery) foreach ($arrayImageGallery as $value) {
                 ?>
-                <div class="col-md-4 portfolio-work-grid wow bounceIn" data-wow-delay="0.4s">
-                    <div class="portfolio-work-grid-pic">
-                        <img src="<?php echo $value; ?>"/>
-                    </div>
-                </div>
+				<div class="col-md-4 portfolio-work-grid wow bounceIn" data-wow-delay="0.4s">
+					<div class="portfolio-work-grid-pic" style="height: 230px; overflow: hidden;">
+						<a href="<?php echo $value; ?>" class="example-image-link"  data-lightbox="example-set" data-title="<?php the_title(); ?>">
+							<img src="<?php echo $value; ?>" class="example-image" alt="<?php the_title(); ?>"/>
+						</a>
+					</div>
+				</div>
             <?php } ?>
 
             <div class="clearfix"></div>
         </div>
-        <div class="text-center col-md-3 portfolio-work-grid wow bounceIn margin-bottom-20" data-wow-delay="0.4s">
-            <div class="portfolio-work-grid-pic">
-                <img src="<?php echo $urlThumbnail; ?>"/>
-            </div>
-        </div>
-        <div class="col-md-9 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
+		<div class="col-md-2 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
+			<img src="<?php echo get_template_directory_uri().'/library/images/baansaladaeng_room_201.gif' ?>" style="width: auto; height: auto;"/>
+		</div>
+        <div class="col-md-6 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
             <p>
             <table class="">
                 <tr>
@@ -115,32 +125,28 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
                 </tr>
                 <tr>
                     <td>Price:</td>
-                    <td><?php echo $price; ?> THB/night <i>(Incl.Breakfast)</i></td>
+                    <td><?php echo empty($recommend_price) ? $price : $recommend_price; ?> THB/night
+                        <i>(Incl.Breakfast)</i></td>
                 </tr>
             </table>
             </p>
             <p class="font-color-999">
                 <?php the_content(); ?>
             </p>
-
-            <div class="col-md-12 col-xs-12 text-center" style="">
-                <div class="col-md-6">
-                    <div class="calendar" id="calendar"></div>
-                </div>
-                <div class="col-md-4">
-                    <form id="form_room_submit" method="post"
-                          action="<?php echo network_site_url('/') . "reservation"; ?>">
-                        <input type="hidden" value="true" name="booking_post"/>
-                        <input type="hidden" value="1" name="step"/>
-                        <input type="hidden" value="<?php echo $postID; ?>" name="room_id"/>
-                        <input type="hidden" value="<?php the_title(); ?>" name="room_name"/>
-                        <input type="hidden" value="" id="check_in_date" name="check_in_date"/>
-                        <input type="hidden" value="" id="check_out_date" name="check_out_date"/>
-                        <button class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">RESERVATION
-                        </button>
-                    </form>
-                </div>
-            </div>
         </div>
-    </div>
+		<div class="col-md-4 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
+			<div class="calendar" id="calendar"></div>
+			<form id="form_room_submit" method="post"
+				  action="<?php echo network_site_url('/') . "reservation"; ?>">
+				<input type="hidden" value="true" name="booking_post"/>
+				<input type="hidden" value="1" name="step"/>
+				<input type="hidden" value="<?php echo $postID; ?>" name="room_id"/>
+				<input type="hidden" value="<?php the_title(); ?>" name="room_name"/>
+				<input type="hidden" value="" id="check_in_date" name="check_in_date"/>
+				<input type="hidden" value="" id="check_out_date" name="check_out_date"/>
+				<button class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">RESERVATION
+				</button>
+			</form>
+		</div>
+	</div>
 </div>
