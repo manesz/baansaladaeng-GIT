@@ -43,7 +43,7 @@ get_header(); ?>
                     'disableDefaultUI': false, 'callback': function () {
                         var self = this;
                         self.addMarker({'position': this.get('map').getCenter() }).click(function () {
-                            self.openInfoWindow({ 'content': 'Hello World!' }, this);
+                            self.openInfoWindow({ 'content': 'Baansaladaeng' }, this);
                         });
                     }});
 //            }).load();
