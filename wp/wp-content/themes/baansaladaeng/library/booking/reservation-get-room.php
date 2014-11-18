@@ -75,7 +75,7 @@ if ($loopPostTypeRoom->have_posts() && $dateCheckIn->format('Y-m-d') >= $dateNow
                     Type: <?php echo $type; ?><br/>
                     Size: <?php echo $size; ?> sq.mtrs<br/>
                     Designer: <?php echo $designer; ?><br/>
-                    Price: <?php echo empty($recommend_price)? $price: $recommend_price; ?> THB/night (Incl Breakfast)
+                    Price: <?php echo empty($recommend_price) ? $price : $recommend_price; ?> THB/night (Incl Breakfast)
                 </p>
 
                 <p class="font-12">
@@ -90,7 +90,8 @@ if ($loopPostTypeRoom->have_posts() && $dateCheckIn->format('Y-m-d') >= $dateNow
                 </p>
 
                 <div class="col-md-8 alpha" style="">
-                    <h3 style="margin-top: 0px; padding-top: 10px;">PRICE : <?php echo empty($recommend_price) ? $price : $recommend_price; ?> BAHT</h3>
+                    <h3 style="margin-top: 0px; padding-top: 10px;">PRICE
+                        : <?php echo empty($recommend_price) ? $price : $recommend_price; ?> BAHT</h3>
                 </div>
                 <div class="col-md-4 bg-ED2024" onclick="addOrder(<?php echo $postID; ?>);"
                      style="text-align: center; padding: 10px 0 10px 0; color: #fff; cursor: pointer;">
@@ -98,15 +99,15 @@ if ($loopPostTypeRoom->have_posts() && $dateCheckIn->format('Y-m-d') >= $dateNow
                 </div>
             </div>
         </div>
-        <div class="form-group col-md-12">
-            <div class="col-md-4"
-                 style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
-                <button id="btn_list_room_back" class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
-                    Back
-                </button>
-            </div>
+    <?php endwhile; ?>
+    <div class="form-group col-md-12">
+        <div class="col-md-4"
+             style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
+            <button id="btn_list_room_back" class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
+                Back
+            </button>
         </div>
-    <?php endwhile;
+    </div><?php
     exit;
 endif;
 
