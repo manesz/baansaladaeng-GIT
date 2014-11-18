@@ -38,25 +38,27 @@ if ($arrayContact) {
                                     <p><span class="c-mobi"> </span><?php echo $tel; ?></p>
                                 <?php endif; ?>
                                 <?php if ($title_twitter): ?>
-                                    <p>
-                                        <img
-                                            src="<?php echo get_template_directory_uri(); ?>/library/images/icon-twitter.png"
-                                            style="max-width: 32px;margin-right: 0.3em;"/><a
-                                            href="<?php echo $link_twitter; ?>"><?php echo $title_twitter; ?></a>
+                                    <p><a
+                                            href="<?php echo $link_twitter; ?>">
+                                            <img
+                                                src="<?php echo get_template_directory_uri(); ?>/library/images/icon-twitter.png"
+                                                style="max-width: 32px;margin-right: 0.3em;"/><?php echo $title_twitter; ?>
+                                        </a>
                                     </p>
                                 <?php endif; ?>
                                 <?php if ($title_pinterest): ?>
-                                    <p>
-                                        <img
-                                            src="<?php echo get_template_directory_uri(); ?>/library/images/icon-pinterest.png"
-                                            style="max-width: 32px;margin-right: 0.3em;"/><a
-                                            href="<?php echo $link_pinterest; ?>"><?php echo $title_pinterest; ?></a>
+                                    <p><a
+                                            href="<?php echo $link_pinterest; ?>">
+                                            <img
+                                                src="<?php echo get_template_directory_uri(); ?>/library/images/icon-pinterest.png"
+                                                style="max-width: 32px;margin-right: 0.3em;"/><?php echo $title_pinterest; ?>
+                                        </a>
                                     </p>
                                 <?php endif; ?>
                                 <?php if ($qr_code_line): ?>
-                                    <p>
-                                        <img src="<?php echo $qr_code_line; ?>"
-                                             style="width: 90%; margin-right: 0.3em;"/>
+                                    <p><a target="_blank" href="<?php echo $qr_code_line; ?>">
+                                            <img src="<?php echo $qr_code_line; ?>"
+                                                 style="width: 90%; margin-right: 0.3em;"/></a>
                                     </p>
                                 <?php endif; ?>
                             </div>
@@ -64,33 +66,37 @@ if ($arrayContact) {
                         <div class="col-md-6">
                             <div class="contact-right-grid">
                                 <?php if ($email): ?>
-                                    <p><span class="c-msg"> </span><a
-                                            href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
+                                    <p><a
+                                            href="mailto:<?php echo $email; ?>"><span
+                                                class="c-msg"> </span><?php echo $email; ?></a>
                                     </p>
                                 <?php endif; ?>
                                 <?php if ($title_facebook): ?>
-                                    <p>
-                                        <img
-                                            src="<?php echo get_template_directory_uri(); ?>/library/images/icon-facebook.png"
-                                            style="max-width: 32px;margin-right: 0.3em;"/><a
-                                            href="<?php echo $link_facebook; ?>"><?php echo $title_facebook; ?></a></p>
+                                    <p><a
+                                            href="<?php echo $link_facebook; ?>">
+                                            <img
+                                                src="<?php echo get_template_directory_uri(); ?>/library/images/icon-facebook.png"
+                                                style="max-width: 32px;margin-right: 0.3em;"/><?php echo $title_facebook; ?>
+                                        </a></p>
 
                                 <?php endif; ?>
                                 <?php if ($title_tripadvisor): ?>
-                                    <p>
-                                        <img
-                                            src="<?php echo get_template_directory_uri(); ?>/library/images/icon-tripadvisor.png"
-                                            style="max-width: 32px;margin-right: 0.3em;"/><a
-                                            href="<?php echo $link_tripadvisor; ?>"><?php echo $title_tripadvisor; ?></a>
+                                    <p><a
+                                            href="<?php echo $link_tripadvisor; ?>">
+                                            <img
+                                                src="<?php echo get_template_directory_uri(); ?>/library/images/icon-tripadvisor.png"
+                                                style="max-width: 32px;margin-right: 0.3em;"/><?php echo $title_tripadvisor; ?>
+                                        </a>
                                     </p>
 
                                 <?php endif; ?>
                                 <?php if ($title_line): ?>
-                                    <p>
-                                        <img
-                                            src="<?php echo get_template_directory_uri(); ?>/library/images/icon-line.png"
-                                            style="max-width: 32px;margin-right: 0.3em;"/><a
-                                            href="<?php echo $link_line; ?>"><?php echo $title_line; ?></a></p>
+                                    <p><a
+                                            href="<?php echo $link_line; ?>">
+                                            <img
+                                                src="<?php echo get_template_directory_uri(); ?>/library/images/icon-line.png"
+                                                style="max-width: 32px;margin-right: 0.3em;"/><?php echo $title_line; ?>
+                                        </a></p>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -102,7 +108,7 @@ if ($arrayContact) {
                 <div class="contact-right wow fadeInLeft" data-wow-delay="0.4s">
                     <form id="form_contact_us" method="post">
                         <input type="text" class="text" placeholder="Name..." id="send_name" name="send_name">
-                        <input type="text" class="text" placeholder="Email..."  id="send_email" name="send_email">
+                        <input type="text" class="text" placeholder="Email..." id="send_email" name="send_email">
                         <textarea placeholder="Message.." id="send_message" name="send_message"></textarea>
                         <input class="wow shake" data-wow-delay="0.3s" type="submit" value="Send Message"/>
                     </form>
@@ -112,7 +118,8 @@ if ($arrayContact) {
         </div>
         <!--- copy-right ---->
         <div class="copy-right text-center">
-            <p style="font-size: 12px;">modify by <a href="http://www.ideacorners.com">Idea Corners Studio Co.,Ltd.</a></p>
+            <p style="font-size: 12px;">modify by <a href="http://www.ideacorners.com">Idea Corners Studio Co.,Ltd.</a>
+            </p>
             <script type="text/javascript">
                 var send_mail_contact_us = false;
                 $(document).ready(function () {

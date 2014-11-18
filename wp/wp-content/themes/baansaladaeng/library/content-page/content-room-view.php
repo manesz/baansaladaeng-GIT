@@ -13,6 +13,12 @@ $size = @$customField["size"][0];
 $designer = @$customField["designer"][0];
 $price = number_format(@$customField["price"][0]);
 $recommend_price = number_format(@$customField["recommend_price"][0]);
+$facilities = $customField["facilities"][0];
+if (empty($facilities)) {
+    $arrayFacilities = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+} else {
+    $arrayFacilities = explode(',', $facilities);
+}
 if (!$urlThumbnail)
     $urlThumbnail = get_template_directory_uri() . "/library/images/no-thumb.png";
 
@@ -133,6 +139,59 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
             </p>
             <p class="font-color-999">
                 <?php the_content(); ?>
+            </p><p class="padding-10">
+                <?php
+                if ($arrayFacilities[0]):
+                    ?>
+                    <img title="FREE WIFI"
+                         src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-wifi.png' ?>"
+                         style="width: 50px; height: 50px;"/>
+                <?php endif;
+                if ($arrayFacilities[1]):?>
+                    <img title="BREAKFAST"
+                         src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-breakfast.png' ?>"
+                         style="width: 50px; height: 50px;"/>
+                <?php endif;
+                if ($arrayFacilities[2]):?>
+                    <img title="EN-SUITE BATHROOM"
+                         src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-ensuite-bathroom.png' ?>"
+                         style="width: 50px; height: 50px;"/>
+                <?php endif;
+                if ($arrayFacilities[3]):?>
+                    <img title="FLAT SCREEN TV"
+                         src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-flat-tv.png' ?>"
+                         style="width: 50px; height: 50px;"/>
+                <?php endif;
+                if ($arrayFacilities[4]):?>
+                    <img title="MINI BAR"
+                         src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-mini-bar.png' ?>"
+                         style="width: 50px; height: 50px;"/>
+                <?php endif;
+                if ($arrayFacilities[5]):?>
+                    <img title="SAFETY DEPOSIT BOX"
+                         src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-safety-deposit-box.png' ?>"
+                         style="width: 50px; height: 50px;"/>
+                <?php endif;
+                if ($arrayFacilities[6]):?>
+                    <img title="KING SIZE BED"
+                         src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-king-size-bed.png' ?>"
+                         style="width: 50px; height: 50px;"/>
+                <?php endif;
+                if ($arrayFacilities[7]):?>
+                    <img title="QUEEN SIZE BED"
+                         src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-queen-size-bed.png' ?>"
+                         style="width: 50px; height: 50px;"/>
+                <?php endif;
+                if ($arrayFacilities[8]):?>
+                    <img title="TWIN BED"
+                         src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-twin-bed.png' ?>"
+                         style="width: 50px; height: 50px;"/>
+                <?php endif;
+                if ($arrayFacilities[9]):?>
+                    <img title="PRIVATE BALCONY"
+                         src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-private-balcony.png' ?>"
+                         style="width: 50px; height: 50px;"/>
+                <?php endif; ?>
             </p>
         </div>
 		<div class="col-md-4 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">

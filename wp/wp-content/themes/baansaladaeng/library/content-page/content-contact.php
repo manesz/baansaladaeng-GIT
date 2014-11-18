@@ -16,10 +16,10 @@ get_header(); ?>
         }
     </style>
 
-    <div class="container min-height-540">
+    <div class="container min-height-540" style="padding-top: 50px;">
         <div class="row">
 
-            <h2 class="text-center margin-bottom-20">Rooms</h2>
+            <h2 class="text-center margin-bottom-20">Contact</h2>
             <hr/>
             <!-- google map -->
             <section id="maps" class="margin-bottom-20" style="">
@@ -36,7 +36,7 @@ get_header(); ?>
     <!-- JS script -->
     <script type="text/javascript">
         $(function () {
-            demo.add(function () {
+//            demo.add(function () {
                 $('#map_canvas').gmap({
                     'center': '<?php echo $latitude; ?>,<?php echo $longitude; ?>',
                     'zoom': 15,
@@ -46,7 +46,7 @@ get_header(); ?>
                             self.openInfoWindow({ 'content': 'Hello World!' }, this);
                         });
                     }});
-            }).load();
+//            }).load();
         });
     </script>
 <?php get_footer(); ?>
