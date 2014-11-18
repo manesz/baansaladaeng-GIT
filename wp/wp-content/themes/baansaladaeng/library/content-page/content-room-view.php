@@ -7,6 +7,7 @@ get_template_part('nav');
 $postID = get_the_id();
 $urlThumbnail = wp_get_attachment_url(get_post_thumbnail_id($postID));
 $customField = get_post_custom($postID);
+$room_plan = @$customField["room_plan"][0];
 $type = @$customField["type"][0];
 $size = @$customField["size"][0];
 $designer = @$customField["designer"][0];
@@ -106,7 +107,7 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
             <div class="clearfix"></div>
         </div>
 		<div class="col-md-2 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
-			<img src="<?php echo get_template_directory_uri().'/library/images/baansaladaeng_room_201.gif' ?>" style="width: auto; height: auto;"/>
+			<img src="<?php echo $room_plan; ?>" style="width: auto; height: auto;"/>
 		</div>
         <div class="col-md-6 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
             <p>
