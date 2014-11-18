@@ -102,7 +102,10 @@ function render_contact_page()
                         <td><label for="qr_code_line">Url QR Code Line :</label></td>
                         <td colspan="3">
                             <input type="text" id="qr_code_line" name="qr_code_line"
-                                               value="<?php echo $qr_code_line; ?>"/></td>
+                                               value="<?php echo $qr_code_line; ?>"/>
+                            <input type="button" value="Upload Image" class="button btn_upload_image"
+                                   data-tbx-id="qr_code_line">
+                        </td>
                     </tr>
                     <tr class="alternate">
                         <td><label for="title_line">Title line :</label></td>
