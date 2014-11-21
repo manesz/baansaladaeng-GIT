@@ -26,7 +26,8 @@
                             $size = $customField["size"][0];
                             $designer = $customField["designer"][0];
                             $price = number_format($customField["price"][0]);
-                            $recommend_price = number_format($customField["recommend_price"][0]);
+                            $recommend_price = $customField["recommend_price"][0];
+                            $recommend_price = empty($recommend_price)? null: number_format($customField["recommend_price"][0]);
 
                             $facilities = $customField["facilities"][0];
                             if (empty($facilities)) {
@@ -73,7 +74,7 @@
                                 Type: <?php echo $type; ?><br/>
                                 Size: <?php echo $size; ?> sq.mtrs<br/>
                                 Designer: <?php echo $designer; ?><br/>
-                                Price: <?php echo empty($recommend_price) ? $price : $recommend_price; ?> THB/night (Incl Breakfast)
+                                Price: <?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night (Incl Breakfast)
                             </p>
 
                             <p class="font-12 padding-10" style="">
@@ -143,7 +144,7 @@
                             </p>
 
                             <div class="col-md-8 alpha" style=""><h3 style="margin-top: 0px; padding-top: 10px;">PRICE
-                                    : <?php echo empty($recommend_price) ? $price : $recommend_price; ?> BAHT</h3></div>
+                                    : <?php echo !$recommend_price ? $price : $recommend_price; ?> BAHT</h3></div>
                             <!--                            <div class="col-md-4 bg-ED2024" style="text-align: center; padding: 10px 0 10px 0; color: #fff; cursor: pointer;"-->
                             <!--                                onclick="$('form #frm_content_room').submit();">RESERVATION</div>-->
 

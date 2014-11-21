@@ -12,7 +12,9 @@ $type = @$customField["type"][0];
 $size = @$customField["size"][0];
 $designer = @$customField["designer"][0];
 $price = number_format(@$customField["price"][0]);
-$recommend_price = number_format(@$customField["recommend_price"][0]);
+$recommend_price = $customField["recommend_price"][0];
+$recommend_price = empty($recommend_price)? null: number_format($customField["recommend_price"][0]);
+
 $facilities = $customField["facilities"][0];
 if (empty($facilities)) {
     $arrayFacilities = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -132,7 +134,7 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
                 </tr>
                 <tr>
                     <td>Price:</td>
-                    <td><?php echo empty($recommend_price) ? $price : $recommend_price; ?> THB/night
+                    <td><?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night
                         <i>(Incl.Breakfast)</i></td>
                 </tr>
             </table>

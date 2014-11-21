@@ -34,7 +34,9 @@
                             $size = $customField["size"][0];
                             $designer = $customField["designer"][0];
                             $price = number_format($customField["price"][0]);
-                            $recommend_price = number_format(@$customField["recommend_price"][0]);
+                            $recommend_price = $customField["recommend_price"][0];
+                            $recommend_price = empty($recommend_price)? null: number_format($customField["recommend_price"][0]);
+
                             ?>
                             <tr>
                                 <td style="width: 20%"><?php the_title(); ?></td>
