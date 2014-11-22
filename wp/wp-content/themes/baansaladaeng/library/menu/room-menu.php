@@ -59,7 +59,8 @@ function room_register()
 function admin_init()
 {
 //    add_meta_box("price-meta", "Price", "price", "room", "side", "low");
-    add_meta_box("credits_meta", "Room Options", "credits_meta", "room", "normal", "low");
+    add_meta_box("room_option_meta", "Room Options", "credits_meta_room_option", "room", "normal", "low");
+    add_meta_box("room_gallery_meta", "Room Gallery", "credits_meta_room_gallery", "room", "normal", "low");
 }
 
 /*
@@ -74,33 +75,26 @@ function price()
 <?php
 }*/
 
-function credits_meta()
+function credits_meta_room_gallery()
 {
     global $post;
-    $custom = get_post_custom($post->ID);
-    $room_plan = $custom["room_plan"][0];
-    $type = $custom["type"][0];
-    $size = $custom["size"][0];
-    $designer = $custom["designer"][0];
-    $price = $custom["price"][0];
-    $recommend_price = $custom["recommend_price"][0];
-    $recommend = $custom["recommend"][0];
-    $facilities = $custom["facilities"][0];
+//    $custom = get_post_custom($post->ID);
+//    $room_plan = $custom["room_plan"][0];
+//    $type = $custom["type"][0];
+//    $size = $custom["size"][0];
+//    $designer = $custom["designer"][0];
 //    $price = $custom["price"][0];
-//    $designers = $custom["designers"][0];
-//    $developers = $custom["developers"][0];
-//    $producers = $custom["producers"][0];
+//    $recommend_price = $custom["recommend_price"][0];
+//    $recommend = $custom["recommend"][0];
+//    $facilities = $custom["facilities"][0];
     ?>
-    <!--    <p><label for="price">Price:</label><br/>-->
-    <!--        <input type="text" id="price" name="price" value="--><?php //echo $price; ?><!--"/> ฿</p>-->
-
-    <p><label for="btn_upload_image">Image Gallery:</label><br/>
-        <script type="text/javascript"
-                src="<?php bloginfo('template_directory'); ?>/library/js/image-post-metabox.js"></script>
-        <link rel="stylesheet" type="text/css"
-              href="<?php bloginfo('template_directory'); ?>/library/css/icon.css"/>
-        <link rel="stylesheet" type="text/css"
-              href="<?php bloginfo('template_directory'); ?>/library/css/imgslidlist.css"/>
+    <label for="btn_upload_image">Image Gallery:</label><br/>
+    <script type="text/javascript"
+            src="<?php bloginfo('template_directory'); ?>/library/js/image-post-metabox.js"></script>
+    <link rel="stylesheet" type="text/css"
+          href="<?php bloginfo('template_directory'); ?>/library/css/icon.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="<?php bloginfo('template_directory'); ?>/library/css/imgslidlist.css"/>
     <div class="misc-pub-section">
         <input type="text" title="Path Image" placeholder="Path Image" size="40" name="pathImg" id="pathImg"><input
             type="button" value="Upload Image" class="button btn_upload_image" id="btn_upload_image"
@@ -135,110 +129,135 @@ function credits_meta()
             } ?>
         </ul>
         <div class="clear"></div>
-        <table>
-            <tr>
-                <td valign="top"><label for="room_plan">Room plan:</label></td>
-                <td>
-                    <input id="room_plan" name="room_plan" value="<?php echo $room_plan; ?>"/>
-                    <input type="button" value="Upload Image" class="button btn_upload_image"
-                           data-tbx-id="room_plan"></br>
-                    <?php if ($room_plan): ?>
-                        <img src="<?php echo $room_plan; ?>" width="250"/>
-                    <?php endif; ?>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="type">Type:</label></td>
-                <td>
-                    <select id="type" name="type">
-                        <option value="">-- Select --</option>
-                        <option value="King size" <?php echo $type == "Double king size bed" ? "selected" : ""; ?>>Double king size bed
-                        </option>
-                        <option value="Queen size" <?php echo $type == "Double queen size bed" ? "selected" : ""; ?>>Double queen size bed
-                        </option>
-                        <option value="Twin" <?php echo $type == "Twin / Super king size bed" ? "selected" : ""; ?>>Twin / Super king size bed</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="size">Size:</label></td>
-                <td><input id="size" name="size" value="<?php echo $size; ?>"/> sq.mtrs</td>
-            </tr>
-            <tr>
-                <td><label for="designer">Designer:</label></td>
-                <td><input id="designer" name="designer" value="<?php echo $designer; ?>"/></td>
-            </tr>
-            <tr>
-                <td><label for="price">Price:</label></td>
-                <td><input id="price" name="price" value="<?php echo $price; ?>"
-                           maxlength="15"/> THB/night (Incl Breakfast)
-                </td>
-            </tr>
-            <tr>
-                <td><label for="recommend_price">Recommended Price:</label></td>
-                <td><input id="price" name="recommend_price" maxlength="15"
-                           value="<?php echo $recommend_price; ?>"/> THB/night (Incl Breakfast)
-                </td>
-            </tr>
-            <tr>
-                <td><label for="recommend">Recommend:</label></td>
-                <td><input id="recommend" name="recommend" value="1" type="checkbox"
-                        <?php echo $recommend == 1 ? "checked" : "" ?>/></td>
-            </tr>
-            <tr>
-                <td colspan="2"></td>
-            </tr>
-            <tr>
-                <?php
-                if (empty($facilities)) {
-                    $arrayFacilities = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-                } else {
-                    $arrayFacilities = explode(',', $facilities);
-                }
-                ?>
-                <td valign="top"><label for="">Facilities :</label></td>
-                <td><input type="hidden" id="facilities" name="facilities" value="<?php echo $facilities; ?>">
-                    <input class="facilities"
-                           type="checkbox" <?php echo @$arrayFacilities[0] ? 'checked' : ""; ?> /> FREE WIFI</br>
-                    <input class="facilities"
-                           type="checkbox" <?php echo @$arrayFacilities[1] ? 'checked' : ""; ?> /> BREAKFAST</br>
-                    <input class="facilities"
-                           type="checkbox" <?php echo @$arrayFacilities[2] ? 'checked' : ""; ?> /> EN-SUITE
-                    BATHROOM</br>
-                    <input class="facilities"
-                           type="checkbox" <?php echo @$arrayFacilities[3] ? 'checked' : ""; ?> /> FLAT SCREEN TV</br>
-                    <input class="facilities"
-                           type="checkbox" <?php echo @$arrayFacilities[4] ? 'checked' : ""; ?> /> MINI BAR</br>
-                    <input class="facilities"
-                           type="checkbox" <?php echo @$arrayFacilities[5] ? 'checked' : ""; ?> />SAFETY DEPOSIT
-                    BOX</br>
-                    <input class="facilities"
-                           type="checkbox" <?php echo @$arrayFacilities[6] ? 'checked' : ""; ?> /> KING SIZE BED</br>
-                    <input class="facilities"
-                           type="checkbox" <?php echo @$arrayFacilities[7] ? 'checked' : ""; ?> /> QUEEN SIZE BED</br>
-                    <input class="facilities"
-                           type="checkbox" <?php echo @$arrayFacilities[8] ? 'checked' : ""; ?> /> TWIN BED</br>
-                    <input class="facilities"
-                           type="checkbox" <?php echo @$arrayFacilities[9] ? 'checked' : ""; ?> /> PRIVATE BALCONY</br>
 
-                    <script>
-                        $(".facilities").click(function () {
-                            var arrFacilities = [];
-                            $(".facilities").each(function () {
-                                if ($(this).prop('checked')) {
-                                    arrFacilities.push(1);
-                                } else {
-                                    arrFacilities.push(0);
-                                }
-                            });
-                            $("#facilities").val(arrFacilities);
-                        });
-                    </script>
-                </td>
-            </tr>
-        </table>
     </div>
+<?php
+}
+
+function credits_meta_room_option()
+{
+    global $post;
+    $custom = get_post_custom($post->ID);
+    $room_plan = $custom["room_plan"][0];
+    $type = $custom["type"][0];
+    $size = $custom["size"][0];
+    $designer = $custom["designer"][0];
+    $price = $custom["price"][0];
+    $recommend_price = $custom["recommend_price"][0];
+    $recommend = $custom["recommend"][0];
+    $facilities = $custom["facilities"][0];
+    ?>
+    <!--    <p><label for="price">Price:</label><br/>-->
+    <!--        <input type="text" id="price" name="price" value="--><?php //echo $price; ?><!--"/> ฿</p>-->
+
+    <p>
+    <table>
+        <tr>
+            <td valign="top"><label for="room_plan">Room plan:</label></td>
+            <td>
+                <input id="room_plan" name="room_plan" value="<?php echo $room_plan; ?>"/>
+                <input type="button" value="Upload Image" class="button btn_upload_image"
+                       data-tbx-id="room_plan"></br>
+                <?php if ($room_plan): ?>
+                    <img src="<?php echo $room_plan; ?>" width="250"/>
+                <?php endif; ?>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="type">Type:</label></td>
+            <td>
+                <select id="type" name="type">
+                    <option value="">-- Select --</option>
+                    <option value="King size" <?php echo $type == "Double king size bed" ? "selected" : ""; ?>>Double
+                        king size bed
+                    </option>
+                    <option value="Queen size" <?php echo $type == "Double queen size bed" ? "selected" : ""; ?>>Double
+                        queen size bed
+                    </option>
+                    <option value="Twin" <?php echo $type == "Twin / Super king size bed" ? "selected" : ""; ?>>Twin /
+                        Super king size bed
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="size">Size:</label></td>
+            <td><input id="size" name="size" value="<?php echo $size; ?>"/> sq.mtrs</td>
+        </tr>
+        <tr>
+            <td><label for="designer">Designer:</label></td>
+            <td><input id="designer" name="designer" value="<?php echo $designer; ?>"/></td>
+        </tr>
+        <tr>
+            <td><label for="price">Price:</label></td>
+            <td><input id="price" name="price" value="<?php echo $price; ?>"
+                       maxlength="15"/> THB/night (Incl Breakfast)
+            </td>
+        </tr>
+        <tr>
+            <td><label for="recommend_price">Recommended Price:</label></td>
+            <td><input id="price" name="recommend_price" maxlength="15"
+                       value="<?php echo $recommend_price; ?>"/> THB/night (Incl Breakfast)
+            </td>
+        </tr>
+        <tr>
+            <td><label for="recommend">Recommend:</label></td>
+            <td><input id="recommend" name="recommend" value="1" type="checkbox"
+                    <?php echo $recommend == 1 ? "checked" : "" ?>/></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <?php
+            if (empty($facilities)) {
+                $arrayFacilities = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            } else {
+                $arrayFacilities = explode(',', $facilities);
+            }
+            ?>
+            <td valign="top"><label for="">Facilities :</label></td>
+            <td><input type="hidden" id="facilities" name="facilities" value="<?php echo $facilities; ?>">
+                <input class="facilities"
+                       type="checkbox" <?php echo @$arrayFacilities[0] ? 'checked' : ""; ?> /> FREE WIFI</br>
+                <input class="facilities"
+                       type="checkbox" <?php echo @$arrayFacilities[1] ? 'checked' : ""; ?> /> BREAKFAST</br>
+                <input class="facilities"
+                       type="checkbox" <?php echo @$arrayFacilities[2] ? 'checked' : ""; ?> /> EN-SUITE
+                BATHROOM</br>
+                <input class="facilities"
+                       type="checkbox" <?php echo @$arrayFacilities[3] ? 'checked' : ""; ?> /> FLAT SCREEN TV</br>
+                <input class="facilities"
+                       type="checkbox" <?php echo @$arrayFacilities[4] ? 'checked' : ""; ?> /> MINI BAR</br>
+                <input class="facilities"
+                       type="checkbox" <?php echo @$arrayFacilities[5] ? 'checked' : ""; ?> />SAFETY DEPOSIT
+                BOX</br>
+                <input class="facilities"
+                       type="checkbox" <?php echo @$arrayFacilities[6] ? 'checked' : ""; ?> /> KING SIZE BED</br>
+                <input class="facilities"
+                       type="checkbox" <?php echo @$arrayFacilities[7] ? 'checked' : ""; ?> /> QUEEN SIZE BED</br>
+                <input class="facilities"
+                       type="checkbox" <?php echo @$arrayFacilities[8] ? 'checked' : ""; ?> /> TWIN BED</br>
+                <input class="facilities"
+                       type="checkbox" <?php echo @$arrayFacilities[9] ? 'checked' : ""; ?> /> PRIVATE BALCONY</br>
+
+                <script>
+                    $(".facilities").click(function () {
+                        var arrFacilities = [];
+                        $(".facilities").each(function () {
+                            if ($(this).prop('checked')) {
+                                arrFacilities.push(1);
+                            } else {
+                                arrFacilities.push(0);
+                            }
+                        });
+                        $("#facilities").val(arrFacilities);
+                    });
+                </script>
+            </td>
+        </tr>
+    </table>
     </p>
 <?
 }
