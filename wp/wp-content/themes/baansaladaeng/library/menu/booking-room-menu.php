@@ -57,9 +57,9 @@ function render_booking_page_list()
         $myListTable->prepare_items();
         ?>
         <form method="post">
-            <input type="hidden" name="page" value="ttest_list_table">
+            <input type="hidden" name="page" value="render_booking_page_list">
         <?php
-        $myListTable->search_box('search', 'search_id');
+        //$myListTable->search_box('Search', 'room_name');
         $myListTable->display();
         echo '</form></div>';
     }

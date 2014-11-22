@@ -21,8 +21,8 @@ function my_add_booking_menu_na_items()
 //    );
     $hook = add_submenu_page(
         'ics_theme_settings',
-        'Booking List(na)',
-        'Booking List(na)',
+        'Booking List(n/a)',
+        'Booking List(n/a)',
         'manage_options',
         'booking-list-na',
         'render_booking_na_page_list'
@@ -33,7 +33,7 @@ function my_add_booking_menu_na_items()
 
 function add_options_booking_menu_na()
 {
-    global $myListTable;
+    global $classBookingListNa;
     $option = 'per_page';
     $args = array(
         'label' => 'Books',
@@ -41,7 +41,7 @@ function add_options_booking_menu_na()
         'option' => 'books_per_page',
     );
     add_screen_option($option, $args);
-    $myListTable = new Booking_List(false);
+    $classBookingListNa = new Booking_List(false);
 }
 
 //add_action('admin_menu', 'my_add_booking_menu_items');
@@ -49,15 +49,15 @@ function add_options_booking_menu_na()
 
 function render_booking_na_page_list()
 {
-    global $myListTable;
-        echo '</pre><div class="wrap"><h2>Booking List(na)</h2>';
-        $myListTable->prepare_items();
+    global $classBookingListNa;
+        echo '</pre><div class="wrap"><h2>Booking List(n/a)</h2>';
+        $classBookingListNa->prepare_items();
         ?>
         <form method="post">
             <input type="hidden" name="page" value="ttest_list_table">
         <?php
-        $myListTable->search_box('search', 'search_id');
-        $myListTable->display();
+        //$classBookingListNa->search_box('search', 'room_name');
+        $classBookingListNa->display();
         echo '</form></div>';
 
 }

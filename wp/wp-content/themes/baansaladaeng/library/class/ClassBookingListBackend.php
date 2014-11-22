@@ -59,7 +59,7 @@ class Booking_List extends WP_List_Table
                     'count' => $key + 1,
                     'room_name' => "<a href='$permalink' target='_blank'>$value->room_name</a>",
 //                'booking_date' => $value->booking_date,
-                    'name' => "$value->name $value->last_name",
+                    'name' => $value->name ? "$value->name $value->last_name" : '-',
 //                'passport_no' => $value->passport_no,
 //                'email' => $value->email,
 //                'tel' => $value->tel,
@@ -80,7 +80,7 @@ class Booking_List extends WP_List_Table
     function admin_header()
     {
         $page = (isset($_GET['page'])) ? esc_attr($_GET['page']) : false;
-        if ('booking-list' != $page)
+        if ('booking-list' != $page && 'booking-list-na' != $page)
             return;
         ?>
         <style type="text/css">
@@ -98,7 +98,7 @@ class Booking_List extends WP_List_Table
 
             /*.wp-list-table .column-booking_date { width: 10%; }*/
             .wp-list-table .column-name {
-                width: 10%;
+                width: 5%;
             }
 
             /*.wp-list-table .column-email {
