@@ -153,11 +153,11 @@ function credits_meta()
                 <td>
                     <select id="type" name="type">
                         <option value="">-- Select --</option>
-                        <option value="King size" <?php echo $type == "King size" ? "selected" : ""; ?>>King size
+                        <option value="King size" <?php echo $type == "Double king size bed" ? "selected" : ""; ?>>Double king size bed
                         </option>
-                        <option value="Queen size" <?php echo $type == "Queen size" ? "selected" : ""; ?>>Queen size
+                        <option value="Queen size" <?php echo $type == "Double queen size bed" ? "selected" : ""; ?>>Double queen size bed
                         </option>
-                        <option value="Twin" <?php echo $type == "Twin" ? "selected" : ""; ?>>Twin</option>
+                        <option value="Twin" <?php echo $type == "Twin / Super king size bed" ? "selected" : ""; ?>>Twin / Super king size bed</option>
                     </select>
                 </td>
             </tr>
@@ -318,9 +318,9 @@ function room_custom_columns($column)
         case "recommend":
             echo $custom["recommend"][0] ? '<input type="checkbox" disabled checked/>' : "";
             break;
-        case "category":
-            echo get_the_term_list($post->ID, 'Category', '', ', ', '');
-            break;
+//        case "category":
+//            echo get_the_term_list($post->ID, 'Category', '', ', ', '');
+//            break;
     }
 }
 
