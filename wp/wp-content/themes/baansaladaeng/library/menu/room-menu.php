@@ -207,8 +207,41 @@ function credits_meta_room_option()
             }
             ?>
             <td valign="top"><label for="">Facilities :</label></td>
-            <td><input type="hidden" id="facilities" name="facilities" value="<?php echo $facilities; ?>">
-                <input class="facilities"
+            <td>
+                <input type="hidden" id="facilities" name="facilities" value="<?php echo $facilities; ?>">
+                <table>
+                    <tr>
+                        <td><label><input class="facilities"  <?php echo @$arrayFacilities[0] ? 'checked' : ""; ?>
+                                          type="checkbox" checked=""> FREE WIFI</label></td>
+                        <td><label><input class="facilities"  <?php echo @$arrayFacilities[1] ? 'checked' : ""; ?>
+                                          type="checkbox" checked=""> BREAKFAST</label></td>
+                        <td><label><input class="facilities"  <?php echo @$arrayFacilities[2] ? 'checked' : ""; ?>
+                                          type="checkbox" checked=""> EN-SUITE BATHROOM</label></td>
+                    </tr>
+                    <tr>
+                        <td><label><input class="facilities"  <?php echo @$arrayFacilities[3] ? 'checked' : ""; ?>
+                                          type="checkbox" checked=""> FLAT SCREEN TV</label></td>
+                        <td><label><input class="facilities"  <?php echo @$arrayFacilities[4] ? 'checked' : ""; ?>
+                                          type="checkbox" checked=""> MINI BAR</label></td>
+                        <td><label><input class="facilities"  <?php echo @$arrayFacilities[5] ? 'checked' : ""; ?>
+                                          type="checkbox">SAFETY DEPOSIT BOX</label></td>
+                    </tr>
+                    <tr>
+                        <td><label><input class="facilities"  <?php echo @$arrayFacilities[6] ? 'checked' : ""; ?>
+                                          type="checkbox"> KING SIZE BED</label></td>
+                        <td><label><input class="facilities"  <?php echo @$arrayFacilities[7] ? 'checked' : ""; ?>
+                                          type="checkbox"> QUEEN SIZE BED</label></td>
+                        <td><label><input class="facilities"  <?php echo @$arrayFacilities[8] ? 'checked' : ""; ?>
+                                          type="checkbox"> TWIN BED</label></td>
+                    </tr>
+                    <tr>
+                        <td><label><input class="facilities"  <?php echo @$arrayFacilities[9] ? 'checked' : ""; ?>
+                                          type="checkbox"> PRIVATE BALCONY</label></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <!--<input class="facilities"
                        type="checkbox" <?php echo @$arrayFacilities[0] ? 'checked' : ""; ?> /> FREE WIFI</br>
                 <input class="facilities"
                        type="checkbox" <?php echo @$arrayFacilities[1] ? 'checked' : ""; ?> /> BREAKFAST</br>
@@ -230,7 +263,7 @@ function credits_meta_room_option()
                        type="checkbox" <?php echo @$arrayFacilities[8] ? 'checked' : ""; ?> /> TWIN BED</br>
                 <input class="facilities"
                        type="checkbox" <?php echo @$arrayFacilities[9] ? 'checked' : ""; ?> /> PRIVATE BALCONY</br>
-
+-->
                 <script>
                     $(".facilities").click(function () {
                         var arrFacilities = [];
