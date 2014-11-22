@@ -17,7 +17,7 @@ if ($getContent != 'true') {
             <div class="services-grids">
                 <div class="col-md-12">
                     <div class="service-grid wow fadeInDown" data-wow-delay="0.4s">
-                        <?php echo get_the_content(); ?>
+                        <?php the_content(); ?>
                     </div>
                 </div>
                 <div class="clearfix"></div>

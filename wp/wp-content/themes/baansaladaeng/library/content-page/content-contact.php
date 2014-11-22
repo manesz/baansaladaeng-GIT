@@ -28,7 +28,7 @@ get_header(); ?>
             </section>
 
             <div class="col-md-12 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
-                <?php echo get_the_content(); ?>
+                <?php the_content(); ?>
             </div>
         </div>
     </div>
