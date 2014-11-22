@@ -21,6 +21,7 @@ get_template_part('nav');
         var room_id = <?php echo $roomID; ?>;
         var web_url = '<?php echo network_site_url('/'); ?>';
         var count_order = <?php echo $countOrder;?>;
+        var str_loading = '<div id="img_loading" style="position: absolute; top: 40%; left: 50%;"><img src="<?php bloginfo('template_directory'); ?>/library/images/loading.gif" width="64"/></div>';
     </script>
     <script type="text/javascript"
             src="<?php bloginfo('template_directory'); ?>/library/js/reservation.js"></script>

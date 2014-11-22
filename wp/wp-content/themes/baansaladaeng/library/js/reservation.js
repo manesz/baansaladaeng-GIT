@@ -14,11 +14,7 @@ $(document).ready(function () {
         return false;
     });
     $(document).on("click", "#linkPayment, .btn_payment", function (e) {
-        getSummaryOrder();
-        scrollToTop('#section_payment');
-        $('#section_select_date').hide();
-        $('#list_room').hide();
-        $('#section_confirm_order').hide();
+        showPayment();
     });
 
     $("#btn_step1").click(function (e) {
@@ -101,6 +97,14 @@ $(document).on("submit", "#payment_post", function (e) {
     data_booking = $(this).serialize();
     return false;
 });
+
+function showPayment() {
+    getSummaryOrder();
+    scrollToTop('#section_payment');
+    $('#section_select_date').hide();
+    $('#list_room').hide();
+    $('#section_confirm_order').hide();
+}
 
 function postSendEmail(paymentID) {
     var email = $("#payment_email").val();
@@ -257,6 +261,7 @@ function getRoom() {
 var check_add_room = false;
 function addOrder(roomID) {
     if (!check_add_room) {
+        $("body").append(str_loading);
         $.ajax({
             type: "POST",
             url: '',
@@ -270,13 +275,21 @@ function addOrder(roomID) {
                 need_airport_pickup: $("#need_airport_pickup").val()
             },
             success: function (data) {
+                $("#img_loading").remove();
                 if (data == 'success') {
-                    window.location.href = web_url + "reservation";
+                    //
+                    getOrder();
+                    getRoom();
+//                    showPayment();
+                    if (room_id) {
+                        window.location.href = web_url + "reservation";
+                    }
                 }
                 else alert('Fail');
                 check_add_room = false;
             },
             error: function (result) {
+                $("#img_loading").remove();
                 alert("Error:\n" + result.responseText);
                 check_add_room = false;
             }
