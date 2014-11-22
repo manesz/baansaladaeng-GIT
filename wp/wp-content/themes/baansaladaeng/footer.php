@@ -28,8 +28,8 @@ if ($arrayContact) {
             <div class="col-md-6">
                 <div class="contact-left wow fadeInRight" data-wow-delay="0.4s">
                     <h3>Contact Us</h3>
-                    <?php if ($massage): ?>
-                        <label><?php echo $massage; ?></label>
+                    <?php if (@$massage): ?>
+                        <label><?php echo nl2br($massage); ?></label>
                     <?php endif; ?>
                     <div class="contact-left-grids">
                         <div class="col-md-6">
