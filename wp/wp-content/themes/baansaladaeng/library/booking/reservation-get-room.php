@@ -45,9 +45,9 @@ $argc = $arrayRoomID ? array(
     'post_type' => 'room',
     'post_status' => 'publish',
     'posts_per_page' => -1,
-    'caller_get_posts' => 1
+//    'caller_get_posts' => 1
 ) :
-    array('post_type' => 'room');
+    array('post_type' => 'room', 'posts_per_page' => -1);
 
 $loopPostTypeRoom = new WP_Query($argc);
 if ($loopPostTypeRoom->have_posts() && $dateCheckIn->format('Y-m-d') >= $dateNow && $dateCheckOut->format('Y-m-d') >= $dateNow):
