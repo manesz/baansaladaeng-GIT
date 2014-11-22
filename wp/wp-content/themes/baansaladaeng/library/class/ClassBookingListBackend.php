@@ -13,9 +13,11 @@ class Booking_List extends WP_List_Table
 {
 
     var $booking_data = null;
+    var $check_add_payment = true;
 
-    function __construct()
+    function __construct($check_add_payment = true)
     {
+        $this->check_add_payment = $check_add_payment;
         global $status, $page, $wpdb;
 
         parent::__construct(array(
@@ -33,33 +35,44 @@ class Booking_List extends WP_List_Table
             $permalink = get_permalink($value->room_id);
             $checkTimeOut = $classBooking->checkTimeOut($value->pm_create_time, $value->timeout);
             $paid = $value->paid;
-            if (!$checkTimeOut || $paid){
+            if (!$checkTimeOut || $paid) {
                 $strShowPaidField = $paid ? '<input type="checkbox" checked onclick="return setApprove(this, ' .
                     $value->payment_id . ');" />'
                     : '<input type="checkbox" onclick="return setApprove(this, ' . $value->payment_id .
                     ');" />';
-            } else  {
+            } else {
                 $strShowPaidField = "Time Out";
             }
-            $strShowTime = '<div class="clock" date-create="'.
-                $value->create_time.'" timeout="'.$value->timeout.'" paid="'.$value->paid. '"></div>';
-            $this->booking_data[] = array(
-                'id' => $value->id,
-                'count' => $key + 1,
-                'room_name' => "<a href='$permalink' target='_blank'>$value->room_name</a>",
+            $strShowTime = '<div class="clock" date-create="' .
+                $value->create_time . '" timeout="' . $value->timeout . '" paid="' . $value->paid . '"></div>';
+            $strEdit = $this->check_add_payment ? '<a href="?page=booking-list&booking-edit=true&id=' . $value->payment_id . '">Edit</a>' : "";
+            $checkAddData = false;
+            if ($this->check_add_payment && $value->card_type != "" && $value->name != "") {
+                $checkAddData = true;
+            }
+            if (!$this->check_add_payment && $value->card_type == "" && $value->name == "") {
+                $checkAddData = true;
+            }
+            if ($checkAddData)
+                $this->booking_data[] = array(
+                    'id' => $value->id,
+                    'count' => $key + 1,
+                    'room_name' => "<a href='$permalink' target='_blank'>$value->room_name</a>",
 //                'booking_date' => $value->booking_date,
-                'name' => "$value->name $value->last_name",
+                    'name' => "$value->name $value->last_name",
 //                'passport_no' => $value->passport_no,
-                'email' => $value->email,
-                'tel' => $value->tel,
-                'adults' => $value->adults,
-                'need_airport_pickup' => $value->need_airport_pickup ? 'YES' : 'NO',
+//                'email' => $value->email,
+//                'tel' => $value->tel,
+                    'check_in_date' => $value->check_in_date,
+                    'check_out_date' => $value->check_out_date,
+                    'adults' => $value->adults,
+                    'need_airport_pickup' => $value->need_airport_pickup ? 'YES' : 'NO',
 //                'price'=>number_format($value->total),
-                'timeout' => $strShowTime,
-                'paid' => $strShowPaidField,
-                'pm_create_time' => $value->pm_create_time,
-                'edit' => '<a href="?page=booking-list&booking-edit=true&id=' . $value->payment_id . '">Edit</a>'
-            );
+                    'timeout' => $strShowTime,
+                    'paid' => $strShowPaidField,
+                    'pm_create_time' => $value->pm_create_time,
+                    'edit' => $strEdit
+                );
         }
 
     }
@@ -80,7 +93,7 @@ class Booking_List extends WP_List_Table
             }
 
             .wp-list-table .column-room_name {
-                width: 10%;
+                width: 15%;
             }
 
             /*.wp-list-table .column-booking_date { width: 10%; }*/
@@ -88,12 +101,20 @@ class Booking_List extends WP_List_Table
                 width: 10%;
             }
 
-            .wp-list-table .column-email {
+            /*.wp-list-table .column-email {
                 width: 15%;
             }
 
             .wp-list-table .column-tel {
                 width: 10%;
+            }*/
+
+            .wp-list-table .column-check_in_date {
+                width: 5%;
+            }
+
+            .wp-list-table .column-check_out_date {
+                width: 5%;
             }
 
             .wp-list-table .column-adults {
@@ -107,6 +128,7 @@ class Booking_List extends WP_List_Table
             .wp-list-table .column-timeout {
                 width: 10%;
             }
+
             .wp-list-table .column-paid {
                 width: 5%;
             }
@@ -118,6 +140,7 @@ class Booking_List extends WP_List_Table
             .wp-list-table .column-edit {
                 width: 5%;
             }
+
             .clock {
                 zoom: 0.23;
                 -moz-transform: scale(0.5)
@@ -144,8 +167,10 @@ class Booking_List extends WP_List_Table
 //            case 'booking_date':
             case 'name':
 //            case 'passport_no':
-            case 'email':
-            case 'tel':
+//            case 'email':
+//            case 'tel':
+            case 'check_in_date':
+            case 'check_out_date':
             case 'adults':
             case 'need_airport_pickup':
             case 'timeout':
@@ -165,6 +190,8 @@ class Booking_List extends WP_List_Table
             'room_name' => array('room_name', true),
 //            'booking_date' => array('booking_date', true),
             'name' => array('name', true),
+            'check_in_date' => array('check_in_date', true),
+            'check_out_date' => array('check_out_date', true),
 //            'passport_no' => array('passport_no', false),
             'email' => array('email', false),
 //            'tel' => array('tel', false),
@@ -184,8 +211,10 @@ class Booking_List extends WP_List_Table
 //            'booking_date' => __('Booking Date', 'mylisttable'),
             'name' => __('Name', 'mylisttable'),
 //            'passport_no' => __('Passport', 'mylisttable'),
-            'email' => __('Email', 'mylisttable'),
-            'tel' => __('Tel', 'mylisttable'),
+//            'email' => __('Email', 'mylisttable'),
+//            'tel' => __('Tel', 'mylisttable'),
+            'check_in_date' => __('Check In', 'mylisttable'),
+            'check_out_date' => __('Check Out', 'mylisttable'),
             'adults' => __('Adults', 'mylisttable'),
             'need_airport_pickup' => __('Pickup', 'mylisttable'),
             'timeout' => __('Time Out', 'mylisttable'),
