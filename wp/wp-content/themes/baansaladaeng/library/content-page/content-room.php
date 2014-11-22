@@ -7,7 +7,8 @@
             <hr/>
             <div id="sectionRoom">
                 <?php
-                $loop = new WP_Query(array('post_type' => 'room', /* 'posts_per_page' => 10*/));
+                $loop = new WP_Query(array('post_type' => 'room', 'posts_per_page' => -1));
+//                var_dump($loop);
                 //                    $categories = get_the_category();
                 //                    $query = new WP_Query( 'posts_per_page= -1&cat='.$categories[0]->cat_ID );
                 //                    if( $query->have_posts() ): while ( $query->have_posts() ): $query->the_post();
