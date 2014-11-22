@@ -153,17 +153,6 @@ function credits_meta_room_option()
     <p>
     <table>
         <tr>
-            <td valign="top"><label for="room_plan">Room plan:</label></td>
-            <td>
-                <input id="room_plan" name="room_plan" value="<?php echo $room_plan; ?>"/>
-                <input type="button" value="Upload Image" class="button btn_upload_image"
-                       data-tbx-id="room_plan"></br>
-                <?php if ($room_plan): ?>
-                    <img src="<?php echo $room_plan; ?>" width="250"/>
-                <?php endif; ?>
-            </td>
-        </tr>
-        <tr>
             <td>
                 <label for="type">Type:</label></td>
             <td>
@@ -255,6 +244,17 @@ function credits_meta_room_option()
                         $("#facilities").val(arrFacilities);
                     });
                 </script>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top"><label for="room_plan">Room plan:</label></td>
+            <td>
+                <input id="room_plan" name="room_plan" value="<?php echo $room_plan; ?>"/>
+                <input type="button" value="Upload Image" class="button btn_upload_image"
+                       data-tbx-id="room_plan"></br>
+                <?php if ($room_plan): ?>
+                    <img src="<?php echo $room_plan; ?>" style="height: 200px; margin-top: 10px;"/>
+                <?php endif; ?>
             </td>
         </tr>
     </table>
