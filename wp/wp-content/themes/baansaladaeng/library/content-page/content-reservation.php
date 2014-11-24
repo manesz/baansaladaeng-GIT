@@ -22,6 +22,7 @@ get_template_part('nav');
         var web_url = '<?php echo network_site_url('/'); ?>';
         var count_order = <?php echo $countOrder;?>;
         var str_loading = '<div id="img_loading" style="position: absolute; top: 40%; left: 50%;"><img src="<?php bloginfo('template_directory'); ?>/library/images/loading.gif" width="64"/></div>';
+
     </script>
     <script type="text/javascript"
             src="<?php bloginfo('template_directory'); ?>/library/js/reservation.js"></script>
@@ -192,6 +193,10 @@ get_template_part('nav');
                     <div class="col-md-3 alpha"><label for="payment_est_arrival1">Estimated arrival Time <font
                                 color="#FF0000">*</font></label></div>
                     <div class="col-md-9 alpha omega">
+<!--                        <div class="input-append bootstrap-timepicker">-->
+<!--                            <input id="payment_est_arrival" name="payment_est_arrival" type="text" class="input-small">-->
+<!--                            <span class="add-on"><i class="icon-time"></i></span>-->
+<!--                        </div>-->
                         <select id="payment_est_arrival1" name="payment_est_arrival1" class="">
                             <option value="">--</option>
                             <?php for ($i = 1; $i <= 12; $i++): ?>
@@ -378,5 +383,13 @@ get_template_part('nav');
     </div>
     </div>
     </div>
+    <link type="text/css" href="<?php bloginfo('template_directory'); ?>/library/css/bootstrap.min.css" />
+    <link type="text/css" href="<?php bloginfo('template_directory'); ?>/library/css/bootstrap-timepicker.min.css" />
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="<?php bloginfo('template_directory'); ?>/library/js/timepicker/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<?php bloginfo('template_directory'); ?>/library/js/timepicker/bootstrap-timepicker.min.js"></script>
+<script>
 
+    $('#payment_est_arrival').timepicker();
+</script>
 <?php get_footer(); ?>
