@@ -43,7 +43,7 @@ class Booking
                   b.room_id = c.ID
                 )
             WHERE 1
-              AND b.`publish` = 1
+              AND a.`publish` = 1
               $strAnd
             $strGroup
         ";
@@ -475,6 +475,24 @@ class Booking
                 'publish' => 0
             ),
             array('id' => $booking_id),
+            array('%s', '%d'),
+            array('%d')
+
+        );
+        if (!$result)
+            return false;
+        return true;
+    }
+
+    function deletePayment($payment_id)
+    {
+        $result = $this->wpdb->update(
+            $this->tablePayment,
+            array(
+                'update_time' => date_i18n('Y-m-d H:i:s'),
+                'publish' => 0
+            ),
+            array('id' => $payment_id),
             array('%s', '%d'),
             array('%d')
 

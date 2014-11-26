@@ -53,6 +53,12 @@ if ($_REQUEST) {
                 else echo "fail";
                 exit;
                 break;
+            case 'delete_payment' :
+                if ($objClassBooking->deletePayment(@$_REQUEST['payment_id']))
+                    echo "success";
+                else echo "fail";
+                exit;
+                break;
             case 'add_booking' :
                 $result = $objClassBooking->paymentAdd($_REQUEST);
                 echo $result;

@@ -16,6 +16,40 @@ function postNeedAirportPickup(elm, bookingID) {
     $("#payment_need_airport_pickup").val(elm.value);
     $("#frm_booking").submit();
 }
+$(document).on("click", ".btn_delete_booking", function (e) {
+    var paymentID = $(this).attr("pm-id");
+   if (confirm("Do you want to delete order id " + paymentID)) {
+       $.ajax({
+           type: "POST",
+           cache: false,
+           url: '',
+           data: {
+               booking_post: 'true',
+               reservation_post: 'delete_payment',
+               payment_id: paymentID
+           },
+           success: function (data) {
+               if (data != "success") {
+                   alert(data);
+               } else {
+                   $("body").html("");
+                   alert("Save Success.");
+                   window.location.reload();
+               }
+           }
+       })
+           .done(function () {
+               //alert("second success");
+           })
+           .fail(function () {
+               alert("เกิดข้อผิดพลาด");
+           })
+           .always(function () {
+               //alert("finished");
+           });
+   }
+    return false;
+});
 $(document).on("submit", "#frm_booking", function (e) {
 
 //        alert($(this).serialize())

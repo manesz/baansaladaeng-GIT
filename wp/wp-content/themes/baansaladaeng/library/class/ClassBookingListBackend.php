@@ -45,7 +45,10 @@ class Booking_List extends WP_List_Table
             }
             $strShowTime = '<div class="clock" date-create="' .
                 $value->create_time . '" timeout="' . $value->timeout . '" paid="' . $value->paid . '"></div>';
-            $strEdit = $this->check_add_payment ? '<a href="?page=booking-list&booking-edit=true&id=' . $value->payment_id . '">Edit</a>' : "";
+            $strEdit = $this->check_add_payment ?
+                '<a href="?page=booking-list&booking-edit=true&id=' . $value->payment_id . '">Edit</a> |' :
+                "";
+            $strDelete = '<a class="btn_delete_booking" href="#" pm-id="' . $value->payment_id . '">Delete</a> ';
             $checkAddData = false;
             if ($this->check_add_payment && $value->card_type != "" && $value->name != "") {
                 $checkAddData = true;
@@ -56,7 +59,7 @@ class Booking_List extends WP_List_Table
             if ($checkAddData)
                 $this->booking_data[] = array(
                     'id' => $value->id,
-                    'count' => $key + 1,
+                    'count' => $value->payment_id,
                     'room_name' => "<a href='$permalink' target='_blank'>$value->room_name</a>",
 //                'booking_date' => $value->booking_date,
                     'name' => $value->name ? "$value->name $value->last_name" : '-',
@@ -71,7 +74,7 @@ class Booking_List extends WP_List_Table
 //                    'timeout' => $strShowTime,
                     'paid' => $strShowPaidField,
                     'pm_create_time' => $value->pm_create_time,
-                    'edit' => $strEdit
+                    'edit' => $strEdit . $strDelete,
                 );
         }
 
@@ -293,19 +296,8 @@ class Booking_List extends WP_List_Table
         $objDataBooking = $classBooking->bookingList($paymentID);
         $arrayRoomName = array();
         $subTotal = 0;
-        foreach ($objDataBooking as $key => $value) {
-            $needAirPortPickup = $value->need_airport_pickup;
-            $subTotal += $value->total;
-            $strRoomName = $key + 1 . ". " . $value->room_name . " / " . number_format($value->price) .
-                " ฿ | " . date_i18n("d/m/Y", strtotime($value->check_in_date)) .
-                " - " . date_i18n("d/m/Y", strtotime($value->check_out_date)) . " | ";
-            $strRoomName .= '<input type="checkbox" class="need_airport_pickup" onclick="postNeedAirportPickup(this, ' . $value->booking_id . ');" ';
-            $strRoomName .= $needAirPortPickup ? ' value="1" checked/>' : ' value="0" />';
-            $strRoomName .= " Need Airport Pickup (THB 1,200 one way)";
-//            $strRoomName .= "</br>Adults: <input type='text' value='$value->adults' /></br>";
-            $arrayRoomName[] = $strRoomName;
-        }
         extract((array)$objDataBooking[0]);
+
         ?>
         <script type="text/javascript"
                 src="<?php bloginfo('template_directory'); ?>/library/js/booking_edit.js"></script>
@@ -340,7 +332,32 @@ class Booking_List extends WP_List_Table
         <tbody id="the-list-edit">
         <tr class="alternate">
             <td><label for="">Room :</label></td>
-            <td colspan="3"><?php echo $arrayRoomName ? implode('<br/>', $arrayRoomName) : "No data"; ?></td>
+            <td colspan="3">
+                <table border="1">
+                    <?php
+                    foreach ($objDataBooking as $key => $value) {
+                        $subTotal += $value->total;
+                        echo "<tr>";
+                        $needAirPortPickup = $value->need_airport_pickup;
+                        $count = $key + 1;
+                        echo "<td>$count" . ". " . $value->room_name . "</td>";
+                        echo "<td>" . number_format($value->price) . " ฿</td>";
+                        echo "<td>" . date_i18n("d/m/Y", strtotime($value->check_in_date)) .
+                            " - " . date_i18n("d/m/Y", strtotime($value->check_out_date)) . "</td>";
+                        if ($needAirPortPickup) {
+                            echo '<td><input type="checkbox" class="need_airport_pickup"
+                            onclick="postNeedAirportPickup(this, ' . $value->booking_id . ');" value="1" checked />';
+                        } else {
+                            echo '<td><input type="checkbox" class="need_airport_pickup"
+                            onclick="postNeedAirportPickup(this, ' . $value->booking_id . ');" value="0" />';
+                        }
+                        echo " Need Airport Pickup (THB 1,200 one way)</td>";
+                        echo "</tr>";
+                    }
+
+                    ?>
+                </table>
+            </td>
         </tr>
         <tr class="alternate">
             <td><label for="">Sub total :</label></td>
@@ -533,42 +550,42 @@ class Booking_List extends WP_List_Table
                        onclick="return setApprove(this, <?php echo $payment_id; ?>);"/>
             </td>
             <td colspan="3">
-<!--                <label for="time_left">Time Left :</label>-->
+                <!--                <label for="time_left">Time Left :</label>-->
 
-<!--                <div class="clock"></div>-->
+                <!--                <div class="clock"></div>-->
             </td>
             <script type="text/javascript">
                 /*//                                var interval = setInterval(oneSecondFunction, 1000);
-                var paid = <?php echo $paid; ?>;
-                var time_left_hour = <?php echo $timeout; ?>;
-                var create_time = '<?php echo $create_time; ?>';
-                $(function () {
-                    oneSecondFunction()
-                });
+                 var paid = <?php echo $paid; ?>;
+                 var time_left_hour = <?php echo $timeout; ?>;
+                 var create_time = '<?php echo $create_time; ?>';
+                 $(function () {
+                 oneSecondFunction()
+                 });
 
-                function oneSecondFunction() {
-                    var dateNow = new Date();
-                    var dateCreate = new Date(create_time);
-                    var strToTime = time_left_hour * 60 * 60;
-                    var diff = Math.round(dateNow.getTime() / 1000 - dateCreate.getTime() / 1000);
-                    diff = strToTime - diff;
-                    if (diff < 0 || paid) {
-                        diff = 0;
-                    }
-                    var clock = $('.clock').FlipClock(diff, {
-                        countdown: true,
-                        clockFace: 'HourCounter'
-                    });
-                }*/
+                 function oneSecondFunction() {
+                 var dateNow = new Date();
+                 var dateCreate = new Date(create_time);
+                 var strToTime = time_left_hour * 60 * 60;
+                 var diff = Math.round(dateNow.getTime() / 1000 - dateCreate.getTime() / 1000);
+                 diff = strToTime - diff;
+                 if (diff < 0 || paid) {
+                 diff = 0;
+                 }
+                 var clock = $('.clock').FlipClock(diff, {
+                 countdown: true,
+                 clockFace: 'HourCounter'
+                 });
+                 }*/
             </script>
         </tr>
-<!--        <tr>-->
-<!--            <td><label for="time_out">Time Out :</label></td>-->
-<!--            <td colspan="3">-->
-<!--                <input type="text" id="time_out" name="time_out"-->
-<!--                       value="--><?php //echo $timeout; ?><!--"/> Hour-->
-<!--            </td>-->
-<!--        </tr>-->
+        <!--        <tr>-->
+        <!--            <td><label for="time_out">Time Out :</label></td>-->
+        <!--            <td colspan="3">-->
+        <!--                <input type="text" id="time_out" name="time_out"-->
+        <!--                       value="--><?php //echo $timeout; ?><!--"/> Hour-->
+        <!--            </td>-->
+        <!--        </tr>-->
         </tbody>
         </table>
         <input type="button" class="button-primary" value="Back"
