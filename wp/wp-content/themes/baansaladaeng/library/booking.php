@@ -17,6 +17,10 @@ if ($_REQUEST) {
 
         $reservation = @$_REQUEST['reservation_post'];
         switch ($reservation) {
+            case "booking_bar_get_room" :
+                require_once("booking/booking-bar-get-room.php");
+                exit;
+                break;
             case "get_room" :
                 require_once("booking/reservation-get-room.php");
                 exit;

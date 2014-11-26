@@ -72,7 +72,7 @@ get_template_part('nav');
             <div class="form-group col-md-12">
                 <h4>Adults</h4>
                 <select id="adult" name="adult" class="form-control">
-                    <?php for ($i = 1; $i <= 6; $i++): ?>
+                    <?php for ($i = 1; $i <= 2; $i++): ?>
                         <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
                     <?php endfor; ?>
                 </select>
