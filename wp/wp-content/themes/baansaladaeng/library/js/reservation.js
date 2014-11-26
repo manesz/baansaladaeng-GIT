@@ -1,20 +1,22 @@
 $(document).ready(function () {
     getOrder();
-    $('#section_select_date').show();
-    $('#list_room').hide();
-    $('#section_payment').hide();
-    $('#section_confirm_order').hide();
-
+    getRoom();
+    if (room_id){
+        $('#list_room').hide();
+        $('#section_select_date').show();
+        $('#section_payment').hide();
+        $('#section_confirm_order').hide();
+    }else {
+        showSelectRoom();
+    }
 
     $('#linkSelectRoom').click(function () {
-//        $('#section_select_date').hide();
-//        $('#list_room').fadeIn();
-//        $('#section_payment').hide();
-//        $('#section_confirm_order').hide();
+        showSelectRoom();
         return false;
     });
     $(document).on("click", "#linkPayment, .btn_payment", function (e) {
         showPayment();
+        return false;
     });
 
     $("#btn_step1").click(function (e) {
@@ -27,10 +29,8 @@ $(document).ready(function () {
     });
 });
 $(document).on("click", '#linkSelectDate, #btn_list_room_back', function () {
-    $('#section_select_date').fadeIn();
-    $('#list_room').hide();
-    $('#section_payment').hide();
-    $('#section_confirm_order').hide();
+    showSelectDate();
+    return false;
 });
 
 var data_post_payment = false;
@@ -98,6 +98,31 @@ $(document).on("submit", "#payment_post", function (e) {
     return false;
 });
 
+function chooseRoom(id, name) {
+    room_id = id;
+    $("#room_id").val(id);
+    $("#room_name").val(name);
+
+    $('#list_room').hide();
+    $('#section_payment').hide();
+    $('#section_confirm_order').hide();
+    $('#section_select_date').fadeIn();
+}
+
+function showSelectRoom() {
+    $('#section_select_date').hide();
+    $('#section_payment').hide();
+    $('#section_confirm_order').hide();
+    $('#list_room').fadeIn();
+}
+
+function showSelectDate() {
+    $('#list_room').hide();
+    $('#section_payment').hide();
+    $('#section_confirm_order').hide();
+    $('#section_select_date').fadeIn();
+}
+
 function showPayment() {
     getSummaryOrder();
     scrollToTop('#section_payment');
@@ -133,19 +158,19 @@ function validateFormCreditCard(elm) {
         alert("Please select Card Type.");
         elm.card_type.focus();
         return false;
-    }else if (elm.card_holder_name.value == "") {
+    } else if (elm.card_holder_name.value == "") {
         alert("Please add Card Holder's Name.");
         elm.card_holder_name.focus();
         return false;
-    }else if (elm.card_number.value == "") {
+    } else if (elm.card_number.value == "") {
         alert("Please add Card No.");
         elm.card_number.focus();
         return false;
-    }else if (elm.tree_digit_id.value == "") {
+    } else if (elm.tree_digit_id.value == "") {
         alert("Please add 3-Digit ID#.");
         elm.tree_digit_id.focus();
         return false;
-    }else if (elm.card_expiry_date1.value == "" || elm.card_expiry_date2.value == "") {
+    } else if (elm.card_expiry_date1.value == "" || elm.card_expiry_date2.value == "") {
         alert("Please add Card Expiry Date.");
         elm.card_expiry_date1.focus();
         return false;
@@ -227,6 +252,14 @@ function step1Click() {
         arrivalDate.select();
         return false;
     }
+    if (!room_id) {
+        alert("Please select rooms.");
+        $('#section_select_date').hide();
+        $('#section_payment').hide();
+        $('#section_confirm_order').hide();
+        $('#list_room').fadeIn();
+        return false;
+    }
     $('#section_select_date').hide();
     $('#section_confirm_order').hide();
     if (room_id) {
@@ -250,7 +283,7 @@ function getRoom() {
             check_out: $("#departure_date").val()
         },
         success: function (data) {
-            $("#list_room").html(data).fadeIn();
+            $("#list_room").html(data);
         },
         error: function (result) {
             alert("Error:\n" + result.responseText);
@@ -261,7 +294,7 @@ function getRoom() {
 var check_add_room = false;
 function addOrder(roomID) {
     if (!check_add_room) {
-        $("body").append(str_loading);
+        showImgLoading();
         $.ajax({
             type: "POST",
             url: '',
@@ -275,21 +308,25 @@ function addOrder(roomID) {
                 need_airport_pickup: $("#need_airport_pickup").val()
             },
             success: function (data) {
-                $("#img_loading").remove();
+                hideImgLoading();
                 if (data == 'success') {
                     //
                     getOrder();
                     getRoom();
+                    $("#room_name").val('');
+                    $("#adult").val('1');
+                    room_id = 0;
+                    showSelectRoom();
 //                    showPayment();
-                    if (room_id) {
-                        window.location.href = web_url + "reservation";
-                    }
+//                    if (room_id) {
+//                        window.location.href = web_url + "reservation";
+//                    }
                 }
                 else alert('Fail');
                 check_add_room = false;
             },
             error: function (result) {
-                $("#img_loading").remove();
+                hideImgLoading();
                 alert("Error:\n" + result.responseText);
                 check_add_room = false;
             }
@@ -340,6 +377,7 @@ function getOrder() {
             } else {
                 $("#payment_info").hide();
             }
+            $("#show_count_order").html("Room " + count_order);
         },
         error: function (result) {
             alert("Error:\n" + result.responseText);
@@ -368,6 +406,7 @@ var check_delete_room = false;
 function deleteOrder(bookingId) {
     if (!check_delete_room) {
         if (confirm('Do you want delete room ?')) {
+            showImgLoading();
             $.ajax({
                 type: "POST",
                 url: '',
@@ -377,12 +416,14 @@ function deleteOrder(bookingId) {
                     booking_id: bookingId
                 },
                 success: function (data) {
+                    hideImgLoading();
                     if (data == 'success')
-                        window.location.reload();
+                        getOrder();
                     else alert(data);
                     check_delete_room = false;
                 },
                 error: function (result) {
+                    hideImgLoading();
                     alert("Error:\n" + result.responseText);
                 }
             });
@@ -392,6 +433,14 @@ function deleteOrder(bookingId) {
     }
     check_delete_room = true;
     return true;
+}
+
+function showImgLoading() {
+    $("body").append(str_loading);
+}
+
+function hideImgLoading() {
+    $("#img_loading").remove();
 }
 
 function scrollToTop(fade_in) {

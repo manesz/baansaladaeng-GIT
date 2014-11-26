@@ -8,7 +8,7 @@ $paymentID = empty($sessionGet['payment_id']) ? 0 : $sessionGet['payment_id'];
 $arrayOrder = $paymentID ? $objClassBooking->bookingList($paymentID) : null;
 ?>
 <script>
-    count_order = <?php echo count($arrayOrder); ?>;
+    count_order = <?php echo $arrayOrder ? count($arrayOrder) + 1 : 1; ?>;
 </script>
 <ul class="bg-fafafa alpha" style="list-style: none; height: 100%">
     <?php

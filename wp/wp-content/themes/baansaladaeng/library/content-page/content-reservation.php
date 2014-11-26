@@ -34,19 +34,27 @@ get_template_part('nav');
 
     <!--                <h2 class="col-md-12">Select Rooms <span class="font-color-999 font-size-14">Mediterranean Suite</span> </h2>-->
     <ol class="breadcrumb" style="padding: 15px 0 15px 15px;">
-        <li><a id="linkSelectDate" href="#">SELECT DATES</a></li>
-        <?php if (!$roomID): ?>
+        <?php //if (!$roomID): ?>
             <li><a id="linkSelectRoom" href="#">ROOM SELECTION</a></li>
-        <?php endif; ?>
+        <?php //endif; ?>
+        <li><a id="linkSelectDate" href="#">SELECT DATES</a></li>
         <li><a id="linkPayment" href="#">PAYMENT</a></li>
         <li><a id="linkConfirm" href="#">CONFIRM</a></li>
     </ol>
     <hr class=""/>
 
     <div id="section_select_date">
-        <h2>Room <?php echo $countOrder + 1; ?></h2>
+        <h2 id="show_count_order">Room <?php echo $countOrder + 1; ?></h2>
 
         <div class="col-md-12 alpha">
+            <?php //if ($roomID): ?>
+            <div class="form-group col-md-12">
+                <h4>Room</h4>
+                <input id="room_name" name="room_name" disabled
+                       type="text" maxlength="50" class="form-control col-md-12"
+                       value="<?php echo $roomName; ?>"/>
+            </div>
+            <?php //endif; ?>
             <div class="form-group col-md-6">
                 <h4>Arrival Date</h4>
                 <!--                            <label for="check_in_date">Check in date</label>-->
@@ -61,14 +69,6 @@ get_template_part('nav');
                        value="<?php echo $checkOutDate; ?>"
                        class="form-control datePicker"/>
             </div>
-            <?php if ($roomID): ?>
-                <div class="form-group col-md-12">
-                    <h4>Rooms</h4>
-                    <input id="room_name" name="room_name" disabled
-                           type="text" maxlength="50" class="form-control col-md-12"
-                           value="<?php echo $roomName; ?>"/>
-                </div>
-            <?php endif; ?>
             <div class="form-group col-md-12">
                 <h4>Adults</h4>
                 <select id="adult" name="adult" class="form-control">
@@ -101,7 +101,7 @@ get_template_part('nav');
                      style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
                     <button onclick="return step1Click();"
                             class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
-                        <?php echo $roomID ? "Booking Now" : "Next"; ?>
+                        <?php //echo $roomID ? "Booking Now" : "Next"; ?>Booking Now
                     </button>
                 </div>
             </div>

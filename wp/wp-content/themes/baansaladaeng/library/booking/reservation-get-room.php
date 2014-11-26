@@ -2,6 +2,7 @@
 //if (!session_id())
 //    session_start();
 //$arrayOrder = @$_SESSION['array_reservation_order'];
+/*
 $objClassBooking = new Booking($wpdb);
 $getCheckInDate = $_POST['check_in'];
 $getCheckOutDate = $_POST['check_out'];
@@ -39,18 +40,19 @@ foreach ($arrayRoom as $value) {
 //        $arrayRoomID[] = $value['room_id'];
 //    }
 //}
-
-$argc = $arrayRoomID ? array(
+*/
+$argc = /*$arrayRoomID ? array(
     'post__not_in' => $arrayRoomID,
     'post_type' => 'room',
     'post_status' => 'publish',
     'posts_per_page' => -1,
 //    'caller_get_posts' => 1
-) :
+) :*/
     array('post_type' => 'room', 'posts_per_page' => -1);
 
 $loopPostTypeRoom = new WP_Query($argc);
-if ($loopPostTypeRoom->have_posts() && $dateCheckIn->format('Y-m-d') >= $dateNow && $dateCheckOut->format('Y-m-d') >= $dateNow):
+//if ($loopPostTypeRoom->have_posts() && $dateCheckIn->format('Y-m-d') >= $dateNow && $dateCheckOut->format('Y-m-d') >= $dateNow):
+if ($loopPostTypeRoom->have_posts()):
     while ($loopPostTypeRoom->have_posts()) : $loopPostTypeRoom->the_post();
         $postID = get_the_id();
         $urlThumbnail = wp_get_attachment_url(get_post_thumbnail_id($postID));
@@ -94,21 +96,22 @@ if ($loopPostTypeRoom->have_posts() && $dateCheckIn->format('Y-m-d') >= $dateNow
                     <h3 style="margin-top: 0px; padding-top: 10px;">PRICE
                         : <?php echo empty($recommend_price) ? $price : $recommend_price; ?> BAHT</h3>
                 </div>
-                <div class="col-md-4 bg-ED2024" onclick="addOrder(<?php echo $postID; ?>);"
+                <div class="col-md-4 bg-ED2024" onclick="chooseRoom(<?php echo $postID; ?>, '<?php the_title(); ?>');"
                      style="text-align: center; padding: 10px 0 10px 0; color: #fff; cursor: pointer;">
                     CHOOSE
                 </div>
             </div>
         </div>
     <?php endwhile; ?>
-    <div class="form-group col-md-12">
-        <div class="col-md-4"
-             style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
-            <button id="btn_list_room_back" class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
-                Back
-            </button>
-        </div>
-    </div><?php
+<!--    <div class="form-group col-md-12">-->
+<!--        <div class="col-md-4"-->
+<!--             style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">-->
+<!--            <button id="btn_list_room_back" class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">-->
+<!--                Back-->
+<!--            </button>-->
+<!--        </div>-->
+<!--    </div>-->
+    <?php
     exit;
 endif;
 
