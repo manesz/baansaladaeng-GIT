@@ -40,21 +40,21 @@
                             if (!empty($url)) {
                                 ?>
                                 <section class="img_thumb"
-                                         style="margin: 0px; padding: 0px; height: 100%; overflow: hidden;">
+                                         style="margin: 0px; padding: 0px; height: auto; overflow: hidden;">
                                     <a href="<?php echo the_permalink(); ?>">
                                         <img class="col-md-12 alpha omega" alt="<?php the_title(); ?>"
-                                             src="<?php echo $url; ?>" style="width: 100%; height: 360px; top: -25%;"/>
+                                             src="<?php echo $url; ?>" style="width: auto; height: 360px; left: -15%;"/>
                                     </a>
                                 </section>
                             <?php
                             } else {
                                 ?>
                                 <section class="img_thumb"
-                                         style="margin: 0px; padding: 0px; width: 100%; height: 360px; overflow: hidden;">
+                                         style="margin: 0px; padding: 0px; width: auto; height: 360px; overflow: hidden;">
                                     <a href="<?php echo the_permalink(); ?>">
                                         <img class="col-md-12 alpha omega" alt="<?php the_title(); ?>"
                                              src="<?php echo get_template_directory_uri(); ?>/library/images/no-thumb.png"
-                                             style="width: 100%; top: -25%"/>
+                                             style="width: auto; left: -15%"/>
                                     </a>
                                 </section>
 
