@@ -68,7 +68,7 @@ class Booking_List extends WP_List_Table
                     'adults' => $value->adults,
                     'need_airport_pickup' => $value->need_airport_pickup ? 'YES' : 'NO',
 //                'price'=>number_format($value->total),
-                    'timeout' => $strShowTime,
+//                    'timeout' => $strShowTime,
                     'paid' => $strShowPaidField,
                     'pm_create_time' => $value->pm_create_time,
                     'edit' => $strEdit
@@ -173,7 +173,7 @@ class Booking_List extends WP_List_Table
             case 'check_out_date':
             case 'adults':
             case 'need_airport_pickup':
-            case 'timeout':
+//            case 'timeout':
             case 'paid':
             case 'pm_create_time':
             case 'edit':
@@ -217,7 +217,7 @@ class Booking_List extends WP_List_Table
             'check_out_date' => __('Check Out', 'mylisttable'),
             'adults' => __('Adults', 'mylisttable'),
             'need_airport_pickup' => __('Pickup', 'mylisttable'),
-            'timeout' => __('Time Out', 'mylisttable'),
+//            'timeout' => __('Time Out', 'mylisttable'),
             'paid' => __('Approve', 'mylisttable'),
             'pm_create_time' => __('Create time', 'mylisttable'),
             'edit' => __('Edit', 'mylisttable'),
@@ -532,12 +532,13 @@ class Booking_List extends WP_List_Table
                        value="<?php echo $paid; ?>" <?php echo $paid ? "checked" : ""; ?>
                        onclick="return setApprove(this, <?php echo $payment_id; ?>);"/>
             </td>
-            <td colspan="3"><label for="time_left">Time Left :</label>
+            <td colspan="3">
+<!--                <label for="time_left">Time Left :</label>-->
 
-                <div class="clock"></div>
+<!--                <div class="clock"></div>-->
             </td>
             <script type="text/javascript">
-                //                                var interval = setInterval(oneSecondFunction, 1000);
+                /*//                                var interval = setInterval(oneSecondFunction, 1000);
                 var paid = <?php echo $paid; ?>;
                 var time_left_hour = <?php echo $timeout; ?>;
                 var create_time = '<?php echo $create_time; ?>';
@@ -558,16 +559,16 @@ class Booking_List extends WP_List_Table
                         countdown: true,
                         clockFace: 'HourCounter'
                     });
-                }
+                }*/
             </script>
         </tr>
-        <tr>
-            <td><label for="time_out">Time Out :</label></td>
-            <td colspan="3">
-                <input type="text" id="time_out" name="time_out"
-                       value="<?php echo $timeout; ?>"/> Hour
-            </td>
-        </tr>
+<!--        <tr>-->
+<!--            <td><label for="time_out">Time Out :</label></td>-->
+<!--            <td colspan="3">-->
+<!--                <input type="text" id="time_out" name="time_out"-->
+<!--                       value="--><?php //echo $timeout; ?><!--"/> Hour-->
+<!--            </td>-->
+<!--        </tr>-->
         </tbody>
         </table>
         <input type="button" class="button-primary" value="Back"

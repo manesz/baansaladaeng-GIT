@@ -7,7 +7,7 @@ if (!window.jQuery) {
 }
 var $ = jQuery.noConflict();
 $(document).ready(function () {
-    oneSecondFunction();
+    //oneSecondFunction();
 });
 
 function postNeedAirportPickup(elm, bookingID) {
