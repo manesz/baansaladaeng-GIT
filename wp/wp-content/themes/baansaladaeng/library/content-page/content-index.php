@@ -39,7 +39,7 @@ get_template_part('nav', 'front'); ?>
             $urlThumbnail = $urlThumbnail ? $urlThumbnail : get_template_directory_uri() . '/library/images/no-thumb.png';
             ?>
             <div class="col-md-4 portfolio-work-grid wow bounceIn" data-wow-delay="0.4s">
-                <a href="<?php echo the_permalink(); ?>">
+                <a href="<?php the_permalink(); ?>">
                     <div class="portfolio-work-grid-pic" style="height: 300px; overflow: hidden;">
                         <img src="<?php echo $urlThumbnail; ?>" title="<?php the_title(); ?>"/>
                     </div>
@@ -84,7 +84,7 @@ get_template_part('nav', 'front'); ?>
                     ?>
                     <div class="col-md-4">
                         <div class="col-md-12 wow fadeIn border-1-ddd alpha omega" data-wow-delay="0.4s">
-                            <h3 class="padding-15"><a href="<?php echo the_permalink(); ?>"
+                            <h3 class="padding-15"><a href="<?php the_permalink(); ?>"
                                     ><?php the_title(); ?></a></h3>
                             <img src="<?php echo $urlThumbnail; ?>"
                                  class="alpha omega" style="width: 100%; height: auto;"/>
@@ -97,7 +97,7 @@ get_template_part('nav', 'front'); ?>
                                 $strContent = strlen($strContent) < strlen($excerptContent) ? $strContent . '...' : $strContent;
                                 echo $strContent;
                                 ?></p>
-                            <a href="<?php echo the_permalink(); ?>">
+                            <a href="<?php the_permalink(); ?>">
                                 <button
                                     class="col-md-12 alpha omega btn-service" style="">More information
                                 </button>

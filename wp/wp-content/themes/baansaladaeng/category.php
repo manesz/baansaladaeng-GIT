@@ -19,7 +19,7 @@
                             if(!empty($url)){
                                 ?>
                                 <section class="img_thumb" style="margin: 0px; padding: 0px; width: 100%; height: 250px; overflow: hidden;">
-                                    <a href="<?php echo the_permalink();?>">
+                                    <a href="<?php the_permalink();?>">
                                         <img class="col-md-12 alpha omega" alt="<?php the_title();?>" src="<?php echo $url;?>" style="width: 100%; top: -25%;"/>
                                     </a>
                                 </section>
@@ -27,7 +27,7 @@
                             } else {
                                 ?>
                                 <section class="img_thumb" style="margin: 0px; padding: 0px; width: 100%; height: 250px; overflow: hidden;">
-                                    <a href="<?php echo the_permalink();?>">
+                                    <a href="<?php the_permalink();?>">
                                         <img class="col-md-12 alpha omega" alt="<?php the_title();?>" src="<?php echo get_template_directory_uri();?>/library/images/no-thumb.png" style="width: 100%; top: -25%"/>
                                     </a>
                                 </section>
@@ -37,10 +37,10 @@
                             ?>
                         </div>
                         <div class="col-md-8 alpha omega content-thumb">
-                            <a href="<?php echo the_permalink();?>"><h3><?php the_title();?></h3></a>
+                            <a href="<?php the_permalink();?>"><h3><?php the_title();?></h3></a>
                             <?php the_excerpt(); ?>
                             <h3 class="col-md-8" style="margin-top: 0px; padding-top: 10px;">PRICE : 1,300 BAHT</h3>
-                            <a href="<?php echo the_permalink();?>">
+                            <a href="<?php the_permalink();?>">
                                 <div class="col-md-4 bg-ED2024" style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">RESERVATION</div>
                             </a>
                         </div><div class="clearfix"> </div>

@@ -920,7 +920,7 @@ h4 {
                             <tr>
                                 <td valign="top" class="leftColumnContent"
                                     mc:edit="left_column_content">
-                                    <h3><a href="<?php the_permalink(); ?>"><?php echo the_title(); ?></a></h3>
+                                    <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
 
                                     <p>Type: <?php echo $type; ?><br/>
                                         Size: <?php echo $size; ?> sq.mtrs<br/>

@@ -41,7 +41,7 @@
                                 ?>
                                 <section class="img_thumb"
                                          style="margin: 0px; padding: 0px; height: auto; overflow: hidden;">
-                                    <a href="<?php echo the_permalink(); ?>">
+                                    <a href="<?php the_permalink(); ?>">
                                         <img class="col-md-12 alpha omega" alt="<?php the_title(); ?>"
                                              src="<?php echo $url; ?>" style="width: auto; height: 360px; left: -15%;"/>
                                     </a>
@@ -51,7 +51,7 @@
                                 ?>
                                 <section class="img_thumb"
                                          style="margin: 0px; padding: 0px; width: auto; height: 360px; overflow: hidden;">
-                                    <a href="<?php echo the_permalink(); ?>">
+                                    <a href="<?php the_permalink(); ?>">
                                         <img class="col-md-12 alpha omega" alt="<?php the_title(); ?>"
                                              src="<?php echo get_template_directory_uri(); ?>/library/images/no-thumb.png"
                                              style="width: auto; left: -15%"/>
@@ -67,7 +67,7 @@
                                 style="width: auto; height: auto;"/>
                         </div>
                         <div class="col-md-6 alpha omega">
-                            <a href="<?php echo the_permalink(); ?>"><h3><?php the_title(); ?></h3></a>
+                            <a href="<?php the_permalink(); ?>"><h3><?php the_title(); ?></h3></a>
                             <?php //the_excerpt();
 
                             ?>
