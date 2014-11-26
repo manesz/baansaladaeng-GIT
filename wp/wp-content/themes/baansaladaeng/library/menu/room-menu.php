@@ -56,11 +56,11 @@ function room_register()
             ))); // portfolio categories
 }
 
-function admin_init()
+function admin_init_room()
 {
 //    add_meta_box("price-meta", "Price", "price", "room", "side", "low");
-    add_meta_box("room_option_meta", "Room Options", "credits_meta_room_option", "room", "normal", "low");
-    add_meta_box("room_gallery_meta", "Room Gallery", "credits_meta_room_gallery", "room", "normal", "low");
+    add_meta_box("room_option_meta", "Room Options", "meta_room_option", "room", "normal", "low");
+    add_meta_box("room_gallery_meta", "Room Gallery", "meta_room_gallery", "room", "normal", "low");
 }
 
 /*
@@ -75,18 +75,19 @@ function price()
 <?php
 }*/
 
-function credits_meta_room_gallery()
+function meta_room_gallery()
 {
     global $post;
-//    $custom = get_post_custom($post->ID);
+    $custom = get_post_custom($post->ID);
 //    $room_plan = $custom["room_plan"][0];
 //    $type = $custom["type"][0];
 //    $size = $custom["size"][0];
 //    $designer = $custom["designer"][0];
 //    $price = $custom["price"][0];
 //    $recommend_price = $custom["recommend_price"][0];
-//    $recommend = $custom["recommend"][0];
-//    $facilities = $custom["facilities"][0];
+//    $recommend = $custom[""][0];
+//    $facilities = $custom["room_image_gallery"][0];
+//    var_dump($facilities);
     ?>
     <label for="btn_upload_image">Image Gallery:</label><br/>
     <script type="text/javascript"
@@ -100,7 +101,7 @@ function credits_meta_room_gallery()
             type="button" value="Upload Image" class="button btn_upload_image" id="btn_upload_image"
             data-tbx-id="pathImg">
         <button id="imgaddlist" class="button-primary"><i class="icon-plus-2"></i> Add Image</button>
-    </div><?php $meta_values = get_post_meta($post->ID, 'room_image_gallery', true); ?>
+    </div><?php $meta_values = get_post_meta($post->ID, 'room_image_gallery', true);// var_dump($meta_values); ?>
     <div class="tabs-panel" id="imglist-stage" <?php if (!count($meta_values)){ ?>style="display:none"<?php } ?>>
         <ul id="sortable">
             <?php
@@ -134,7 +135,7 @@ function credits_meta_room_gallery()
 <?php
 }
 
-function credits_meta_room_option()
+function meta_room_option()
 {
     global $post;
     $custom = get_post_custom($post->ID);
@@ -158,13 +159,13 @@ function credits_meta_room_option()
             <td>
                 <select id="type" name="type">
                     <option value="">-- Select --</option>
-                    <option value="King size" <?php echo $type == "Double king size bed" ? "selected" : ""; ?>>Double
+                    <option value="Double king size bed" <?php echo $type == "Double king size bed" ? "selected" : ""; ?>>Double
                         king size bed
                     </option>
-                    <option value="Queen size" <?php echo $type == "Double queen size bed" ? "selected" : ""; ?>>Double
+                    <option value="Double queen size bed" <?php echo $type == "Double queen size bed" ? "selected" : ""; ?>>Double
                         queen size bed
                     </option>
-                    <option value="Twin" <?php echo $type == "Twin / Super king size bed" ? "selected" : ""; ?>>Twin /
+                    <option value="Twin / Super king size bed" <?php echo $type == "Twin / Super king size bed" ? "selected" : ""; ?>>Twin /
                         Super king size bed
                     </option>
                 </select>
@@ -265,7 +266,7 @@ function credits_meta_room_option()
                        type="checkbox" <?php echo @$arrayFacilities[9] ? 'checked' : ""; ?> /> PRIVATE BALCONY</br>
 -->
                 <script>
-                    $(".facilities").click(function () {
+                    jQuery.noConflict()(".facilities").click(function () {
                         var arrFacilities = [];
                         $(".facilities").each(function () {
                             if ($(this).prop('checked')) {
@@ -299,7 +300,7 @@ function credits_meta_room_option()
 function save_details()
 {
     global $post;
-
+//var_dump($_POST);exit;
     update_post_meta($post->ID, "room_plan", trim($_POST["room_plan"]));
     update_post_meta($post->ID, "type", trim($_POST["type"]));
     update_post_meta($post->ID, "size", trim($_POST["size"]));
@@ -385,7 +386,7 @@ register_taxonomy("Category", array("room"), array(
     "rewrite" => true
 ));
 
-add_action("admin_init", "admin_init");
+add_action("admin_init", "admin_init_room");
 
 global $post;
 $custom = get_post_custom($post->ID);
