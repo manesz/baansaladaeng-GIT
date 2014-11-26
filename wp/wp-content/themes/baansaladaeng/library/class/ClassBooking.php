@@ -54,14 +54,16 @@ class Booking
     public function getRoomByDateCheckInCheckOut($check_in, $check_out, $room_id = 0)
     {
         $strAnd = $room_id ? " AND a.room_id=$room_id" : "";
-        $strAnd .= $check_in == $check_out ?
-            " AND a.check_in_date='$check_in'
+        if ($check_in && $check_out) {
+            $strAnd .= $check_in == $check_out ?
+                " AND a.check_in_date='$check_in'
             AND a.check_out_date='$check_out'" :
-            " AND (
+                " AND (
                 a.`check_in_date`
                 AND a.`check_out_date` BETWEEN '$check_in'
                 AND '$check_out'
               )";
+        }
         $sql = "
             SELECT
               a.*,
@@ -118,6 +120,7 @@ class Booking
      */
     public function checkTimeOut($create_time, $time_out)
     {
+        return false;//ยกเลิก time out
         $dateNow = date_i18n("Y-m-d H:i:s");
         $timeDiff = abs(strtotime($dateNow) - strtotime($create_time));
         $numberHours = $timeDiff / (60 * 60);
@@ -455,7 +458,7 @@ class Booking
         }
         $post['payment_id'] = $payment_id;
         $post['room_name'] = $roomName;
-        $post['price'] = empty($recommend_price)? $roomPrice: $recommend_price;
+        $post['price'] = empty($recommend_price) ? $roomPrice : $recommend_price;
         $result = $this->bookingAdd($post);
         if (!$result)
             return false;
@@ -480,6 +483,7 @@ class Booking
             return false;
         return true;
     }
+
     function approveBookingRoom($post)
     {
         extract($post);
@@ -488,17 +492,17 @@ class Booking
         $current_user = wp_get_current_user();
         $objDataPayment = $this->bookingList($payment_id);
         $oldSetPaid = $objDataPayment[0]->set_paid_by;
-        $currentUserName = "paid=$set_paid:".$current_user->user_login;
+        $currentUserName = "paid=$set_paid:" . $current_user->user_login;
         $result = $this->wpdb->update(
             $this->tablePayment,
             array(
                 'update_time' => date_i18n('Y-m-d H:i:s'),
                 'paid_time' => date_i18n('Y-m-d H:i:s'),
-                'set_paid_by' => $oldSetPaid ? $oldSetPaid . "," . $currentUserName: $currentUserName,
+                'set_paid_by' => $oldSetPaid ? $oldSetPaid . "," . $currentUserName : $currentUserName,
                 'paid' => $set_paid
             ),
             array('id' => $payment_id),
-            array('%s','%s','%s', '%d'),
+            array('%s', '%s', '%s', '%d'),
             array('%d')
 
         );
