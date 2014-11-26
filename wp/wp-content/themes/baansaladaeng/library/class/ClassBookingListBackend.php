@@ -45,9 +45,7 @@ class Booking_List extends WP_List_Table
             }
             $strShowTime = '<div class="clock" date-create="' .
                 $value->create_time . '" timeout="' . $value->timeout . '" paid="' . $value->paid . '"></div>';
-            $strEdit = $this->check_add_payment ?
-                '<a href="?page=booking-list&booking-edit=true&id=' . $value->payment_id . '">Edit</a> |' :
-                "";
+            $strEdit = '<a href="?page=booking-list&booking-edit=true&id=' . $value->payment_id . '">Edit</a> |';
             $strDelete = '<a class="btn_delete_booking" href="#" pm-id="' . $value->payment_id . '">Delete</a> ';
             $checkAddData = false;
             if ($this->check_add_payment && $value->card_type != "" && $value->name != "") {
