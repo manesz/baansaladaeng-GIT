@@ -5,24 +5,7 @@ $sessionGet = @$_SESSION['array_reservation_order'];
 $objClassBooking = new Booking($wpdb);
 function convertMonth($str_date)
 {
-    $day = date_i18n('d', strtotime($str_date));
-    $monthNumber = date_i18n('m', strtotime($str_date));
-    $year = date_i18n('Y', strtotime($str_date));
-    $arrayMonth = array(
-        1 => "Janaury",
-        2 => "February",
-        3 => "March",
-        4 => "April",
-        5 => "May",
-        6 => "June",
-        7 => "July",
-        8 => "August",
-        9 => "September",
-        10 => "October",
-        11 => "November",
-        12 => "December",
-    );
-    return $day . ' ' . $arrayMonth[$monthNumber] . ' ' . $year;
+    return date_i18n('d F Y', strtotime($str_date));
 }
 
 $paymentID = empty($sessionGet['payment_id']) ? 0 : $sessionGet['payment_id'];

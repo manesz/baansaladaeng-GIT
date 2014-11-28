@@ -106,8 +106,8 @@ function oneSecondFunction() {
 }
 
 function setApprove(elm, paymentID) {
-    this.value = $(elm).prop('checked') ? 1 : 0;
-    var setPaid = this.value;
+    elm.value = $(elm).prop('checked') ? 1 : 0;
+    var setPaid = elm.value;
     if (setPaid) {
         if (!confirm('Approve customer payment.')){
             return false;

@@ -47,8 +47,20 @@ if ($_REQUEST) {
                 else echo "fail";
                 exit;
                 break;
+            case "add_array_booking" :
+                if ($objClassBooking->addArrayBooking($_REQUEST))
+                    echo "success";
+                else echo "fail";
+                exit;
+                break;
             case 'delete_room' :
                 if ($objClassBooking->deleteBookingRoom(@$_REQUEST['booking_id']))
+                    echo "success";
+                else echo "fail";
+                exit;
+                break;
+            case 'set_pickup' :
+                if ($objClassBooking->updateBookingTotal(@$_REQUEST['booking_id'], @$_REQUEST['set_pickup']))
                     echo "success";
                 else echo "fail";
                 exit;

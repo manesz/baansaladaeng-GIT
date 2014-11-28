@@ -62,6 +62,8 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
     /*}*/
 </style>
 <script>
+    var room_id = <?php the_ID(); ?>;
+    var date_now = "<?php echo date_i18n('Y-m-d')?>";
     var webUrl = "<?php echo get_site_url(); ?>/";
     var $jConflict = jQuery.noConflict();
     var obj_event =
@@ -81,9 +83,10 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
                 title: 'X',
                 start: '<?php echo $dateCheckIn; ?>',
                 end: '<?php echo $dateCheckOut; ?>',
-                backgroundColor: '#ED1317'
+                backgroundColor: '#FF0000'
 //                    allDay: true
                 //url: 'http://google.com/'
+//                className: ["event", "redEvent"]
             },
             <?php } endforeach; ?>
         ];
@@ -92,6 +95,16 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
         // $jConflict(".fancybox").fancybox();
     // });
 </script>
+<style>
+    .bg-select {
+        background-color: #1EECFF;
+    }
+    .bg-no-select {
+        background-color: #ffffff;
+    }.redEvent {
+         background-color:#FF0000;
+     }
+</style>
 <script type="text/javascript"
         src="<?php bloginfo('template_directory'); ?>/library/js/booking_room.js"></script>
 		
@@ -198,17 +211,19 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
         </div>
 		<div class="col-md-4 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
 			<div class="calendar" id="calendar"></div>
-			<form id="form_room_submit" method="post"
-				  action="<?php echo network_site_url('/') . "reservation"; ?>">
+			<!--<form id="form_room_submit" method="post"
+				  action="<?php echo network_site_url('/') . "reservation"; ?>">-->
 				<input type="hidden" value="true" name="booking_post"/>
 				<input type="hidden" value="1" name="step"/>
 				<input type="hidden" value="<?php echo $postID; ?>" name="room_id"/>
 				<input type="hidden" value="<?php the_title(); ?>" name="room_name"/>
+				<input type="hidden" value="" id="array_date" name="array_date"/>
 				<input type="hidden" value="" id="check_in_date" name="check_in_date"/>
 				<input type="hidden" value="" id="check_out_date" name="check_out_date"/>
-				<button class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">RESERVATION
+				<button onclick="postAddBooking();"
+                    class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">BOOKING NOW
 				</button>
-			</form>
+<!--			</form>-->
 		</div>
 	</div>
 </div>

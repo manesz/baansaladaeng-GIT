@@ -7,6 +7,7 @@ $checkInDate = @$_POST['check_in_date'] ? $_POST['check_in_date'] : '';
 $checkOutDate = @$_POST['check_out_date'] ? $_POST['check_out_date'] : '';
 $roomID = @$_POST['room_id'] ? $_POST['room_id'] : '0';
 $roomName = @$_POST['room_name'] ? $_POST['room_name'] : '';
+$showPayment = @$_REQUEST['payment'] ? $_REQUEST['payment'] : false;
 $payment_id = empty($arrayOrder) ? 0 : $arrayOrder['payment_id'];
 
 if ($payment_id) {
@@ -14,18 +15,20 @@ if ($payment_id) {
     $countOrder = $objDataBooking ? count($objDataBooking) : 0;
 } else
     $countOrder = 0;
+
 get_header();
 get_template_part('nav');
 ?>
     <script>
         var room_id = <?php echo $roomID; ?>;
+        var show_payment = <?php echo $showPayment ? "true"  : "false"; ?>;
         var web_url = '<?php echo network_site_url('/'); ?>';
         var count_order = <?php echo $countOrder;?>;
         var str_loading = '<div id="img_loading" style="position: absolute; top: 40%; left: 50%;"><img src="<?php bloginfo('template_directory'); ?>/library/images/loading.gif" width="64"/></div>';
     </script>
     <script type="text/javascript"
             src="<?php bloginfo('template_directory'); ?>/library/js/reservation.js"></script>
-    <div class="container"  style="padding-top: 50px;">
+    <div class="container" style="padding-top: 50px;">
     <div class="row">
 
     <h2 class="text-center margin-bottom-20">Reservation</h2>
@@ -35,7 +38,7 @@ get_template_part('nav');
     <!--                <h2 class="col-md-12">Select Rooms <span class="font-color-999 font-size-14">Mediterranean Suite</span> </h2>-->
     <ol class="breadcrumb" style="padding: 15px 0 15px 15px;">
         <?php //if (!$roomID): ?>
-            <li><a id="linkSelectRoom" href="#">ROOM SELECTION</a></li>
+        <li><a id="linkSelectRoom" href="#">ROOM SELECTION</a></li>
         <?php //endif; ?>
         <li><a id="linkSelectDate" href="#">SELECT DATES</a></li>
         <li><a id="linkPayment" href="#">PAYMENT</a></li>

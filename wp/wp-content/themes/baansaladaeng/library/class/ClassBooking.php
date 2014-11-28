@@ -87,10 +87,14 @@ class Booking
     public function checkRoom($post)
     {
         extract($post);
-        $dateCheckIn = DateTime::createFromFormat('d/m/Y', $check_in);
-        $dateCheckOut = DateTime::createFromFormat('d/m/Y', $check_out);
-        $checkIn = $dateCheckIn->format('Y-m-d');
-        $checkOut = $dateCheckOut->format('Y-m-d');
+        if (!preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{1}$/', $check_in)) {
+            $dateCheckIn = DateTime::createFromFormat('d/m/Y', $check_in);
+            $dateCheckOut = DateTime::createFromFormat('d/m/Y', $check_out);
+            $check_in = $dateCheckIn->format('Y-m-d');
+            $check_out = $dateCheckOut->format('Y-m-d');
+        }
+        $checkIn = date_i18n("Y-m-d", strtotime($check_in));
+        $checkOut = date_i18n("Y-m-d", strtotime($check_out));
         $dateNow = date_i18n("Y-m-d");
         if ($checkIn < $dateNow || $checkOut < $dateNow)
             return false;
@@ -120,7 +124,7 @@ class Booking
      */
     public function checkTimeOut($create_time, $time_out)
     {
-        return false;//ยกเลิก time out
+        return false; //ยกเลิก time out
         $dateNow = date_i18n("Y-m-d H:i:s");
         $timeDiff = abs(strtotime($dateNow) - strtotime($create_time));
         $numberHours = $timeDiff / (60 * 60);
@@ -134,39 +138,22 @@ class Booking
 
     public function bookingAdd($data)
     {
-//        $booking_date = date_i18n("Y-m-d", strtotime(@$booking_date));
-//        $need_airport_pickup = @$need_airport_pickup == "on" ? 1 : 0;
-//        if (!session_id())
-//            session_start();
-//        $arrayOrder = @$_SESSION['array_reservation_order'];
-        extract($data);
-        //check booking มีแล้วหรือยัง
-//        foreach ($arrayOrder as $value) {
         $roomID = @$data['room_id'];
         $roomName = @$data['room_name'];
         $arrivalDate = @$data['arrival_date'];
-        $arrivalDateConvert = DateTime::createFromFormat('d/m/Y', $arrivalDate);
         $departureDate = @$data['departure_date'];
-        $departureDateConvert = DateTime::createFromFormat('d/m/Y', $departureDate);
-        $result = $this->getRoomByDateCheckInCheckOut($arrivalDateConvert->format('Y-m-d'),
-            $departureDateConvert->format('Y-m-d'), $roomID);
+        $payment_id = @$data['payment_id'];
+        $price = @$data['price'];
+        $needAirportPickup = @$data['need_airport_pickup'];
+        $result = $this->getRoomByDateCheckInCheckOut($arrivalDate,
+            $departureDate, $roomID);
         if ($result) {
             return "Sorry, $roomName customer request.";
         }
-//        }
-//        foreach ($arrayOrder as $value) {
-        $payment_id = @$data['payment_id'];
-        $price = @$data['price'];
-        $arrivalDate = @$data['arrival_date'];
-        $needAirportPickup = @$data['need_airport_pickup'];
-        $arrivalDateConvert = DateTime::createFromFormat('d/m/Y', $arrivalDate);
-        $departureDate = @$data['departure_date'];
-        $departureDateConvert = DateTime::createFromFormat('d/m/Y', $departureDate);
-        $timeDiff = abs(strtotime($departureDateConvert->format('Y-m-d')) -
-            strtotime($arrivalDateConvert->format('Y-m-d')));
+        $timeDiff = abs(strtotime($departureDate) - strtotime($arrivalDate));
         $numberDays = $timeDiff / 86400;
         $numberDays = ceil($numberDays);
-        $total = ($numberDays + 1) * $price; //return "$total $price";
+        $total = ($numberDays + 1) * $price;
         $total += $needAirportPickup ? 1200 : 0;
 
         $result = $this->wpdb->insert(
@@ -174,8 +161,8 @@ class Booking
             array(
                 'room_id' => $roomID,
                 'payment_id' => $payment_id,
-                'check_in_date' => $arrivalDateConvert->format('Y-m-d'),
-                'check_out_date' => $departureDateConvert->format('Y-m-d'),
+                'check_in_date' => $arrivalDate,
+                'check_out_date' => $departureDate,
                 'need_airport_pickup' => $needAirportPickup,
                 'price' => $price,
                 'total' => $total,
@@ -199,8 +186,6 @@ class Booking
         if (!$result) {
             return 'fail';
         }
-//        }
-//        $_SESSION['array_reservation_order'] = array();
         return $result;
     }
 
@@ -412,6 +397,97 @@ class Booking
         return true;
     }
 
+    function groupArrayDate($array_date)
+    {
+        //$datearray = array("2013-05-05", "2013-05-06", "2013-05-07", "2013-05-08", "2013-06-19", "2013-06-20", "2013-06-21");
+//        asort($array_date);
+        $resultArray = array();
+        $index = -1;
+        $last = 0;
+        $out = "";
+        $arrSaveDate = array();
+        $arrDateSort1 = array();
+        $arrDateSort2 = array();
+
+        foreach ($array_date as $sort1) {
+            $expDate = explode('|', $sort1);
+            $arrDateSort1[] = date("Y-m-d", strtotime($expDate[0]));
+        }
+        asort($arrDateSort1);
+
+        foreach ($arrDateSort1 as $sort1) {
+            foreach($array_date as $sort2) {
+                $expDate = explode('|', $sort2);
+                if (date("Y-m-d", strtotime($expDate[0])) == $sort1) {
+                    $arrDateSort2[] = date("Y-m-d", strtotime($expDate[0])) . "|". date("Y-m-d", strtotime($expDate[1]));
+                }
+            }
+        }
+        $array_date = $arrDateSort2;
+        foreach ($array_date as $date) {
+            $expDate = explode('|', $date);
+            if ($expDate[0] == $expDate[1]) {
+                $ts = strtotime($expDate[0]);
+                if (false !== $ts) {
+                    $diff = $ts - $last;
+
+                    if ($diff > 86400) {
+                        $index = $index + 1;
+                        $resultArray[$index][] = $expDate[0];
+                    } elseif ($diff > 0) {
+                        $resultArray[$index][] = $expDate[0];
+                    } else {
+                        // Error! dates are not in order from small to large
+                    }
+                    $last = $ts;
+                }
+            } else {
+                $arrSaveDate[] = $date;
+            }
+        }
+        foreach ($resultArray as $a) {
+            if (count($a) > 1) {
+                $firstDate = $a[0];
+                $firstDateBits = explode('-', $firstDate);
+                $lastDate = $a[count($a) - 1];
+                $lastDateBits = explode('-', $lastDate);
+                /*
+                        if ($firstDateBits[1] === $lastDateBits[1]) {
+                            $out .= intval($firstDateBits[2]) . '-' . intval($lastDateBits[2]) . ' ' . date("m",strtotime($firstDate)) . ', ';
+                        } else {
+                            $out .= date("Y-m-d",strtotime($firstDate)) . '-' . date("Y-m-d",strtotime($lastDate)) . ', ';
+                        }*/
+                $arrSaveDate[] = $firstDate . "|" . $lastDate;
+            } else {
+                $arrSaveDate[] = $a[0] . "|" . $a[0];
+            }
+        }
+        return $arrSaveDate;
+    }
+
+    function addArrayBooking($post)
+    {
+        if (!@$post['array_booking'] || !@$post['room_id'])
+            return false;
+        if ($post['array_booking']) {
+            $newGroupDate = $this->groupArrayDate($post['array_booking']);
+
+            foreach ($newGroupDate as $key => $value) {
+                $expDate = explode('|', $value);
+                $checkInDate = $expDate[0];
+                $checkOutDate = $expDate[1];
+                $post['arrival_date'] = $checkInDate;
+                $post['departure_date'] = $checkOutDate;
+                $post['need_airport_pickup'] = 0;
+                $result = $this->addSessionOrder($post);
+                if ($result != true) {
+                    return $result;
+                }
+            }
+        }
+        return true;
+    }
+
     function addSessionOrder($post)
     {
 //        $arrayOrder = @$_SESSION['array_reservation_order'];
@@ -459,6 +535,17 @@ class Booking
         $post['payment_id'] = $payment_id;
         $post['room_name'] = $roomName;
         $post['price'] = empty($recommend_price) ? $roomPrice : $recommend_price;
+
+        $arrivalDate = @$post['arrival_date'];
+        $departureDate = @$post['departure_date'];
+        if (!preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{1}$/', $arrivalDate)) {
+            $dateCheckIn = DateTime::createFromFormat('d/m/Y', $arrivalDate);
+            $dateCheckOut = DateTime::createFromFormat('d/m/Y', $departureDate);
+            $arrivalDate = $dateCheckIn->format('Y-m-d');
+            $departureDate = $dateCheckOut->format('Y-m-d');
+        }
+        $post['arrival_date'] = $arrivalDate;
+        $post['departure_date'] = $departureDate;
         $result = $this->bookingAdd($post);
         if (!$result)
             return false;

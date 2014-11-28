@@ -6,6 +6,10 @@ $sessionGet = @$_SESSION['array_reservation_order'];
 $subTotal = 0;
 $paymentID = empty($sessionGet['payment_id']) ? 0 : $sessionGet['payment_id'];
 $arrayOrder = $paymentID ? $objClassBooking->bookingList($paymentID) : null;
+$arrayOrder = $arrayOrder ? $arrayOrder : null;
+if (!$arrayOrder) {
+    $_SESSION['array_reservation_order'] = null;
+}
 ?>
 <script>
     count_order = <?php echo $arrayOrder ? count($arrayOrder) + 1 : 1; ?>;
@@ -73,15 +77,26 @@ $arrayOrder = $paymentID ? $objClassBooking->bookingList($paymentID) : null;
                 </tr>
                 <tr>
                     <td style="width: 80%">Adults :</td>
-                    <td style="width: 20%"><?php echo @$value->adults; ?></td>
+                    <td style="width: 20%">
+                        <select>
+                            <option value="1" <?php echo @$value->adults==1? "selected":""; ?>>1</option>
+                            <option value="2" <?php echo @$value->adults==2? "selected":""; ?>>2</option>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <td style="width: 80%"><?php echo $roomName; ?></td>
                     <td style="width: 20%"><?php echo $priceFormat; ?> ฿</td>
                 </tr>
                 <tr>
-                    <td style="width: 80%">Need Airport Pickup</br>(THB 1,200 one way) :</td>
-                    <td style="width: 20%"><?php echo $needAirportPickup ? "Yes" : "No"; ?></td>
+                    <td style="width: 80%">
+                        Need Airport Pickup</br>(THB 1,200 one way) :</td>
+                    <td style="width: 20%">
+                        <select onchange="setPickup(<?php echo $value->booking_id; ?>, this);">
+                            <option value="0" <?php echo !$needAirportPickup? "selected":""; ?>>No</option>
+                            <option value="1" <?php echo $needAirportPickup? "selected":""; ?>>Yes</option>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <td style="width: 80%; font-weight: bold;">TOTAL :</td>

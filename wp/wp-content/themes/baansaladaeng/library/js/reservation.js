@@ -1,33 +1,4 @@
-$(document).ready(function () {
-    getOrder();
-    getRoom();
-    if (room_id){
-        $('#list_room').hide();
-        $('#section_select_date').show();
-        $('#section_payment').hide();
-        $('#section_confirm_order').hide();
-    }else {
-        showSelectRoom();
-    }
 
-    $('#linkSelectRoom').click(function () {
-        showSelectRoom();
-        return false;
-    });
-    $(document).on("click", "#linkPayment, .btn_payment", function (e) {
-        showPayment();
-        return false;
-    });
-
-    $("#btn_step1").click(function (e) {
-    });
-
-
-    $(document).on("click", ".btn_choose", function (e) {
-        $("#reservation_order").fadeOut();
-        getOrder();
-    });
-});
 $(document).on("click", '#linkSelectDate, #btn_list_room_back', function () {
     showSelectDate();
     return false;
@@ -107,6 +78,8 @@ function chooseRoom(id, name) {
     $('#section_payment').hide();
     $('#section_confirm_order').hide();
     $('#section_select_date').fadeIn();
+    $('#arrival_date').focus();
+    scrollToTop();
 }
 
 function showSelectRoom() {
@@ -272,6 +245,12 @@ function step1Click() {
     return false;
 }
 
+function clearSelectRoom() {
+    $("#room_name").val('');
+    $("#adult").val('1');
+    room_id = 0;
+}
+
 function getRoom() {
     $.ajax({
         type: "POST",
@@ -313,16 +292,14 @@ function addOrder(roomID) {
                     //
                     getOrder();
                     getRoom();
-                    $("#room_name").val('');
-                    $("#adult").val('1');
-                    room_id = 0;
+                    clearSelectRoom();
                     showSelectRoom();
 //                    showPayment();
 //                    if (room_id) {
 //                        window.location.href = web_url + "reservation";
 //                    }
                 }
-                else alert('Fail');
+                else alert(data);
                 check_add_room = false;
             },
             error: function (result) {
@@ -434,6 +411,39 @@ function deleteOrder(bookingId) {
     check_delete_room = true;
     return true;
 }
+var check_set_pickup = false;
+function setPickup(bookingId, elm) {
+    var setPickup = $(elm).val();
+    if (!check_set_pickup) {
+            showImgLoading();
+            $.ajax({
+                type: "POST",
+                url: '',
+                data: {
+                    booking_post: 'true',
+                    reservation_post: 'set_pickup',
+                    booking_id: bookingId,
+                    set_pickup: setPickup
+                },
+                success: function (data) {
+                    hideImgLoading();
+                    if (data == 'success')
+                        getOrder();
+                    else alert(data);
+                    check_set_pickup = false;
+                },
+                error: function (result) {
+                    hideImgLoading();
+                    alert("Error:\n" + result.responseText);
+                }
+            });
+        } else {
+            return true;
+
+    }
+    check_set_pickup = true;
+    return true;
+}
 
 function showImgLoading() {
     $("body").append(str_loading);
@@ -454,3 +464,36 @@ function scrollToTop(fade_in) {
                 $(fade_in).fadeIn();
         });
 }
+
+$(document).ready(function () {
+    getOrder();
+    getRoom();
+    if (show_payment) {
+        showPayment();
+    } else if (room_id){
+        $('#list_room').hide();
+        $('#section_select_date').show();
+        $('#section_payment').hide();
+        $('#section_confirm_order').hide();
+    }else {
+        showSelectRoom();
+    }
+
+    $('#linkSelectRoom').click(function () {
+        showSelectRoom();
+        return false;
+    });
+    $(document).on("click", "#linkPayment, .btn_payment", function (e) {
+        showPayment();
+        return false;
+    });
+
+    $("#btn_step1").click(function (e) {
+    });
+
+
+    $(document).on("click", ".btn_choose", function (e) {
+        $("#reservation_order").fadeOut();
+        getOrder();
+    });
+});
