@@ -101,7 +101,7 @@ function meta_room_gallery()
             type="button" value="Upload Image" class="button btn_upload_image" id="btn_upload_image"
             data-tbx-id="pathImg">
         <button id="imgaddlist" class="button-primary"><i class="icon-plus-2"></i> Add Image</button>
-    </div><?php $meta_values = get_post_meta($post->ID, 'room_image_gallery', true);// var_dump($meta_values); ?>
+    </div><?php $meta_values = get_post_meta($post->ID, 'room_image_gallery', true); // var_dump($meta_values); ?>
     <div class="tabs-panel" id="imglist-stage" <?php if (!count($meta_values)){ ?>style="display:none"<?php } ?>>
         <ul id="sortable">
             <?php
@@ -144,7 +144,7 @@ function meta_room_option()
     $size = $custom["size"][0];
     $designer = $custom["designer"][0];
     $price = $custom["price"][0];
-    $recommend_price = $custom["recommend_price"][0];
+    $recommend_price = get_post_meta($post->ID, 'recommend_price', true);;
     $recommend = $custom["recommend"][0];
     $facilities = $custom["facilities"][0];
     ?>
@@ -159,13 +159,19 @@ function meta_room_option()
             <td>
                 <select id="type" name="type">
                     <option value="">-- Select --</option>
-                    <option value="Double king size bed" <?php echo $type == "Double king size bed" ? "selected" : ""; ?>>Double
+                    <option
+                        value="Double king size bed" <?php echo $type == "Double king size bed" ? "selected" : ""; ?>>
+                        Double
                         king size bed
                     </option>
-                    <option value="Double queen size bed" <?php echo $type == "Double queen size bed" ? "selected" : ""; ?>>Double
+                    <option
+                        value="Double queen size bed" <?php echo $type == "Double queen size bed" ? "selected" : ""; ?>>
+                        Double
                         queen size bed
                     </option>
-                    <option value="Twin / Super king size bed" <?php echo $type == "Twin / Super king size bed" ? "selected" : ""; ?>>Twin /
+                    <option
+                        value="Twin / Super king size bed" <?php echo $type == "Twin / Super king size bed" ? "selected" : ""; ?>>
+                        Twin /
                         Super king size bed
                     </option>
                 </select>
@@ -186,9 +192,66 @@ function meta_room_option()
             </td>
         </tr>
         <tr>
-            <td><label for="recommend_price">Recommended Price:</label></td>
-            <td><input id="price" name="recommend_price" maxlength="15"
-                       value="<?php echo $recommend_price; ?>"/> THB/night (Incl Breakfast)
+            <td valign="top"><label for="recommend_price">Recommended Price:</label></td>
+            <td>
+
+                <?php if (empty($recommend_price)) {
+                    for ($i = 0; $i < 12; $i++) {
+                        $recommend_price[] = '';
+                    }
+                }
+                ?>
+                <?php ?>
+                <table>
+                        <tr>
+                            <td>January</td>
+                            <td><input id="price" name="recommend_price[]" maxlength="15"
+                                       value="<?php echo $recommend_price[0]; ?>"/></td>
+                            <td>February</td>
+                            <td><input id="price" name="recommend_price[]" maxlength="15"
+                                       value="<?php echo $recommend_price[1]; ?>"/></td>
+                        </tr>
+                        <tr>
+                            <td>March</td>
+                            <td><input id="price" name="recommend_price[]" maxlength="15"
+                                       value="<?php echo $recommend_price[2]; ?>"/></td>
+                            <td>April</td>
+                            <td><input id="price" name="recommend_price[]" maxlength="15"
+                                       value="<?php echo $recommend_price[3]; ?>"/></td>
+                        </tr>
+                        <tr>
+                            <td>May</td>
+                            <td><input id="price" name="recommend_price[]" maxlength="15"
+                                       value="<?php echo $recommend_price[4]; ?>"/></td>
+                            <td>June</td>
+                            <td><input id="price" name="recommend_price[]" maxlength="15"
+                                       value="<?php echo $recommend_price[5]; ?>"/></td>
+                        </tr>
+                        <tr>
+                            <td>July</td>
+                            <td><input id="price" name="recommend_price[]" maxlength="15"
+                                       value="<?php echo $recommend_price[6]; ?>"/></td>
+                            <td>August</td>
+                            <td><input id="price" name="recommend_price[]" maxlength="15"
+                                       value="<?php echo $recommend_price[7]; ?>"/></td>
+                        </tr>
+                        <tr>
+                            <td>September</td>
+                            <td><input id="price" name="recommend_price[]" maxlength="15"
+                                       value="<?php echo $recommend_price[8]; ?>"/></td>
+                            <td>October</td>
+                            <td><input id="price" name="recommend_price[]" maxlength="15"
+                                       value="<?php echo $recommend_price[9]; ?>"/></td>
+                        </tr>
+                        <tr>
+                            <td>November</td>
+                            <td><input id="price" name="recommend_price[]" maxlength="15"
+                                       value="<?php echo $recommend_price[10]; ?>"/></td>
+                            <td>December</td>
+                            <td><input id="price" name="recommend_price[]" maxlength="15"
+                                       value="<?php echo $recommend_price[11]; ?>"/></td>
+                        </tr>
+                </table>
             </td>
         </tr>
         <tr>
@@ -306,8 +369,8 @@ function save_details()
     update_post_meta($post->ID, "size", trim($_POST["size"]));
     update_post_meta($post->ID, "designer", trim($_POST["designer"]));
     update_post_meta($post->ID, "price", trim($_POST["price"]));
-    update_post_meta($post->ID, "recommend_price", trim($_POST["recommend_price"]));
-    update_post_meta($post->ID, "recommend", trim($_POST["recommend"]));
+    update_post_meta($post->ID, "recommend_price", $_POST["recommend_price"]);
+    update_post_meta($post->ID, "recommend", $_POST["recommend"]);
     update_post_meta($post->ID, "facilities", $_POST['facilities']);
 //    update_post_meta($post->ID, "designers", $_POST["designers"]);
 //    update_post_meta($post->ID, "developers", $_POST["developers"]);
