@@ -99,6 +99,71 @@ $dateNow = date_i18n("Y-m-d");
                     ?>
                 </p>
             </div>
+
+            <div class="col-md-12 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
+                <h2 class="text-center margin-bottom-20">NEWS</h2>
+                <hr/>
+                <div id="sectionRoom">
+                    <?php
+                    $args = array(
+                        'category_name' => 'news',
+                        'posts_per_page' => -1
+                    );
+                    $loop = new WP_Query($args);
+                    if ($loop->have_posts()): while ($loop->have_posts()) : $loop->the_post();
+                        ?>
+                        <div class="col-md-12 alpha omega bg-fafafa clearfix margin-bottom-20 wow fadeInRight"
+                             style="min-height: 250px;">
+                            <div class="col-md-4 alpha omega">
+                                <?php
+                                $postID = get_the_id();
+                                $url = wp_get_attachment_url(get_post_thumbnail_id($postID));
+
+
+                                if (!empty($url)) {
+                                    ?>
+                                    <section class="img_thumb"
+                                             style="margin: 0px; padding: 0px; height: auto; overflow: hidden;">
+                                        <a href="<?php the_permalink(); ?>">
+                                            <img class="col-md-12 alpha omega" alt="<?php the_title(); ?>"
+                                                 src="<?php echo $url; ?>" style="width: auto; height: 360px; left: -15%;"/>
+                                        </a>
+                                    </section>
+                                <?php
+                                } else {
+                                    ?>
+                                    <section class="img_thumb"
+                                             style="margin: 0px; padding: 0px; width: auto; height: 360px; overflow: hidden;">
+                                        <a href="<?php the_permalink(); ?>">
+                                            <img class="col-md-12 alpha omega" alt="<?php the_title(); ?>"
+                                                 src="<?php echo get_template_directory_uri(); ?>/library/images/no-thumb.png"
+                                                 style="width: auto; left: -15%"/>
+                                        </a>
+                                    </section>
+
+                                <?php
+                                }
+                                ?>
+                            </div>
+
+                            <div class="col-md-6 alpha omega"><h3><?php the_title(); ?></h3>
+                                <p class="font-12 padding-10" style="">
+                                    <?php the_content(); ?>
+                                </p>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    <?php
+//                    endfor;
+                    endwhile;
+                    else:
+                        echo "No data.";
+                    endif;
+                    ?>
+                </div>
+                <div class="clearfix"></div>
+            </div>
         </div>
     </div>
 <?php get_footer(); ?>
