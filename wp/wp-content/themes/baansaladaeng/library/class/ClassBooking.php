@@ -87,11 +87,18 @@ class Booking
     public function checkRoom($post)
     {
         extract($post);
-        if (!preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{1}$/', $check_in)) {
-            $dateCheckIn = DateTime::createFromFormat('d/m/Y', $check_in);
-            $dateCheckOut = DateTime::createFromFormat('d/m/Y', $check_out);
-            $check_in = $dateCheckIn->format('Y-m-d');
-            $check_out = $dateCheckOut->format('Y-m-d');
+//        if (!preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{1}$/', $check_in)) {
+//            $dateCheckIn = explode('/', $check_in);//DateTime::createFromFormat('d/m/Y', $check_in);
+//            $dateCheckOut = explode('/', $check_out);
+//            echo $check_in = $dateCheckIn[2] . "-".$dateCheckIn[1] . "-".$dateCheckIn[0];
+//            $check_out = $dateCheckOut[2] . "-".$dateCheckOut[1] . "-".$dateCheckOut[0];
+//        }
+        list($dd,$mm,$yyyy) = explode('/',$check_in);
+        if (checkdate($mm,$dd,$yyyy)) {
+            $dateCheckIn = explode('/', $check_in);//DateTime::createFromFormat('d/m/Y', $check_in);
+            $dateCheckOut = explode('/', $check_out);
+            $check_in = $dateCheckIn[2] . "-".$dateCheckIn[1] . "-".$dateCheckIn[0];
+            $check_out = $dateCheckOut[2] . "-".$dateCheckOut[1] . "-".$dateCheckOut[0];
         }
         $checkIn = date_i18n("Y-m-d", strtotime($check_in));
         $checkOut = date_i18n("Y-m-d", strtotime($check_out));
