@@ -13,7 +13,7 @@ require_once('menu/theme-option-menu.php');
 //theme option menu
 require_once('menu/banner-slide-menu.php');
 require_once('menu/booking-room-menu.php');
-require_once('menu/booking-room-na-menu.php');
+//require_once('menu/booking-room-na-menu.php');
 require_once('menu/contact-menu.php');
 require_once('menu/image-gallery-menu.php');
 

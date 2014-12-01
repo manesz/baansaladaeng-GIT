@@ -47,14 +47,14 @@ class Booking_List extends WP_List_Table
                 $value->create_time . '" timeout="' . $value->timeout . '" paid="' . $value->paid . '"></div>';
             $strEdit = '<a href="?page=booking-list&booking-edit=true&id=' . $value->payment_id . '">Edit</a> |';
             $strDelete = '<a class="btn_delete_booking" href="#" pm-id="' . $value->payment_id . '">Delete</a> ';
-            $checkAddData = false;
-            if ($this->check_add_payment && $value->card_type != "" && $value->name != "") {
-                $checkAddData = true;
-            }
-            if (!$this->check_add_payment && $value->card_type == "" && $value->name == "") {
-                $checkAddData = true;
-            }
-            if ($checkAddData)
+//            $checkAddData = false;
+//            if ($this->check_add_payment && $value->card_type != "" && $value->name != "") {
+//                $checkAddData = true;
+//            }
+//            if (!$this->check_add_payment && $value->card_type == "" && $value->name == "") {
+//                $checkAddData = true;
+//            }
+//            if ($checkAddData)
                 $this->booking_data[] = array(
                     'id' => $value->id,
                     'count' => $value->payment_id,
@@ -70,7 +70,7 @@ class Booking_List extends WP_List_Table
                     'need_airport_pickup' => $value->need_airport_pickup ? 'YES' : 'NO',
 //                'price'=>number_format($value->total),
 //                    'timeout' => $strShowTime,
-                    'paid' => $strShowPaidField,
+//                    'paid' => $strShowPaidField,
                     'pm_create_time' => $value->pm_create_time,
                     'edit' => $strEdit . $strDelete,
                 );
@@ -175,7 +175,7 @@ class Booking_List extends WP_List_Table
             case 'adults':
             case 'need_airport_pickup':
 //            case 'timeout':
-            case 'paid':
+//            case 'paid':
             case 'pm_create_time':
             case 'edit':
                 return $item[$column_name];
@@ -219,7 +219,7 @@ class Booking_List extends WP_List_Table
             'adults' => __('Adults', 'mylisttable'),
             'need_airport_pickup' => __('Pickup', 'mylisttable'),
 //            'timeout' => __('Time Out', 'mylisttable'),
-            'paid' => __('Approve', 'mylisttable'),
+//            'paid' => __('Approve', 'mylisttable'),
             'pm_create_time' => __('Create time', 'mylisttable'),
             'edit' => __('Edit', 'mylisttable'),
         );
@@ -536,6 +536,7 @@ class Booking_List extends WP_List_Table
             </td>
         </tr>
         <tr>
+        <?php /* ?>
         <tr class="alternate">
             <td></td>
             <td colspan="3"><h3>Payment Approve</h3></td>
@@ -553,7 +554,7 @@ class Booking_List extends WP_List_Table
                 <!--                <div class="clock"></div>-->
             </td>
             <script type="text/javascript">
-                /*//                                var interval = setInterval(oneSecondFunction, 1000);
+                                              var interval = setInterval(oneSecondFunction, 1000);
                  var paid = <?php echo $paid; ?>;
                  var time_left_hour = <?php echo $timeout; ?>;
                  var create_time = '<?php echo $create_time; ?>';
@@ -574,9 +575,9 @@ class Booking_List extends WP_List_Table
                  countdown: true,
                  clockFace: 'HourCounter'
                  });
-                 }*/
+                 }
             </script>
-        </tr>
+        </tr> <?php */ ?>
         <!--        <tr>-->
         <!--            <td><label for="time_out">Time Out :</label></td>-->
         <!--            <td colspan="3">-->
