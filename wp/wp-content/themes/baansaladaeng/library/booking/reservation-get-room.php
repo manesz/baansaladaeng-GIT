@@ -64,7 +64,7 @@ if ($loopPostTypeRoom->have_posts()):
         $designer = @$customField["designer"][0];
         $price = number_format(@$customField["price"][0]);
         $recommend_price = get_post_meta($postID, 'recommend_price', true);
-        $recommend_price = is_array($recommend_price) ? @$recommend_price[date_i18n('m') - 1] : null;
+        $recommend_price = is_array($recommend_price) ? @$recommend_price[intval(date_i18n('m')) - 1] : null;
         $recommend_price = empty($recommend_price) ? null : number_format($recommend_price);
         ?>
         <div class="col-md-12 alpha bg-fafafa clearfix margin-bottom-20" style="height: 250px;">

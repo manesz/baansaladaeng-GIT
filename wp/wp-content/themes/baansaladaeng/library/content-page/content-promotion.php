@@ -1,5 +1,9 @@
-<?php get_header(); ?>
-<?php get_template_part('nav'); ?>
+<?php get_header();
+
+get_template_part('nav');
+
+$dateNow = date_i18n("Y-m-d");
+?>
     <style>
         table tr td {
             padding: 10px;
@@ -18,32 +22,44 @@
                     <tr>
                         <td style="width: 20%">Rate / Night</td>
                         <td style="width: 20%">Regular rate / night</td>
-                        <td style="width: 20%">Sep</td>
-                        <td style="width: 20%">Oct</td>
-                        <td style="width: 20%">Nov-Dec</td>
+                        <td style="width: 20%"><?php echo date_i18n("M", strtotime("+0 month", $dateNow))?></td>
+                        <td style="width: 20%"><?php echo date_i18n("M", strtotime("+1 month", $dateNow))?></td>
+                        <td style="width: 20%"><?php echo date_i18n("M", strtotime("+2 month", $dateNow))?></td>
                         <td style="width: 20%">REDERVATION</td>
                     </tr>
                     <?php $loopPostTypeRoom = new WP_Query(array(
-                        'post_type' => 'room',
+                        'post_type' => 'room', 'posts_per_page' => -1
                     ));
                     if ($loopPostTypeRoom->have_posts()):
                         while ($loopPostTypeRoom->have_posts()) : $loopPostTypeRoom->the_post();
                             $postID = get_the_id();
+                            $recommend_price = get_post_meta($postID, 'recommend_price', true);
+
+                            $checkShow = false;
+                            if (is_array($recommend_price)) {
+                                $recMonth1 = $recommend_price[intval(date_i18n('m') - 1)];
+                                $recMonth2 = $recommend_price[intval(date_i18n("m", strtotime("+0 month", $dateNow)))];
+                                $recMonth3 = $recommend_price[intval(date_i18n("m", strtotime("+1 month", $dateNow)))];
+                                $recMonth4 = $recommend_price[intval(date_i18n("m", strtotime("+2 month", $dateNow)))];
+                                if ($recMonth1 && $recMonth2 && $recMonth3 && $recMonth4)
+                                    $checkShow = true;
+                            }
+                            if ($checkShow) :
                             $customField = get_post_custom($postID);
                             $type = $customField["type"][0];
                             $size = $customField["size"][0];
                             $designer = $customField["designer"][0];
                             $price = number_format($customField["price"][0]);
-                            $recommend_price = $customField["recommend_price"][0];
-                            $recommend_price = empty($recommend_price)? null: number_format($customField["recommend_price"][0]);
+//                            $recommend_price = $customField["recommend_price"][0];
+//                            $recommend_price = empty($recommend_price)? null: number_format($customField["recommend_price"][0]);
 
                             ?>
                             <tr>
                                 <td style="width: 20%"><?php the_title(); ?></td>
-                                <td style="width: 20%"><?php echo $price; ?> THB</td>
-                                <td style="width: 20%">1,249 THB</td>
-                                <td style="width: 20%">1,249 THB</td>
-                                <td style="width: 20%">1,249 THB</td>
+                                <td style="width: 20%"><?php echo $recMonth1; ?> THB</td>
+                                <td style="width: 20%"><?php echo $recMonth2; ?> THB</td>
+                                <td style="width: 20%"><?php echo $recMonth3; ?> THB</td>
+                                <td style="width: 20%"><?php echo $recMonth4; ?> THB</td>
                                 <td style="width: 20%">
                                     <form class="form" method="post"
                                           action="<?php echo network_site_url('/') . "reservation"; ?>">
@@ -59,7 +75,8 @@
                                     </form>
                                 </td>
                             </tr>
-                        <?php endwhile;
+                        <?php endif;
+                            endwhile;
                     endif; ?>
                 </table>
                 </p>
