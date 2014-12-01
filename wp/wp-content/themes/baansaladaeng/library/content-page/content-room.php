@@ -8,7 +8,7 @@
             <div id="sectionRoom">
                 <?php
                 $loop = new WP_Query(array('post_type' => 'room', 'posts_per_page' => -1));
-//                var_dump($loop);
+                //                var_dump($loop);
                 //                    $categories = get_the_category();
                 //                    $query = new WP_Query( 'posts_per_page= -1&cat='.$categories[0]->cat_ID );
                 //                    if( $query->have_posts() ): while ( $query->have_posts() ): $query->the_post();
@@ -27,8 +27,9 @@
                             $size = $customField["size"][0];
                             $designer = $customField["designer"][0];
                             $price = number_format($customField["price"][0]);
-                            $recommend_price = $customField["recommend_price"][0];
-                            $recommend_price = empty($recommend_price)? null: number_format($customField["recommend_price"][0]);
+                            $recommend_price = get_post_meta($postID, 'recommend_price', true);
+                            $recommend_price = is_array($recommend_price) ? @$recommend_price[date_i18n('m') - 1] : null;
+                            $recommend_price = empty($recommend_price) ? null : number_format($recommend_price);
 
                             $facilities = $customField["facilities"][0];
                             if (empty($facilities)) {
@@ -64,7 +65,7 @@
                         </div>
                         <div class="col-md-2 text-center" style="padding-top: 15px;">
                             <img src="<?php echo $room_plan; ?>"
-                                style="width: auto; height: auto;"/>
+                                 style="width: auto; height: auto;"/>
                         </div>
                         <div class="col-md-6 alpha omega">
                             <a href="<?php the_permalink(); ?>"><h3><?php the_title(); ?></h3></a>
@@ -75,7 +76,8 @@
                                 Type: <?php echo $type; ?><br/>
                                 Size: <?php echo $size; ?> sq.mtrs<br/>
                                 Designer: <?php echo $designer; ?><br/>
-                                Price: <?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night (Incl Breakfast)
+                                Price: <?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night (Incl
+                                Breakfast)
                             </p>
 
                             <p class="font-12 padding-10" style="">
@@ -144,8 +146,16 @@
                                 <?php endif; ?>
                             </p>
 
-                            <div class="col-md-8 alpha" style=""><h3 style="margin-top: 0px; padding-top: 10px;">PRICE
-                                    : <?php echo !$recommend_price ? $price : $recommend_price; ?> BAHT</h3></div>
+                            <div class="col-md-8 alpha" style="">
+                                <?php if ($recommend_price): ?>
+                                    <span style="margin-top: 0px; padding-top: 10px; font-size: 20px;">PRICE : <?php echo $price; ?> BAHT</span>
+                                    <h3 style="margin-top: 0px; padding-top: 10px; color: red; padding-left: 0;">PRICE :
+                                        <?php echo $recommend_price; ?> BAHT</h3>
+                                <?php else: ?>
+                                    <h3 style="margin-top: 0px; padding-top: 10px;">PRICE
+                                        : <?php echo $price; ?> BAHT</h3>
+                                <?php endif; ?>
+                            </div>
                             <!--                            <div class="col-md-4 bg-ED2024" style="text-align: center; padding: 10px 0 10px 0; color: #fff; cursor: pointer;"-->
                             <!--                                onclick="$('form #frm_content_room').submit();">RESERVATION</div>-->
 

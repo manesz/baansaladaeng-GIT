@@ -508,7 +508,8 @@ class Booking
 
         $roomName = @$posts[0]->post_title;
         $roomPrice = @$customField['price'][0];
-        $recommend_price = @$customField['recommend_price'][0];
+        $recommend_price = get_post_meta($roomID, 'recommend_price', true);
+        $recommend_price = is_array($recommend_price) ? @$recommend_price[date_i18n('m') - 1] : null;
 
 //        $arrivalDate = $post['arrival_date'];
 //        $departureDate = $post['departure_date'];

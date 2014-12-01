@@ -63,8 +63,9 @@ if ($loopPostTypeRoom->have_posts()):
         $size = @$customField["size"][0];
         $designer = @$customField["designer"][0];
         $price = number_format(@$customField["price"][0]);
-        $recommend_price = @$customField["recommend_price"][0];
-        $recommend_price = empty($recommend_price) ? 0 : number_format($recommend_price);
+        $recommend_price = get_post_meta($postID, 'recommend_price', true);
+        $recommend_price = is_array($recommend_price) ? @$recommend_price[date_i18n('m') - 1] : null;
+        $recommend_price = empty($recommend_price) ? null : number_format($recommend_price);
         ?>
         <div class="col-md-12 alpha bg-fafafa clearfix margin-bottom-20" style="height: 250px;">
             <div class="col-md-4 alpha omega">
@@ -93,8 +94,14 @@ if ($loopPostTypeRoom->have_posts()):
                 </p>
 
                 <div class="col-md-8 alpha" style="">
-                    <h3 style="margin-top: 0px; padding-top: 10px;">PRICE
-                        : <?php echo empty($recommend_price) ? $price : $recommend_price; ?> BAHT</h3>
+                    <?php if ($recommend_price): ?>
+                        <span style="margin-top: 0px; padding-top: 10px; font-size: 20px;">PRICE : <?php echo $price; ?> BAHT</span>
+                        <h3 style="margin-top: 0px; padding-top: 10px; color: red; padding-left: 0;">PRICE :
+                            <?php echo $recommend_price; ?> BAHT</h3>
+                    <?php else: ?>
+                        <h3 style="margin-top: 0px; padding-top: 10px;">PRICE
+                            : <?php echo $price; ?> BAHT</h3>
+                    <?php endif; ?>
                 </div>
                 <div class="col-md-4 bg-ED2024" onclick="chooseRoom(<?php echo $postID; ?>, '<?php the_title(); ?>');"
                      style="text-align: center; padding: 10px 0 10px 0; color: #fff; cursor: pointer;">

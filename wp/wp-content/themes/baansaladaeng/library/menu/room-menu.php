@@ -144,7 +144,7 @@ function meta_room_option()
     $size = $custom["size"][0];
     $designer = $custom["designer"][0];
     $price = $custom["price"][0];
-    $recommend_price = get_post_meta($post->ID, 'recommend_price', true);;
+    $recommend_price = get_post_meta($post->ID, 'recommend_price', true);
     $recommend = $custom["recommend"][0];
     $facilities = $custom["facilities"][0];
     ?>
