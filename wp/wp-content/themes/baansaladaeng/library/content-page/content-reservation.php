@@ -340,7 +340,6 @@ get_template_part('nav');
                 <div class="col-md-9 alpha omega">
                     <input type="text" maxlength="3" id="tree_digit_id" name="tree_digit_id"
                            class="form-control col-md-12"/>
-                    <span style="font-size: 10px; color: red;"></span>
                 </div>
             </div>
             <div class="col-md-12 margin-bottom-10 alpha omega">
@@ -362,6 +361,13 @@ get_template_part('nav');
                             echo $strY = strlen($strY) == 1 ? "0$strY" : $strY; ?>"><?php echo $i; ?></option>
                         <?php endfor; ?>
                     </select>
+                </div>
+            </div>
+            <div class="col-md-12 margin-bottom-10 alpha omega">
+                <div class="col-md-3 alpha"></div>
+                <div class="col-md-9 alpha omega">
+                    <label><input type="checkbox" id="term"/> Accept Term</label>
+                    <a target="_blank" style="color: blue;" href="<?php echo network_site_url('/term-and-condition'); ?>">Term</a>
                 </div>
             </div>
             <div class="col-md-12 margin-bottom-10 alpha omega">

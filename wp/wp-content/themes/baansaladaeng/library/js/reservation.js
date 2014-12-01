@@ -17,6 +17,7 @@ $(document).on("submit", "#form_credit_card_payment", function (e) {
         booking_post: 'true',
         reservation_post: 'add_booking'
     });
+    showImgLoading();
     $.ajax({
         type: "POST",
         url: '',
@@ -29,8 +30,10 @@ $(document).on("submit", "#form_credit_card_payment", function (e) {
                 alert(data);
                 data_post_payment = false;
             }
+            hideImgLoading();
         },
         error: function (result) {
+            hideImgLoading();
             alert("Error:\n" + result.responseText);
             data_post_payment = false;
         }
@@ -105,6 +108,7 @@ function showPayment() {
 }
 
 function postSendEmail(paymentID) {
+    showImgLoading();
     var email = $("#payment_email").val();
     $.ajax({
         type: "POST",
@@ -121,6 +125,7 @@ function postSendEmail(paymentID) {
             window.location.href = web_url + 'reservation';
         },
         error: function (result) {
+            hideImgLoading();
             alert("Error:\n" + result.responseText);
         }
     });
@@ -146,6 +151,9 @@ function validateFormCreditCard(elm) {
     } else if (elm.card_expiry_date1.value == "" || elm.card_expiry_date2.value == "") {
         alert("Please add Card Expiry Date.");
         elm.card_expiry_date1.focus();
+        return false;
+    } else if (!$("#term").prop('checked')) {
+        alert("Please accept term and condition.");
         return false;
     }
     return true;
