@@ -212,8 +212,8 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
         </div>
 		<div class="col-md-4 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
 			<div class="calendar" id="calendar"></div>
-			<!--<form id="form_room_submit" method="post"
-				  action="<?php echo network_site_url('/') . "reservation"; ?>">-->
+			<form id="form_room_submit" method="post"
+				  action="<?php echo network_site_url('/') . "reservation"; ?>">
 				<input type="hidden" value="true" name="booking_post"/>
 				<input type="hidden" value="1" name="step"/>
 				<input type="hidden" value="<?php echo $postID; ?>" name="room_id"/>
@@ -221,10 +221,10 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
 				<input type="hidden" value="" id="array_date" name="array_date"/>
 				<input type="hidden" value="" id="check_in_date" name="check_in_date"/>
 				<input type="hidden" value="" id="check_out_date" name="check_out_date"/>
-				<button onclick="postAddBooking();"
+				<button
                     class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">BOOKING NOW
 				</button>
-<!--			</form>-->
+			</form>
 		</div>
 	</div>
 </div>

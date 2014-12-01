@@ -63,8 +63,8 @@ if (!$arrayOrder) {
         ?>
         <li class="text-left" style="margin-top: 20px; padding: 10px; border-bottom: 1px #999 dashed;">
             <h5 class="pull-left" style="margin-top: 0px; font-weight: bold;">ROOM <?php echo $key + 1; ?></h5>
-            <span class="pull-right"><a href="#"
-                                        onclick="deleteOrder(<?php echo $value->booking_id; ?>);return false;" ">Delete</a></span>
+            <span class="pull-right"><a href="#" style="color: blue;"
+                                        onclick="deleteOrder(<?php echo $value->booking_id; ?>);return false;">Delete</a></span>
             <hr/>
             <table style="width: 100%">
                 <tr>

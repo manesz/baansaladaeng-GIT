@@ -24,7 +24,7 @@ get_template_part('nav');
         var show_payment = <?php echo $showPayment ? "true"  : "false"; ?>;
         var web_url = '<?php echo network_site_url('/'); ?>';
         var count_order = <?php echo $countOrder;?>;
-        var str_loading = '<div id="img_loading" style="position: absolute; top: 40%; left: 50%;"><img src="<?php bloginfo('template_directory'); ?>/library/images/loading.gif" width="64"/></div>';
+        var str_loading = '<div class="img_loading" style="position: absolute; top: 40%; left: 50%;"><img src="<?php bloginfo('template_directory'); ?>/library/images/loading.gif" width="64"/></div>';
     </script>
     <script type="text/javascript"
             src="<?php bloginfo('template_directory'); ?>/library/js/reservation.js"></script>
@@ -239,10 +239,13 @@ get_template_part('nav');
                     </div>
                 </div>
                 <div class="col-md-12 margin-bottom-10 alpha">
-                    <button type="submit" class="col-md-12 btn btn-success btn-lg"
+
+                    <div class="col-md-4"
+                         style="text-align: center; padding: 10px 0 10px 0; color: #fff; "><button type="submit" class="col-md-12 btn btn-success btn-lg"
                             style="border-radius: 0;">
                         SUBMIT
                     </button>
+                    </div>
                 </div>
 
             </div>
@@ -294,10 +297,10 @@ get_template_part('nav');
                 <td>No. of Person:</td>
                 <td id="confirm_no_of_person"></td>
             </tr>
-            <tr>
-                <td>require airport pickup:</td>
-                <td id="confirm_need_airport_pickup"></td>
-            </tr>
+<!--            <tr>-->
+<!--                <td>require airport pickup:</td>-->
+<!--                <td id="confirm_need_airport_pickup"></td>-->
+<!--            </tr>-->
             <tr>
                 <td>Note:</td>
                 <td id="confirm_note"></td>
@@ -371,9 +374,21 @@ get_template_part('nav');
                 </div>
             </div>
             <div class="col-md-12 margin-bottom-10 alpha omega">
-                <div class="col-md-12 alpha omega">
-                    <input type="submit" class="btn btn-success form-control col-md-12" value="SUBMIT">
+                <div class="col-md-4"
+                     style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
+                    <button onclick="showPayment();return false;"
+                            class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
+                        Back
+                    </button>
                 </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-4"
+                           style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
+                    <button type="submit" class="col-md-12 btn btn-success btn-lg"
+                            style="border-radius: 0;">
+                        SUBMIT
+                    </button>
+            </div>
             </div>
         </form>
     </div>

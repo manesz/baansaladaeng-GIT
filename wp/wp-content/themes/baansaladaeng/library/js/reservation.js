@@ -30,7 +30,6 @@ $(document).on("submit", "#form_credit_card_payment", function (e) {
                 alert(data);
                 data_post_payment = false;
             }
-            hideImgLoading();
         },
         error: function (result) {
             hideImgLoading();
@@ -51,23 +50,7 @@ $(document).on("submit", "#payment_post", function (e) {
     $('#list_room').hide();
     $('#section_payment').hide();
 
-    $("#section_confirm_order table").each(function () {
-        $('.confirm_summary_order', this).remove();
-    });
-    $("#section_confirm_order table").prepend($("#summary_order table tbody").html());
-
-    $('#confirm_name').html(this.payment_name.value);
-    $('#confirm_middle_name').html(this.payment_middle_name.value);
-    $('#confirm_last_name').html(this.payment_last_name.value);
-    $('#confirm_dob').html(this.payment_date_of_birth_1.value + "/" + this.payment_date_of_birth_2.value + "/" + this.payment_date_of_birth_3.value);
-    $('#confirm_passport_no').html(this.payment_passport_no.value);
-    $('#confirm_nationality').html(this.payment_nationality.value);
-    $('#confirm_email').html(this.payment_email.value);
-    $('#confirm_time').html(this.payment_est_arrival1.value + ":" + this.payment_est_arrival2.value + ":" + this.payment_est_arrival3.value);
-    $('#confirm_tel').html(this.payment_tel.value);
-    $('#confirm_no_of_person').html(this.payment_no_of_person.value);
-    $('#confirm_need_airport_pickup').html($('#payment_need_airport_pickup').prop('checked') ? '(YES)' : "(NO)");
-    $('#confirm_note').html(this.payment_note.value);
+    setSummaryConfirm();
     data_booking = $(this).serialize();
     return false;
 });
@@ -108,7 +91,6 @@ function showPayment() {
 }
 
 function postSendEmail(paymentID) {
-    showImgLoading();
     var email = $("#payment_email").val();
     $.ajax({
         type: "POST",
@@ -121,8 +103,12 @@ function postSendEmail(paymentID) {
             payment_id: paymentID
         },
         success: function (data) {
-            alert("Success\nCheck order your email.");
-            window.location.href = web_url + 'reservation';
+//            alert("Success\nCheck order your email.");
+            window.location.href = "#";
+
+            scrollToTop();
+            $(".row").html('<br/><br/><h2 style="color: #008000;">Success</h2><br/><h3>Check order your email.</h3>');
+            hideImgLoading();
         },
         error: function (result) {
             hideImgLoading();
@@ -260,6 +246,7 @@ function clearSelectRoom() {
 }
 
 function getRoom() {
+    showImgLoading();
     $.ajax({
         type: "POST",
         url: '',
@@ -271,9 +258,11 @@ function getRoom() {
         },
         success: function (data) {
             $("#list_room").html(data);
+            hideImgLoading();
         },
         error: function (result) {
             alert("Error:\n" + result.responseText);
+            hideImgLoading();
         }
     });
 }
@@ -371,6 +360,7 @@ function getOrder() {
 }
 
 function getSummaryOrder() {
+    showImgLoading();
     $.ajax({
         type: "POST",
         url: '',
@@ -380,11 +370,34 @@ function getSummaryOrder() {
         },
         success: function (data) {
             $("#summary_order").html(data);
+            setSummaryConfirm();
+            hideImgLoading();
         },
         error: function (result) {
             alert("Error:\n" + result.responseText);
+            hideImgLoading();
         }
     });
+}
+function setSummaryConfirm() {
+    var $this = document.getElementById("payment_post");
+    $("#section_confirm_order table").each(function () {
+        $('.confirm_summary_order', this).remove();
+    });
+    $("#section_confirm_order table").prepend($("#summary_order table tbody").html());
+
+    $('#confirm_name').html($this.payment_name.value);
+    $('#confirm_middle_name').html($this.payment_middle_name.value);
+    $('#confirm_last_name').html($this.payment_last_name.value);
+    $('#confirm_dob').html($this.payment_date_of_birth_1.value + "/" + $this.payment_date_of_birth_2.value + "/" + $this.payment_date_of_birth_3.value);
+    $('#confirm_passport_no').html($this.payment_passport_no.value);
+    $('#confirm_nationality').html($this.payment_nationality.value);
+    $('#confirm_email').html($this.payment_email.value);
+    $('#confirm_time').html($this.payment_est_arrival1.value + ":" + $this.payment_est_arrival2.value + ":" + $this.payment_est_arrival3.value);
+    $('#confirm_tel').html($this.payment_tel.value);
+    $('#confirm_no_of_person').html($this.payment_no_of_person.value);
+//    $('#confirm_need_airport_pickup').html($('#payment_need_airport_pickup').prop('checked') ? '(YES)' : "(NO)");
+    $('#confirm_note').html($this.payment_note.value);
 }
 
 var check_delete_room = false;
@@ -419,6 +432,7 @@ function deleteOrder(bookingId) {
     check_delete_room = true;
     return true;
 }
+
 var check_set_pickup = false;
 function setPickup(bookingId, elm) {
     var setPickup = $(elm).val();
@@ -434,11 +448,12 @@ function setPickup(bookingId, elm) {
                     set_pickup: setPickup
                 },
                 success: function (data) {
-                    hideImgLoading();
                     if (data == 'success')
                         getOrder();
                     else alert(data);
                     check_set_pickup = false;
+                    hideImgLoading();
+                    getSummaryOrder();
                 },
                 error: function (result) {
                     hideImgLoading();
@@ -454,11 +469,12 @@ function setPickup(bookingId, elm) {
 }
 
 function showImgLoading() {
+    scrollToTop();
     $("body").append(str_loading);
 }
 
 function hideImgLoading() {
-    $("#img_loading").remove();
+    $(".img_loading").remove();
 }
 
 function scrollToTop(fade_in) {

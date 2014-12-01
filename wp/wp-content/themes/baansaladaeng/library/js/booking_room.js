@@ -160,7 +160,10 @@ function removeBookingDate(checkIn, checkOut) {
 }
 
 $jConflict(document).on("submit", "#form_room_submit", function (e) {
-    this.array_date.value = array_booking_date;
+    if (array_booking_date.length > 0){
+        postAddBooking();
+        return false;
+    }
 });
 /*
  function checkDateRoom(elm) {
@@ -191,7 +194,6 @@ $jConflict(document).on("submit", "#form_room_submit", function (e) {
  }*/
 
 function checkDateInArray(start, end) {
-
     var check1 = new Date(start);
     var check2 = new Date(end);
     var dateNow = new Date(date_now);
@@ -257,6 +259,10 @@ function checkDateRoom(start, end, allDay, resourceId) {
 }
 
 function postAddBooking() {
+    if (array_booking_date.length == 0) {
+        window.location.href = webUrl + 'reservation'
+        return false;
+    }
     $jConflict.ajax({
         type: "POST",
         url: '',
