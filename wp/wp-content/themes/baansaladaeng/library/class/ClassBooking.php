@@ -45,6 +45,7 @@ class Booking
             WHERE 1
               AND a.`publish` = 1
               $strAnd
+              AND YEAR(a.create_time) >= YEAR(NOW())
             $strGroup
         ";
         $myrows = $this->wpdb->get_results($sql);
@@ -637,10 +638,9 @@ class Booking
         return true;
     }
 
-    function sendEmail($post, $message)
+    function sendEmail($post, $message, $subject)
     {
         $attachments = "";
-        $subject = "Order reservation: Baansaladang";
         $sendTo = $post['email'];
 
         $headers = "From: me@myblog.com";
