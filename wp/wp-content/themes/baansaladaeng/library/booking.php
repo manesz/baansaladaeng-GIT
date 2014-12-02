@@ -2,6 +2,7 @@
 require_once("class/ClassBooking.php");
 $objClassBooking = new Booking($wpdb);
 require_once("class/ClassBookingListBackend.php");
+$sendTo = 'ruxchuk@gmail.com'; //email info
 if ($_REQUEST) {
 
 //------------------------- Add Booking----------------------------//
@@ -96,11 +97,12 @@ if ($_REQUEST) {
 
                 add_filter('wp_mail_content_type', 'wp_mail_set_content_type');
                 ob_start();
-                require_once("booking/send_email.php");
+                require_once("content-email/booking_send_email.php");
                 $message = ob_get_contents();
                 ob_end_clean();
+                $subject = "Order reservation: Baansaladaeng";
                 if ($_REQUEST['status_send'] == 'true')
-                    echo $result = $objClassBooking->sendEmail($_REQUEST, $message);
+                    echo $result = $objClassBooking->sendEmail($_REQUEST, $message, $subject);
                 else {
                     echo $message;
                     exit;
@@ -130,19 +132,57 @@ if ($_REQUEST) {
 //------------------------- End Add Booking----------------------------//
     $getContactUsPost = @$_REQUEST['contact_us_send_email'];
     if ($getContactUsPost == true) {
-        $sendTo = 'ruxchuk@gmail.com';//email info
-        $subject = "Message contact us:" . $_REQUEST['send_name'];
-        ob_start();
-        $message = $_REQUEST['send_message'];
-        ?>
-        Massage form :<?php echo $_REQUEST['send_name']; ?>(<?php echo $_REQUEST['send_email']; ?>)
-        <?php echo $message;
-        $message = ob_get_contents();
-        ob_end_clean();
-        $result = wp_mail($sendTo, $subject, $message);
-        if ($result)
-            echo 'success';
-        else echo 'fail';
+        extract($_REQUEST);
+        if ($_SESSION['captcha_contact_us']['code'] != @$security_code) {
+            echo 'error_captcha';
+        } else {
+            function wp_mail_set_content_type()
+            {
+                return "text/html";
+            }
+
+            add_filter('wp_mail_content_type', 'wp_mail_set_content_type');
+            $subject = "Email Contact Us from $send_name";
+            ob_start();
+            require_once("content-email/contact_us_email.php");
+            $message = ob_get_contents();
+            ob_end_clean();
+            $result = wp_mail($sendTo, $subject, $message);
+            if ($result)
+                echo 'success';
+            else echo 'fail';
+        }
+        exit;
+    }
+
+
+    $getLongStayPost = @$_REQUEST['long_stay_post'];
+    if ($getLongStayPost == 'true') {
+        extract($_REQUEST);
+        if ($_SESSION['captcha_long_stay']['code'] != @$security_code) {
+            echo 'error_captcha';
+        } else {
+            function wp_mail_set_content_type()
+            {
+                return "text/html";
+            }
+
+            add_filter('wp_mail_content_type', 'wp_mail_set_content_type');
+            $subject = "Email Long Stay from $full_name";
+            ob_start();
+            require_once("content-email/long_stay_email.php");
+            $message = ob_get_contents();
+            ob_end_clean();
+            $attachments = "";
+            $headers = "From: $email";
+            $headers .= "MIME-Version: 1.0";
+            $headers .= "Content-Type: text/html; charset=UTF-8";
+            $result = wp_mail($sendTo, $subject, $message, $headers, $attachments);
+            if ($result)
+                echo 'success';
+            else echo 'fail';
+            exit;
+        }
         exit;
     }
 }
