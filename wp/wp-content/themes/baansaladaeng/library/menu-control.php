@@ -17,6 +17,11 @@ require_once('menu/booking-room-menu.php');
 require_once('menu/contact-menu.php');
 require_once('menu/image-gallery-menu.php');
 
+//Captcha
+require_once("class/simple-php-captcha-master/long-stay-captcha.php");
+require_once("class/simple-php-captcha-master/contact-us-captcha.php");
+
+
 
 
 //require_once('menu/room-category-menu.php');

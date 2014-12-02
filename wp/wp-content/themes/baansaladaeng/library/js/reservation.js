@@ -468,27 +468,6 @@ function setPickup(bookingId, elm) {
     return true;
 }
 
-function showImgLoading() {
-    scrollToTop();
-    $("body").append(str_loading);
-}
-
-function hideImgLoading() {
-    $(".img_loading").remove();
-}
-
-function scrollToTop(fade_in) {
-    fade_in = fade_in || false;
-    $("body, html").animate({
-            scrollTop: $("body").position().top
-        },
-        500,
-        function () {
-            if (fade_in)
-                $(fade_in).fadeIn();
-        });
-}
-
 $(document).ready(function () {
     getOrder();
     getRoom();

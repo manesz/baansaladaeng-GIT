@@ -112,6 +112,54 @@ $jConflict(document).ready(function () {
             }
         });
     }
+
+    $("#frm_long_stay").submit(function () {
+        $this = this;
+
+        var charCheck = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        var checkEmail = charCheck.test($this.email.value);
+        if ($this.full_name.value == '') {
+            alert("Please add your full name.");
+            $this.full_name.focus();
+        } else if ($this.email.value == "" || !checkEmail) {
+            alert("Please add your email.");
+            $this.email.focus();
+        } else if ($this.questions.value == "") {
+            alert("Please add your questions.");
+            $this.questions.focus();
+        } else if ($this.security_code.value == "") {
+            alert("Please add security code.");
+            $this.security_code.focus();
+        } else {
+            var data = $($this).serialize();
+            data += "&"+ $.param({
+                long_stay_post: 'true'
+            });
+            showImgLoading();
+            $jConflict.ajax({
+                type: "POST",
+                url: '',
+                data: data,
+                success: function (result) {
+                    if (result == 'error_captcha') {
+                        alert("Please check security code.");
+                        $this.security_code.focus();
+                    }else if(result == 'success') {
+                        alert("Send email success.");
+                        window.location.reload();
+                    } else {
+                        alert(result);
+                    }
+                    hideImgLoading();
+                },
+                error: function (result) {
+                    alert("Error:\n" + result.responseText);
+                    hideImgLoading();
+                }
+            });
+        }
+        return false;
+    });
 });
 
 var array_booking_date = [];
@@ -160,7 +208,7 @@ function removeBookingDate(checkIn, checkOut) {
 }
 
 $jConflict(document).on("submit", "#form_room_submit", function (e) {
-    if (array_booking_date.length > 0){
+    if (array_booking_date.length > 0) {
         postAddBooking();
         return false;
     }
@@ -229,6 +277,7 @@ function checkDateRoom(start, end, allDay, resourceId) {
         check_in: strDateCheckIn,
         check_out: strDateCheckOut
     };
+    showImgLoading();
     $jConflict.ajax({
         type: "POST",
         url: '',
@@ -251,9 +300,11 @@ function checkDateRoom(start, end, allDay, resourceId) {
                     true // make the event "stick"
                 );
             }
+            hideImgLoading();
         },
         error: function (result) {
             alert("Error:\n" + result.responseText);
+            hideImgLoading();
         }
     });
 }
@@ -263,6 +314,7 @@ function postAddBooking() {
         window.location.href = webUrl + 'reservation'
         return false;
     }
+    showImgLoading();
     $jConflict.ajax({
         type: "POST",
         url: '',
@@ -277,12 +329,14 @@ function postAddBooking() {
             if (data != 'success') {
                 //check_post_data = false;
                 alert(data);
+                hideImgLoading();
             } else {
                 window.location.href = webUrl + 'reservation?payment=true'
             }
         },
         error: function (result) {
             alert("Error:\n" + result.responseText);
+            hideImgLoading();
         }
     });
 }
