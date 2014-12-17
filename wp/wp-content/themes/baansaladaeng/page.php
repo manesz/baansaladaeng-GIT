@@ -23,8 +23,7 @@ if (have_posts()) :
         }   elseif (is_page('term-and-condition')) {
             get_template_part('library/content-page/content-term-and-condition', get_post_format());
         } else {
-//            get_template_part('post-formats/format', get_post_format());
-            //get_template_part('library/content-page/content-room-view', get_post_format());
+            get_template_part('library/content-page/content-single-page', get_post_format());
         }//END: if check not in category name
     endwhile;
 else :

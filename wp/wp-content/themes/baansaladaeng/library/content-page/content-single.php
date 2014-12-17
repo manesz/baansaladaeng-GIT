@@ -19,19 +19,7 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
         <!--            <h2 class="col-md-12">Room 601 <span class="font-color-999 font-size-14">Mediterranean Suite</span></h2>-->
         <h2 class="col-md-12"><?php the_title(); ?></h2>
         <hr class=""/>
-        <div class="portfolio-works col-md-12 margin-bottom-20">
-            <?php if ($arrayImageGallery) foreach ($arrayImageGallery as $value) {
-                ?>
-                <div class="col-md-4 portfolio-work-grid wow bounceIn" data-wow-delay="0.4s">
-                    <div class="portfolio-work-grid-pic">
-                        <img src="<?php echo $value; ?>"/>
-                    </div>
-                </div>
-            <?php } ?>
-
-            <div class="clearfix"></div>
-        </div>
-        <div class="text-center col-md-3 portfolio-work-grid wow bounceIn margin-bottom-20" data-wow-delay="0.4s">
+                <div class="text-center col-md-3 portfolio-work-grid wow bounceIn margin-bottom-20" data-wow-delay="0.4s">
             <div class="portfolio-work-grid-pic">
                 <img src="<?php echo $urlThumbnail; ?>"/>
             </div>
