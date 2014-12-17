@@ -28,6 +28,8 @@
                     get_template_part('library/content-page/content-room-view', get_post_format());
                 else if ($postType == 'service') {
                     get_template_part('library/content-page/content-service', get_post_format());
+                } else {
+                    get_template_part('library/content-page/content-single', get_post_format());
                 }
                 ?>
 
