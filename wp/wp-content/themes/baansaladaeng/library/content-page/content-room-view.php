@@ -135,10 +135,20 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
 
             <div class="clearfix"></div>
         </div>
+		<?php if (!$getLongStay): ?>
         <div class="col-md-2 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
             <img src="<?php echo $room_plan; ?>" style="width: auto; height: auto;"/>
         </div>
-        <div class="col-md-6 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
+		
+		<?php 
+			$colWidthMain = "col-md-6";
+			$colWidthRight = "col-md-4";
+			else:
+			$colWidthMain = "col-md-7";
+			$colWidthRight = "col-md-5";
+		?>
+		<?php endif;?>
+        <div class="<?php echo $colWidthMain; ?> wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
             <p>
             <table class="">
                 <tr>
@@ -219,7 +229,7 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
                 <?php endif; ?>
             </p>
         </div>
-        <div class="col-md-4 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
+        <div class="<?php echo $colWidthRight; ?> wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
             <?php if ($getLongStay):
                 $_SESSION['captcha_long_stay'] = long_stay_captcha();
                 ?>
@@ -276,11 +286,11 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
                         <div class="col-md-7 alpha omega">
                             <input type="text" maxlength="50" id="security_code" name="security_code"
                                    class="form-control col-md-12" autocomplete="off"/>
-                            <img class="col-md-12" src="<?php echo $_SESSION['captcha_long_stay']['image_src']; ?>" />
+                            <img class="col-md-12" style="margin-top: 20px; padding: 0;" src="<?php echo $_SESSION['captcha_long_stay']['image_src']; ?>" />
                         </div>
                     </div>
-                    <div class="col-md-12 margin-bottom-10 alpha">
-                        <div class="col-md-4"
+                    <div class="col-md-12 margin-bottom-10 alpha omega">
+                        <div class="col-md-12"
                              style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
                             <button type="submit" class="col-md-12 btn btn-success btn-lg"
                                     style="border-radius: 0;"> SUBMIT </button>

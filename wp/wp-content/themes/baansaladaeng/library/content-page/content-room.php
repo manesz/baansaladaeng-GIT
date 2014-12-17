@@ -32,7 +32,7 @@
                             $recommend_price = is_array($recommend_price) ? @$recommend_price[intval(date_i18n('m')) - 1] : null;
                             $recommend_price = empty($recommend_price) ? null : number_format($recommend_price);
 
-                            $facilities = isset($customField["facilities"][0])? $customField["price"][0]: null;
+                            $facilities = isset($customField["facilities"][0]) ? $customField["facilities"][0]: null;
                             if (empty($facilities)) {
                                 $arrayFacilities = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                             } else {
@@ -149,7 +149,7 @@
 
                             <div class="col-md-8 alpha" style="">
                                 <?php if ($recommend_price): ?>
-                                    <span style="margin-top: 0px; padding-top: 10px; font-size: 20px;">PRICE : <?php echo $price; ?> BAHT</span>
+                                    <span style="margin-top: 0px; padding-top: 10px; font-size: 20px;"><strike>PRICE : <?php echo $price; ?> BAHT</strike></span>
                                     <h3 style="margin-top: 0px; padding-top: 10px; color: red; padding-left: 0;">PRICE :
                                         <?php echo $recommend_price; ?> BAHT</h3>
                                 <?php else: ?>
