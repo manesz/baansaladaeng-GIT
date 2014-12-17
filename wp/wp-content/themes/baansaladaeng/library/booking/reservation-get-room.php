@@ -41,17 +41,14 @@ foreach ($arrayRoom as $value) {
 //    }
 //}
 */
-$argc = /*$arrayRoomID ? array(
-    'post__not_in' => $arrayRoomID,
+$argc = array(
     'post_type' => 'room',
+    'category_name' => 'guest-house',
     'post_status' => 'publish',
     'posts_per_page' => -1,
-//    'caller_get_posts' => 1
-) :*/
-    array('post_type' => 'room', 'posts_per_page' => -1);
-
+    'orderby' => 'modified',
+    'order' => 'ASC',);
 $loopPostTypeRoom = new WP_Query($argc);
-//if ($loopPostTypeRoom->have_posts() && $dateCheckIn->format('Y-m-d') >= $dateNow && $dateCheckOut->format('Y-m-d') >= $dateNow):
 if ($loopPostTypeRoom->have_posts()):
     while ($loopPostTypeRoom->have_posts()) : $loopPostTypeRoom->the_post();
         $postID = get_the_id();
