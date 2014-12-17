@@ -22,27 +22,41 @@ $dateNow = date_i18n("Y-m-d");
                     <tr>
                         <td style="width: 20%">Rate / Night</td>
                         <td style="width: 20%">Regular rate / night</td>
+                        <td style="width: 20%"><?php echo date_i18n("M", strtotime($dateNow))?></td>
                         <td style="width: 20%"><?php echo date_i18n("M", strtotime("+0 month", $dateNow))?></td>
                         <td style="width: 20%"><?php echo date_i18n("M", strtotime("+1 month", $dateNow))?></td>
-                        <td style="width: 20%"><?php echo date_i18n("M", strtotime("+2 month", $dateNow))?></td>
                         <td style="width: 20%">REDERVATION</td>
                     </tr>
-                    <?php $loopPostTypeRoom = new WP_Query(array(
-                        'post_type' => 'room', 'posts_per_page' => -1
-                    ));
+                    <?php
+                    $argc = array(
+                        'post_type' => 'room',
+                        'category_name' => 'guest-house',
+                        'post_status' => 'publish',
+                        'posts_per_page' => -1,
+                        'orderby' => 'modified',
+                        'order' => 'ASC',);
+                    $loop = new WP_Query($argc);
+                    $loopPostTypeRoom = new WP_Query($argc);
                     if ($loopPostTypeRoom->have_posts()):
                         while ($loopPostTypeRoom->have_posts()) : $loopPostTypeRoom->the_post();
                             $postID = get_the_id();
                             $recommend_price = get_post_meta($postID, 'recommend_price', true);
-
+                            $customField = get_post_custom($postID);
+                            $price = empty($customField["price"][0]) ? 0 : $customField["price"][0];
+                            $price = number_format($price);
                             $checkShow = false;
                             if (is_array($recommend_price)) {
                                 $recMonth1 = $recommend_price[intval(date_i18n('m') - 1)];
-                                $recMonth2 = $recommend_price[intval(date_i18n("m", strtotime("+0 month", $dateNow)))];
-                                $recMonth3 = $recommend_price[intval(date_i18n("m", strtotime("+1 month", $dateNow)))];
-                                $recMonth4 = $recommend_price[intval(date_i18n("m", strtotime("+2 month", $dateNow)))];
-                                if ($recMonth1 && $recMonth2 && $recMonth3 && $recMonth4)
+                                $recMonth2 = $recommend_price[intval(date_i18n('m') - 1)];
+                                $recMonth3 = $recommend_price[intval(date_i18n("m", strtotime("+0 month", $dateNow)))];
+                                $recMonth4 = $recommend_price[intval(date_i18n("m", strtotime("+1 month", $dateNow)))];
+                                if ($recMonth1 && $recMonth2 && $recMonth3 && $recMonth4) {
                                     $checkShow = true;
+                                    $recMonth1 = number_format($recMonth1);
+                                    $recMonth2 = number_format($recMonth2);
+                                    $recMonth3 = number_format($recMonth3);
+                                    $recMonth4 = number_format($recMonth4);
+                                }
                             }
                             if ($checkShow) :
                             $customField = get_post_custom($postID);
