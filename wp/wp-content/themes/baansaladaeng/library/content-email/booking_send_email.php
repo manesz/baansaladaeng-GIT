@@ -896,11 +896,13 @@ h4 {
                     if (!$urlThumbnail)
                         $urlThumbnail = get_template_directory_uri() . "/library/images/no-thumb.png";
                     $customField = get_post_custom($postID);
-                    $type = @$customField["type"][0];
-                    $size = @$customField["size"][0];
-                    $designer = @$customField["designer"][0];
-                    $price = number_format(@$customField["price"][0]);
-                    $recommend_price = number_format(@$customField["recommend_price"][0]);
+                    $type = isset($customField["type"][0]) ? $customField["type"][0]: '';
+                    $size = isset($customField["size"][0]) ? $customField["size"][0]: '';
+                    $designer = isset($customField["designer"][0]) ? $customField["designer"][0]: '';
+                    $price = isset($customField["price"][0]) ? $customField["price"][0]: 0;
+                    $price = number_format($price);
+                    $recommend_price = isset($customField["recommend_price"][0]) ? $customField["recommend_price"][0]: 0;
+                    $recommend_price = number_format($recommend_price);
                     ?>
                     <?php if ($countRoom % 2 == 0): ?>
                         <tr>

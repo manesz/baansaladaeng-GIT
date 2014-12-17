@@ -9,12 +9,14 @@ if ($loopPostTypeRoom->have_posts()):
         if (!$urlThumbnail)
             $urlThumbnail = get_template_directory_uri() . "/library/images/no-thumb.png";
         $customField = get_post_custom($postID);
-        $type = @$customField["type"][0];
-        $size = @$customField["size"][0];
-        $designer = @$customField["designer"][0];
-        $price = number_format(@$customField["price"][0]);
-        $recommend_price = @$customField["recommend_price"][0];
-        $recommend_price = empty($recommend_price) ? 0 : number_format($recommend_price);
+        $room_plan = isset($customField["room_plan"][0]) ? $customField["room_plan"][0]: '';
+        $type = isset($customField["type"][0]) ? $customField["type"][0]: '';
+        $size = isset($customField["size"][0]) ? $customField["size"][0]: '';
+        $designer = isset($customField["designer"][0]) ? $customField["designer"][0]: '';
+        $price = isset($customField["price"][0]) ? $customField["price"][0]: 0;
+        $price = number_format($price);
+        $recommend_price = isset($customField["recommend_price"][0]) ? $customField["recommend_price"][0]: 0;
+        $recommend_price = number_format($recommend_price);
         ?>
         <div class="col-md-12 alpha bg-fafafa clearfix margin-bottom-20" style="height: 250px;">
             <div class="col-md-4 alpha omega">

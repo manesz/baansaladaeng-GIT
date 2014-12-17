@@ -59,10 +59,12 @@ if ($loopPostTypeRoom->have_posts()):
         if (!$urlThumbnail)
             $urlThumbnail = get_template_directory_uri() . "/library/images/no-thumb.png";
         $customField = get_post_custom($postID);
-        $type = @$customField["type"][0];
-        $size = @$customField["size"][0];
-        $designer = @$customField["designer"][0];
-        $price = number_format(@$customField["price"][0]);
+        $room_plan = isset($customField["room_plan"][0]) ? $customField["room_plan"][0]: '';
+        $type = isset($customField["type"][0]) ? $customField["type"][0]: '';
+        $size = isset($customField["size"][0]) ? $customField["size"][0]: '';
+        $designer = isset($customField["designer"][0]) ? $customField["designer"][0]: '';
+        $price = isset($customField["price"][0]) ? $customField["price"][0]: 0;
+        $price = number_format($price);
         $recommend_price = get_post_meta($postID, 'recommend_price', true);
         $recommend_price = is_array($recommend_price) ? @$recommend_price[intval(date_i18n('m')) - 1] : null;
         $recommend_price = empty($recommend_price) ? null : number_format($recommend_price);
