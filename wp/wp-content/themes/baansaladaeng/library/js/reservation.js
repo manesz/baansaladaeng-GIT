@@ -27,8 +27,9 @@ $(document).on("submit", "#form_credit_card_payment", function (e) {
                 postSendEmail(data);
 //                window.location.href = web_url + 'reservation';
             } else {
-                alert(data);
+//                alert(data);
                 data_post_payment = false;
+                window.location.href = web_url + "reservation-error/";
             }
         },
         error: function (result) {
@@ -104,15 +105,16 @@ function postSendEmail(paymentID) {
         },
         success: function (data) {
 //            alert("Success\nCheck order your email.");
-            window.location.href = "#";
+            window.location.href = web_url + "reservation-success/";
 
-            scrollToTop();
-            $(".row").html('<br/><br/><h2 style="color: #008000;">Success</h2><br/><h3>Check order your email.</h3>');
+//            scrollToTop();
+//            $(".row").html('<br/><br/><h2 style="color: #008000;">Success</h2><br/><h3>Check order your email.</h3>');
             hideImgLoading();
         },
         error: function (result) {
-            hideImgLoading();
-            alert("Error:\n" + result.responseText);
+//            hideImgLoading();
+//            alert("Error:\n" + result.responseText);
+            window.location.href = web_url + "reservation-error/";
         }
     });
 }
