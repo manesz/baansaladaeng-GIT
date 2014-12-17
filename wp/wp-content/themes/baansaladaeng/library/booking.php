@@ -2,7 +2,11 @@
 require_once("class/ClassBooking.php");
 $objClassBooking = new Booking($wpdb);
 require_once("class/ClassBookingListBackend.php");
-$sendTo = 'ruxchuk@gmail.com'; //email info
+$objClassContact = new Contact($wpdb);
+$objContact = $objClassContact->getContact(1);
+//$sendTo = 'ruxchuk@gmail.com'; //email info
+$sendTo = $objContact[0]->email; //email info
+$headersSendEmail[] = "Cc: info@ideacorders.com"; // note you can just use a simple email address
 if ($_REQUEST) {
 
 //------------------------- Add Booking----------------------------//
@@ -102,7 +106,7 @@ if ($_REQUEST) {
                 ob_end_clean();
                 $subject = "Order reservation: Baansaladaeng";
                 if ($_REQUEST['status_send'] == 'true')
-                    echo $result = $objClassBooking->sendEmail($_REQUEST, $message, $subject);
+                    echo $result = $objClassBooking->sendEmail($_REQUEST, $message, $subject, $headersSendEmail);
                 else {
                     echo $message;
                     exit;
@@ -140,14 +144,13 @@ if ($_REQUEST) {
             {
                 return "text/html";
             }
-
             add_filter('wp_mail_content_type', 'wp_mail_set_content_type');
             $subject = "Email Contact Us from $send_name";
             ob_start();
             require_once("content-email/contact_us_email.php");
             $message = ob_get_contents();
             ob_end_clean();
-            $result = wp_mail($sendTo, $subject, $message);
+            $result = wp_mail($sendTo, $subject, $message, $headersSendEmail);
             if ($result)
                 echo 'success';
             else echo 'fail';
@@ -173,11 +176,7 @@ if ($_REQUEST) {
             require_once("content-email/long_stay_email.php");
             $message = ob_get_contents();
             ob_end_clean();
-            $attachments = "";
-            $headers = "From: $email";
-            $headers .= "MIME-Version: 1.0";
-            $headers .= "Content-Type: text/html; charset=UTF-8";
-            $result = wp_mail($sendTo, $subject, $message, $headers, $attachments);
+            $result = wp_mail($sendTo, $subject, $message, $headersSendEmail);
             if ($result)
                 echo 'success';
             else echo 'fail';

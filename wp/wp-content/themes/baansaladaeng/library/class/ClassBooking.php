@@ -637,18 +637,11 @@ class Booking
         return true;
     }
 
-    function sendEmail($post, $message, $subject)
+    function sendEmail($post, $message, $subject, $headersSendEmail)
     {
         $attachments = "";
         $sendTo = $post['email'];
-
-        $headers = "From: me@myblog.com";
-        $headers .= "Return-Path: me@myblog.com";
-        $headers .= "MIME-Version: 1.0";
-        $headers .= "Content-Type: text/html; charset=UTF-8";
-        $headers .= "BCC: ruxtest1@gmail.com";
-        //$headers .= "BCC: rochesterj@gmail.com";
-        return wp_mail($sendTo, $subject, $message, $headers, $attachments);
+        return wp_mail($sendTo, $subject, $message, $headersSendEmail, $attachments);
 //        return true;
     }
 }
