@@ -46,11 +46,11 @@ $dateNow = date_i18n("Y-m-d");
                             }
                             if ($checkShow) :
                             $customField = get_post_custom($postID);
-                            $room_plan = isset($customField["room_plan"][0]) ? $customField["room_plan"][0]: '';
-                            $type = isset($customField["type"][0]) ? $customField["type"][0]: '';
-                            $size = isset($customField["size"][0]) ? $customField["size"][0]: '';
-                            $designer = isset($customField["designer"][0]) ? $customField["designer"][0]: '';
-                            $price = isset($customField["price"][0]) ? $customField["price"][0]: 0;
+                            $room_plan = empty($customField["room_plan"][0]) ? '' : $customField["room_plan"][0];
+                            $type = empty($customField["type"][0]) ? '' : $customField["type"][0];
+                            $size = empty($customField["size"][0]) ? '' : $customField["size"][0];
+                            $designer = empty($customField["designer"][0]) ? '' : $customField["designer"][0];
+                            $price = empty($customField["price"][0]) ? 0 : $customField["price"][0];
                             $price = number_format($price);
 //                            $recommend_price = $customField["recommend_price"][0];
 //                            $recommend_price = empty($recommend_price)? null: number_format($customField["recommend_price"][0]);

@@ -506,7 +506,7 @@ class Booking
         ));
         $posts = $query->get_posts();
         $customField = get_post_custom($roomID);
-        $roomPrice = isset($customField["price"][0]) ? $customField["price"][0]: 0;
+        $roomPrice = empty($customField["price"][0]) ? 0: $customField["price"][0];
         $roomName = @$posts[0]->post_title;
         $recommend_price = get_post_meta($roomID, 'recommend_price', true);
         $recommend_price = is_array($recommend_price) ? @$recommend_price[intval(date_i18n('m')) - 1] : null;
