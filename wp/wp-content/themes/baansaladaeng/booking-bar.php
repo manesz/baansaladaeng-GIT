@@ -1,6 +1,6 @@
 <?php
 
-$postTypeRoom = new WP_Query(array('post_type' => 'room'));
+//$postTypeRoom = new WP_Query(array('post_type' => 'room'));
 ?>
 <script>
     /*$(document).ready(function(){
@@ -18,7 +18,7 @@ $postTypeRoom = new WP_Query(array('post_type' => 'room'));
      return false;
      });
      });*/
-    getRoom();
+    /*getRoom();
     function getRoom() {
         $.ajax({
             type: "POST",
@@ -41,11 +41,11 @@ $postTypeRoom = new WP_Query(array('post_type' => 'room'));
         $("#room_id").val(id);
         $("#room_name").val(name);
         $("#formBooking").submit();
-    }
+    }*/
 </script>
-<button class="col-md-2 wow fadeInRightBig booking-bar" data-wow-delay="0.8s" style="" data-toggle="modal"
-        data-target="#myModal"><h4>BOOOKING NOW.</h4></button>
-
+<button class="col-md-2 wow fadeInRightBig booking-bar" data-wow-delay="0.8s" style=""
+        onclick="window.location.href='<?php echo get_site_url(); ?>/reservation'"><h4>BOOOKING NOW.</h4></button>
+<?php /*
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
      style="min-height: 500px;">
@@ -103,7 +103,7 @@ $postTypeRoom = new WP_Query(array('post_type' => 'room'));
                                value="Next >>">
                     </div>
             <?php */
-            ?>
+            /* ?>
 
                 </form>
 
@@ -111,4 +111,5 @@ $postTypeRoom = new WP_Query(array('post_type' => 'room'));
         </div>
     </div>
 </div>
+<?php */
 
