@@ -8,17 +8,17 @@ get_template_part('nav');
 $postID = get_the_id();
 $urlThumbnail = wp_get_attachment_url(get_post_thumbnail_id($postID));
 $customField = get_post_custom($postID);
-$room_plan = isset($customField["room_plan"][0])? $customField["room_plan"][0]: "";
-$type = isset($customField["type"][0])? $customField["type"][0]: "";
-$size = isset($customField["size"][0])? $customField["size"][0]: "";
-$designer = isset($customField["designer"][0])? $customField["designer"][0]: "";
-$price = isset($customField["price"][0])? $customField["price"][0]: 0;
+$room_plan = empty($customField["room_plan"][0]) ? '' : $customField["room_plan"][0];
+$type = empty($customField["type"][0]) ? '' : $customField["type"][0];
+$size = empty($customField["size"][0]) ? '' : $customField["size"][0];
+$designer = empty($customField["designer"][0]) ? '' : $customField["designer"][0];
+$price = empty($customField["price"][0]) ? 0 : $customField["price"][0];
 $price = number_format($price);
+$facilities = empty($customField["facilities"][0]) ? null : $customField["facilities"][0];
 $recommend_price = get_post_meta($postID, 'recommend_price', true);
 $recommend_price = is_array($recommend_price) ? @$recommend_price[intval(date_i18n('m')) - 1] : null;
 $recommend_price = empty($recommend_price) ? null : number_format($recommend_price);
 
-$facilities = $customField["facilities"][0];
 if (empty($facilities)) {
     $arrayFacilities = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 } else {

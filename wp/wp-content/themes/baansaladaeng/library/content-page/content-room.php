@@ -10,11 +10,16 @@
                 $argc = array(
                     'post_type' => 'room',
                     'category_name' => 'guest-house',
+                    'orderby' => 'date', //name of category by slug
+                    'order' => 'ASC',
                     'post_status' => 'publish',
-                    'posts_per_page' => -1,
-                    'orderby' => 'modified',
-                    'order' => 'ASC',);
+                    'posts_per_page' => -1);
                 $loop = new WP_Query($argc);
+                //                var_dump($loop);
+                //                    $categories = get_the_category();
+                //                    $query = new WP_Query( 'posts_per_page= -1&cat='.$categories[0]->cat_ID );
+                //                    if( $query->have_posts() ): while ( $query->have_posts() ): $query->the_post();
+                //                    for($i=1;$i<=3; $i++):
                 if ($loop->have_posts()): while ($loop->have_posts()) : $loop->the_post();
                     ?>
                     <div class="col-md-12 alpha omega bg-fafafa clearfix margin-bottom-20 wow fadeInRight"
