@@ -43,8 +43,8 @@
         $("#formBooking").submit();
     }*/
 </script>
-<button class="col-md-2 wow fadeInRightBig booking-bar" data-wow-delay="0.8s" style=""
-        onclick="window.location.href='<?php echo get_site_url(); ?>/reservation'"><h4>BOOOKING NOW.</h4></button>
+<a class="col-md-2 wow fadeInRightBig booking-bar" data-wow-delay="0.8s" style=""
+        href="<?php echo get_site_url(); ?>/reservation"><h4>BOOOKING NOW.</h4></a>
 <?php /*
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
