@@ -144,7 +144,7 @@ class Booking
         }
     }
 
-    public function bookingAdd($data)
+    private function bookingAdd($data)
     {
         $roomID = @$data['room_id'];
         $roomName = @$data['room_name'];
@@ -546,11 +546,16 @@ class Booking
 
         $arrivalDate = @$post['arrival_date'];
         $departureDate = @$post['departure_date'];
-        if (!preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{1}$/', $arrivalDate)) {
-            $dateCheckIn = DateTime::createFromFormat('d/m/Y', $arrivalDate);
-            $dateCheckOut = DateTime::createFromFormat('d/m/Y', $departureDate);
-            $arrivalDate = $dateCheckIn->format('Y-m-d');
-            $departureDate = $dateCheckOut->format('Y-m-d');
+        try {
+            if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $arrivalDate))
+            {
+                $dateCheckIn = DateTime::createFromFormat('d/m/Y', $arrivalDate);
+                $dateCheckOut = DateTime::createFromFormat('d/m/Y', $departureDate);
+                $arrivalDate = $dateCheckIn->format('Y-m-d');
+                $departureDate = $dateCheckOut->format('Y-m-d');
+            }
+        } catch (Exception $e) {
+
         }
         $post['arrival_date'] = $arrivalDate;
         $post['departure_date'] = $departureDate;
