@@ -3,8 +3,8 @@ if (!session_id())
     session_start();
 $arrayOrder = @$_SESSION['array_reservation_order'];
 $objClassBooking = new Booking($wpdb);
-$checkInDate = @$_POST['check_in_date'] ? $_POST['check_in_date'] : '';
-$checkOutDate = @$_POST['check_out_date'] ? $_POST['check_out_date'] : '';
+$checkInDate = empty($_POST['check_in_date']) ? date_i18n('d/m/Y'):  $_POST['check_in_date'];
+$checkOutDate = empty($_POST['check_out_date']) ? date_i18n('d/m/Y'):  $_POST['check_out_date'];
 $roomID = @$_POST['room_id'] ? $_POST['room_id'] : '0';
 $roomName = @$_POST['room_name'] ? $_POST['room_name'] : '';
 $showPayment = @$_REQUEST['payment'] ? $_REQUEST['payment'] : false;
