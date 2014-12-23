@@ -28,14 +28,15 @@ $(document).on("submit", "#form_credit_card_payment", function (e) {
 //                window.location.href = web_url + 'reservation';
             } else {
 //                alert(data);
-                data_post_payment = false;
+//                data_post_payment = false;
                 window.location.href = web_url + "reservation-error/";
             }
         },
         error: function (result) {
-            hideImgLoading();
-            alert("Error:\n" + result.responseText);
-            data_post_payment = false;
+//            hideImgLoading();
+//            alert("Error:\n" + result.responseText);
+//            data_post_payment = false;
+            window.location.href = web_url + "reservation-error/";
         }
     });
     data_post_payment = true;

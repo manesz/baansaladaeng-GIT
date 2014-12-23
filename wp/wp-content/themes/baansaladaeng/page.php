@@ -20,7 +20,7 @@ if (have_posts()) :
             get_template_part('library/content-page/content-contact', get_post_format());
         }  elseif (is_page('about-bannsaladang')) {
             get_template_part('library/content-page/content-about', get_post_format());
-        }   elseif (is_page('term-and-condition')) {
+        }   elseif (is_page('term-and-conditions')) {
             get_template_part('library/content-page/content-term-and-condition', get_post_format());
         } else {
             get_template_part('library/content-page/content-single-page', get_post_format());
