@@ -126,9 +126,23 @@ if ($arrayContact) {
 <div class="copy-right text-center">
     <p style="font-size: 12px;">modify by <a href="http://www.ideacorners.com">Idea Corners Studio Co.,Ltd.</a>
     </p>
+    <style type="text/css">
+        .blockDiv {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background-color: #FFF;
+            width: 0px;
+            height: 0px;
+            z-index: 10;
+        }
+        .img_loading {
+            position: fixed; top: 40%; left: 50%;
+        }
+    </style>
     <script type="text/javascript">
         var send_mail_contact_us = false;
-        var str_loading = '<div class="img_loading" style="position: fixed; top: 40%; left: 50%;"><img src="<?php bloginfo('template_directory'); ?>/library/images/loading.gif" width="64"/></div>';
+        var str_loading = '<div class="img_loading"><img src="<?php bloginfo('template_directory'); ?>/library/images/loading.gif" width="40"/></div>';
 
         $(document).ready(function () {
             /*
@@ -205,10 +219,17 @@ if ($arrayContact) {
         function showImgLoading() {
 //            scrollToTop();
             $("body").append(str_loading);
+            $('<div id="screenBlock"></div>').appendTo('body');
+            $('#screenBlock').css( { opacity: 0, width: $(document).width(), height: $(document).height() } );
+            $('#screenBlock').addClass('blockDiv');
+            $('#screenBlock').animate({opacity: 0.7}, 200);
         }
 
         function hideImgLoading() {
             $(".img_loading").remove();
+            $('#screenBlock').animate({opacity: 0}, 200, function() {
+                $('#screenBlock').remove();
+            });
         }
 
         function scrollToTop(fade_in) {

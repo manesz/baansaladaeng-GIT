@@ -945,6 +945,7 @@ h4 {
                             </tr>
                         </table>
                     </td>
+                    <?php /*
                     <!--                                <td align="center" valign="top" class="templateColumnContainer"-->
                     <!--                                    style="padding-top:20px;">-->
                     <!--                                    <table border="0" cellpadding="20" cellspacing="0" width="100%">-->
@@ -975,7 +976,7 @@ h4 {
                     <!--                                        </tr>-->
                     <!--                                    </table>-->
                     <!--                                </td>-->
-
+<?php */ ?>
                     <?php if ($countRoom % 2 != 0): ?>
                         </tr>
                     <?php endif; ?>
