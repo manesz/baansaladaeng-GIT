@@ -65,8 +65,10 @@
                             ?>
                         </div>
                         <div class="col-md-2 text-center" style="padding-top: 15px;">
+                            <?php if ($room_plan): ?>
                             <img src="<?php echo $room_plan; ?>"
                                  style="width: auto; height: auto;"/>
+                            <?php endif; ?>
                         </div>
                         <div class="col-md-6 alpha omega">
                             <a href="<?php the_permalink(); ?>?long-stay=true"><h3><?php the_title(); ?></h3></a>

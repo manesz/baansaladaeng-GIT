@@ -369,7 +369,7 @@ get_template_part('nav');
                 <div class="col-md-3 alpha"></div>
                 <div class="col-md-9 alpha omega">
                     <label><input type="checkbox" id="term"/> Accept Term</label>
-                    <a target="_blank" style="color: blue;" href="<?php echo network_site_url('/term-and-condition'); ?>">Term</a>
+                    <a target="_blank" style="color: blue;" href="<?php echo network_site_url('/terms-and-conditions'); ?>">Terms</a>
                 </div>
             </div>
             <div class="col-md-12 margin-bottom-10 alpha omega">
