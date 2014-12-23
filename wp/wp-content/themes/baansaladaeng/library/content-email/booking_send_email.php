@@ -14,7 +14,8 @@ $arrayRoomID = array();
 foreach ($objDataBooking as $key => $value) {
     $arrayRoomID[] = $value->room_id;
     $needAirportPickup = $value->need_airport_pickup;
-    $subTotal += $value->total;
+//    $subTotal += $value->total;
+    $price = $value->price;
     $strRoomName = $key + 1 . ". " . $value->room_name;
     $arrayRoomName[] = $strRoomName;
     $arrayArrivalDate[] = date_i18n('d/m/y', strtotime($value->check_in_date)) . " - " .
@@ -34,7 +35,7 @@ extract((array)$objDataBooking[0]);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<title>*|MC:SUBJECT|*</title>
+<title><?php echo @$name; ?></title>
 <style type="text/css">
 /* /\/\/\/\/\/\/\/\/ CLIENT-SPECIFIC STYLES /\/\/\/\/\/\/\/\/ */
 #outlook a {
@@ -870,7 +871,7 @@ h4 {
             </tr>
             <tr>
                 <td>Note:</td>
-                <td id="confirm_note"><?php echo @$note? $note: "-"; ?></td>
+                <td id="confirm_note"><?php echo @$note ? $note: "-"; ?></td>
             </tr>
         </table>
     </td>
@@ -903,8 +904,9 @@ h4 {
                     $price = empty($customField["price"][0]) ? 0 : $customField["price"][0];
                     $price = number_format($price);
                     $facilities = empty($customField["facilities"][0]) ? null : $customField["facilities"][0];
-                    $recommend_price = isset($customField["recommend_price"][0]) ? $customField["recommend_price"][0]: 0;
-                    $recommend_price = number_format($recommend_price);
+                    $recommend_price = get_post_meta($postID, 'recommend_price', true);
+                    $recommend_price = is_array($recommend_price) ? @$recommend_price[intval(date_i18n('m')) - 1] : null;
+                    $recommend_price = empty($recommend_price) ? null : number_format($recommend_price);
                     ?>
                     <?php if ($countRoom % 2 == 0): ?>
                         <tr>
@@ -929,7 +931,7 @@ h4 {
                                     <p>Type: <?php echo $type; ?><br/>
                                         Size: <?php echo $size; ?> sq.mtrs<br/>
                                         Designer: <?php echo $designer; ?><br/>
-                                        Price: <?php echo $price; ?> THB/night (Incl Breakfast)<br/><br/>
+                                        Price: <?php echo $recommend_price ? $recommend_price : $price; ?> THB/night (Incl Breakfast)<br/><br/>
                                         <?php
                                         $excerpt = get_the_content();
                                         $excerpt = strip_shortcodes($excerpt);

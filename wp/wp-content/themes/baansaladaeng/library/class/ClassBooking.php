@@ -349,7 +349,7 @@ class Booking
             if (!$result)
                 return false;
             $_SESSION['array_reservation_order'] = array();
-            return true;
+            return $payment_id;
         } else {
             $arrayDataQuery['create_time'] = date_i18n('Y-m-d H:i:s');
             $arrayDataQuery['update_time'] = '0000-00-00 00:00:00';
