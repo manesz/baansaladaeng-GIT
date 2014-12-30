@@ -138,6 +138,7 @@ if ($arrayContact) {
         }
         .img_loading {
             position: fixed; top: 40%; left: 50%;
+            z-index: 9999;
         }
     </style>
     <script type="text/javascript">
