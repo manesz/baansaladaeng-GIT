@@ -33,8 +33,9 @@ $dateNow = date_i18n("Y-m-d");
                         'category_name' => 'guest-house',
                         'post_status' => 'publish',
                         'posts_per_page' => -1,
-                        'orderby' => 'modified',
-                        'order' => 'ASC',);
+//                        'orderby' => 'modified',
+//                        'order' => 'ASC',
+                    );
                     $loop = new WP_Query($argc);
                     $loopPostTypeRoom = new WP_Query($argc);
                     if ($loopPostTypeRoom->have_posts()):

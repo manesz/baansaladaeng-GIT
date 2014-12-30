@@ -10,8 +10,8 @@
                 $argc = array(
                     'post_type' => 'room',
                     'category_name' => 'guest-house',
-                    'orderby' => 'date', //name of category by slug
-                    'order' => 'ASC',
+//                    'orderby' => 'date', //name of category by slug
+//                    'order' => 'ASC',
                     'post_status' => 'publish',
                     'posts_per_page' => -1);
                 $loop = new WP_Query($argc);

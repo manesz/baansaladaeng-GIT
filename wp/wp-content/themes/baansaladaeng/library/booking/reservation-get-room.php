@@ -46,8 +46,9 @@ $argc = array(
     'category_name' => 'guest-house',
     'post_status' => 'publish',
     'posts_per_page' => -1,
-    'orderby' => 'modified',
-    'order' => 'ASC',);
+//    'orderby' => 'modified',
+//    'order' => 'ASC'
+);
 $loopPostTypeRoom = new WP_Query($argc);
 if ($loopPostTypeRoom->have_posts()):
     while ($loopPostTypeRoom->have_posts()) : $loopPostTypeRoom->the_post();

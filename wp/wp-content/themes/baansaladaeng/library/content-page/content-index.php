@@ -30,7 +30,7 @@ get_template_part('nav', 'front'); ?>
         'posts_per_page' => 6,
         'meta_key' => 'recommend',
         'meta_value' => '1',
-		'order' => 'ASC',
+//		'order' => 'ASC',
     ));
     if ($loopPostTypeRoom->have_posts()):
         while ($loopPostTypeRoom->have_posts()) : $loopPostTypeRoom->the_post();
