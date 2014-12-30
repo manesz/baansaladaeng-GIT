@@ -67,22 +67,27 @@ if ($loopPostTypeRoom->have_posts()):
         $recommend_price = is_array($recommend_price) ? @$recommend_price[intval(date_i18n('m')) - 1] : null;
         $recommend_price = empty($recommend_price) ? null : number_format($recommend_price);
         ?>
-        <div class="col-md-12 alpha bg-fafafa clearfix margin-bottom-20" style="height: 250px;">
+        <div class="col-md-12 alpha omega bg-fafafa clearfix margin-bottom-20" style="min-height: auto;">
             <div class="col-md-4 alpha omega">
-                <img src="<?php echo $urlThumbnail; ?>"
-                     style="margin: 0px; padding: 0px; width: 100%; height: 250px; overflow: hidden;"/>
+				<section class="img_thumb" style="margin: 0px; padding: 0px; height: auto; overflow: hidden;">
+					<a href="http://demo.ideacorners.com/baansaladaeng/wp/room/room-201-black-and-white-room/">
+						<img class="col-md-12 alpha omega" alt="<?php the_title(); ?>" src="<?php echo $urlThumbnail; ?>" style="width: 100%; height: auto;">
+					</a>
+				</section>
+                <!--<img src=""
+                     style="margin: 0px; padding: 0px; width: 100%; height: 250px; overflow: hidden;"/>-->
             </div>
-            <div class="col-md-8">
-                <a href="<?php the_permalink(); ?>"><h4><?php the_title(); ?></h4></a>
+            <div class="col-md-8 alpha omega">
+			
+                <a href="<?php the_permalink(); ?>"><h4 style="padding: 0 10px 0 10px;"><?php the_title(); ?></h4></a>
 
-                <p class="font-12">
+                <p class="font-12" style="padding: 0 10px 0 10px;">
                     Type: <?php echo $type; ?><br/>
                     Size: <?php echo $size; ?> sq.mtrs<br/>
-                    Designer: <?php echo $designer; ?><br/>
                     Price: <?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night (Incl Breakfast)
                 </p>
 
-                <p class="font-12">
+                <p class="font-12" style="padding: 0 10px 0 10px;">
                     <?php
                     $excerpt = get_the_content();
                     $excerpt = strip_shortcodes($excerpt);
@@ -95,9 +100,10 @@ if ($loopPostTypeRoom->have_posts()):
 
                 <div class="col-md-8 alpha" style="">
                     <?php if ($recommend_price): ?>
-                        <span style="margin-top: 0px; padding-top: 10px; font-size: 20px;">PRICE : <?php echo $price; ?> BAHT</span>
-                        <h3 style="margin-top: 0px; padding-top: 10px; color: red; padding-left: 0;">PRICE :
-                            <?php echo $recommend_price; ?> BAHT</h3>
+						<div style="padding: 0 10px 0 10px;">
+							<span style="margin-top: 0px; padding-top: 10px; font-size: 20px;">PRICE : <?php echo $price; ?> BAHT</span>
+							<h3 style="margin-top: 0px; padding-top: 10px; color: red; padding-left: 0;">PRICE : <?php echo $recommend_price; ?> BAHT</h3>
+						</div>
                     <?php else: ?>
                         <h3 style="margin-top: 0px; padding-top: 10px;">PRICE
                             : <?php echo $price; ?> BAHT</h3>
