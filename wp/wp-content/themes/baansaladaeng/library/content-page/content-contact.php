@@ -19,7 +19,7 @@ get_header(); ?>
     <div class="container min-height-540" style="padding-top: 50px;">
         <div class="row">
 
-            <h2 class="text-center margin-bottom-20">Contact</h2>
+            <h2 class="margin-bottom-20">Contact</h2>
             <hr/>
             <!-- google map -->
             <section id="maps" class="margin-bottom-20" style="">

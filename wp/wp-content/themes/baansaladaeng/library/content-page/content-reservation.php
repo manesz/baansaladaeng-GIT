@@ -30,9 +30,9 @@ get_template_part('nav');
     <div class="container" style="padding-top: 50px;">
     <div class="row">
 
-    <h2 class="text-center margin-bottom-20">Reservation</h2>
+    <h2 class="margin-bottom-20">Reservation</h2>
     <hr/>
-    <div class="col-md-9 wow fadeInRight margin-bottom-20" data-wow-delay="1s">
+    <div class="col-md-9 wow alpha fadeInRight margin-bottom-20" data-wow-delay="1s">
 
     <!--                <h2 class="col-md-12">Select Rooms <span class="font-color-999 font-size-14">Mediterranean Suite</span> </h2>-->
     <ol class="breadcrumb" style="padding: 15px 0 15px 15px;">

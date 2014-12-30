@@ -3,7 +3,7 @@
     <section class="container" style="padding-top: 50px;">
         <div class="row">
 
-            <h2 class="text-center margin-bottom-20">Rooms</h2>
+            <h2 class="margin-bottom-20">Long Stay Rooms</h2>
             <hr/>
             <div id="sectionRoom">
                 <?php
@@ -45,7 +45,7 @@
                                          style="margin: 0px; padding: 0px; height: auto; overflow: hidden;">
                                     <a href="<?php the_permalink(); ?>?long-stay=true">
                                         <img class="col-md-12 alpha omega" alt="<?php the_title(); ?>"
-                                             src="<?php echo $url; ?>" style="width: auto; height: 360px; left: -15%;"/>
+                                             src="<?php echo $url; ?>" style="width: auto; height: 360px;"/>
                                     </a>
                                 </section>
                             <?php
@@ -64,13 +64,7 @@
                             }
                             ?>
                         </div>
-                        <div class="col-md-2 text-center" style="padding-top: 15px;">
-                            <?php if ($room_plan): ?>
-                            <img src="<?php echo $room_plan; ?>"
-                                 style="width: auto; height: auto;"/>
-                            <?php endif; ?>
-                        </div>
-                        <div class="col-md-6 alpha omega">
+                        <div class="col-md-8 alpha omega">
                             <a href="<?php the_permalink(); ?>?long-stay=true"><h3><?php the_title(); ?></h3></a>
                             <?php //the_excerpt();
 
@@ -78,7 +72,6 @@
                             <p class="font-12 padding-10">
                                 Type: <?php echo $type; ?><br/>
                                 Size: <?php echo $size; ?> sq.mtrs<br/>
-                                Designer: <?php echo $designer; ?><br/>
                                 Price: <?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night (Incl
                                 Breakfast)
                             </p>

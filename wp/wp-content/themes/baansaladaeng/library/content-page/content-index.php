@@ -27,7 +27,7 @@ get_template_part('nav', 'front'); ?>
 <section class="portfolio-works">
     <?php $loopPostTypeRoom = new WP_Query(array(
         'post_type' => 'room',
-        'posts_per_page' => 12,
+        'posts_per_page' => 6,
         'meta_key' => 'recommend',
         'meta_value' => '1',
 		'order' => 'ASC',
