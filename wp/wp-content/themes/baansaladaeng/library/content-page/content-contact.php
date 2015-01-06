@@ -30,6 +30,16 @@ get_header(); ?>
             <div class="col-md-12 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
                 <?php the_content(); ?>
             </div>
+            <div class="col-md-12 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
+                <div class="col-md-4"
+                     style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
+                    <button onclick="window.print();"
+                            class="btn btn-default col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
+                        Print
+                    </button>
+                </div>
+            </div>
+
         </div>
     </div>
 
