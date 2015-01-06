@@ -4,9 +4,11 @@ class Contact
 {
     private $wpdb;
     private $tableContact = "ics_contact";
+    private $pathTitlePromotion = "";
 
     public function __construct($wpdb)
     {
+        $this->pathTitlePromotion = get_template_directory() . '/library/res/save_data.txt';
         $this->wpdb = $wpdb;
     }
 
@@ -125,11 +127,42 @@ class Contact
         );
         return 1;
     }
+
+    public function getTitlePromotion()
+    {
+        $titlePath = $this->pathTitlePromotion;
+        if (file_exists($titlePath)) {
+            $getContent = file_get_contents($titlePath);
+            $arrContent = unserialize($getContent);
+            return $arrContent;
+
+        } else {
+            $arrContent = array('promotion_title' => '');
+            $default_content = serialize($arrContent);
+            file_put_contents($titlePath, $default_content);
+            return $arrContent;
+        }
+    }
+
+    public function saveTitlePromotion($title)
+    {
+        $titlePath = $this->pathTitlePromotion;
+        $arrContent = $this->getTitlePromotion();
+        $arrContent['promotion_title'] = $title;
+        $strContent = serialize($arrContent);
+        $result = file_put_contents($titlePath, $strContent);
+        if ($result) {
+            return json_encode(array('error' => false, 'message' => 'Save success'));
+        }
+        return json_encode(array('error' => true, 'message' => 'Save error'));
+
+    }
 }
 
 $objClassContact = new Contact($wpdb);
 if (@$_POST) {
-    if (@$_POST['contact_post']) {
+    $getContactPost = empty($_POST['contact_post']) ? false : $_POST['contact_post'];
+    if ($getContactPost == 'true') {
         $checkIsContact = $objClassContact->checkIsContact();
         if ($checkIsContact) {
             $result = $objClassContact->editContact($_POST);
@@ -140,6 +173,11 @@ if (@$_POST) {
             echo $result;
         else
             echo 'fail';
+        exit;
+    }
+    $getPromotionPost = empty($_POST['promotion_post']) ? false : $_POST['promotion_post'];
+    if ($getPromotionPost == 'true') {
+        echo $objClassContact->saveTitlePromotion($_POST['title']);
         exit;
     }
 }

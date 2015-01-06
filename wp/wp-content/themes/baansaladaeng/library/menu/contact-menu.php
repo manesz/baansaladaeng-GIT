@@ -49,20 +49,20 @@ function render_contact_page()
     ?>
     <script type="text/javascript"
             src="<?php bloginfo('template_directory'); ?>/library/js/contact.js"></script>
-    <form id="contact-post" method="post">
-        <input type="hidden" name="contact_post" id="contact_post" value="true"/>
+    <div class="wrap">
+        <div id="icon-themes" class="icon32"><br/></div>
 
-        <div class="wrap">
-            <div id="icon-themes" class="icon32"><br/></div>
+        <h2><?php _e(@$webSiteName . ' theme controller', 'wp_toc'); ?></h2>
 
-            <h2><?php _e(@$webSiteName . ' theme controller', 'wp_toc'); ?></h2>
+        <p><?php echo @$webSiteName; ?> business website theme &copy; developer by <a href="http://www.ideacorners.com"
+                                                                                      target="_blank">IdeaCorners
+                Developer</a></p>
+        <!-- If we have any error by submiting the form, they will appear here -->
+        <?php settings_errors('tab1-errors'); ?>
+        <h2>Contact</h2>
 
-            <p><?php echo @$webSiteName; ?> business website theme &copy; developer by <a href="http://www.ideacorners.com"
-                                                                                          target="_blank">IdeaCorners
-                    Developer</a></p>
-            <!-- If we have any error by submiting the form, they will appear here -->
-            <?php settings_errors('tab1-errors'); ?>
-            <h2>Contact</h2>
+        <form id="contact-post" method="post">
+            <input type="hidden" name="contact_post" id="contact_post" value="true"/>
 
             <div class="tb-insert">
                 <table class="wp-list-table widefat" cellspacing="0" width="100%">
@@ -70,8 +70,8 @@ function render_contact_page()
                     <tr class="alternate">
                         <td><label for="massage">Massage :</label></td>
                         <td colspan="3">
-                        <textarea cols="80" rows="3"
-                                id="massage" name="massage"><?php echo $massage; ?></textarea>
+                            <textarea cols="80" rows="3"
+                                      id="massage" name="massage"><?php echo $massage; ?></textarea>
                         </td>
                     </tr>
                     <tr class="alternate">
@@ -102,7 +102,7 @@ function render_contact_page()
                         <td><label for="qr_code_line">Url QR Code Line :</label></td>
                         <td colspan="3">
                             <input type="text" id="qr_code_line" name="qr_code_line"
-                                               value="<?php echo $qr_code_line; ?>"/>
+                                   value="<?php echo $qr_code_line; ?>"/>
                             <input type="button" value="Upload Image" class="button btn_upload_image"
                                    data-tbx-id="qr_code_line">
                         </td>
@@ -126,12 +126,12 @@ function render_contact_page()
                     <tr class="alternate">
                         <td><label for="title_tripadvisor">Title Tripadvisor :</label></td>
                         <td colspan="3"><input type="text" id="title_tripadvisor" name="title_tripadvisor"
-                                   value="<?php echo $title_tripadvisor; ?>"/></td>
+                                               value="<?php echo $title_tripadvisor; ?>"/></td>
                     </tr>
                     <tr class="alternate">
                         <td><label for="link_tripadvisor">Link Tripadvisor :</label></td>
                         <td colspan="3"><input type="text" id="link_tripadvisor" name="link_tripadvisor"
-                                   value="<?php echo $link_tripadvisor; ?>"/></td>
+                                               value="<?php echo $link_tripadvisor; ?>"/></td>
                     </tr>
                     <tr class="alternate">
                         <td><label for="latitude">Latitude :</label></td>
@@ -145,7 +145,29 @@ function render_contact_page()
                 </table>
                 <input type="submit" class="button-primary" value="Save">
             </div>
-        </div>
-    </form>
+        </form>
+        <hr/>
+        <form id="promotion-post" method="post">
+            <input type="hidden" name="promotion_post" value="true"/>
+
+            <div class="tb-insert">
+                <table class="wp-list-table widefat" cellspacing="0" width="100%">
+                    <tbody id="the-list-edit">
+                    <tr class="alternate">
+                        <td><label for="pro_title">Title Promotion :</label></td>
+                        <td colspan="3">
+                            <textarea cols="80" rows="3"
+                                      id="pro_title" name="title"><?php
+                                $arrTitle = $objClassContact->getTitlePromotion();
+                                echo $arrTitle['promotion_title'];
+                                ?></textarea>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <input type="submit" class="button-primary" value="Save">
+            </div>
+        </form>
+    </div>
 <?php
 }

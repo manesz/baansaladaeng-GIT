@@ -33,17 +33,32 @@ $(document).ready(function () {
                 }
             }
         })
-            .done(function () {
-                //alert("second success");
-            })
             .fail(function () {
                 alert("เกิดข้อผิดพลาด");
-            })
-            .always(function () {
-                //alert("finished");
             });
         return false;
     });
+    $("#promotion-post").submit(function(){
+        $.ajax({
+            type: "POST",
+            cache: false,
+            dataType: 'json',
+            url: '',
+            data: $(this).serialize(),
+            success: function (data) {
+                if (data.error) {
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
+            }
+        })
+            .fail(function () {
+                alert("เกิดข้อผิดพลาด");
+            });
+        return false;
+    });
+
     $('.btn_upload_image').click(function () {
         var idTbx = $(this).attr("data-tbx-id");
         imageUploader('#' + idTbx);

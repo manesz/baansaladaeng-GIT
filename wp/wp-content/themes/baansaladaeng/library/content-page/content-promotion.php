@@ -3,6 +3,7 @@
 get_template_part('nav');
 
 $dateNow = date_i18n("Y-m-d");
+$objClassContact = new Contact($wpdb);
 ?>
     <style>
         table tr td {
@@ -118,7 +119,10 @@ $dateNow = date_i18n("Y-m-d");
             </div>
 
             <div class="col-md-12 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
-                <h2 class="margin-bottom-20">NEWS</h2>
+                <h2 class="margin-bottom-20"><?php
+                    $arrTitle = $objClassContact->getTitlePromotion();
+                    echo $arrTitle['promotion_title'];
+                    ?></h2>
                 <hr/>
                 <div id="sectionRoom">
                     <?php
