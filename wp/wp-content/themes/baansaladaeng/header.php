@@ -44,7 +44,8 @@
         <script src="<?php echo get_template_directory_uri(); ?>/library/js/wow.min.js"></script>
         <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/move-top.js"></script>
         <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/easing.js"></script>
-        <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/bootstrap-modal.js"></script>
+<!--        <script type="text/javascript" src="--><?php //echo get_template_directory_uri(); ?><!--/library/js/bootstrap-modal.js"></script>-->
+        <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/bootstrap-datepicker.js"></script>
         <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/jquery.ui.map.js"></script>
         <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/lightbox.min.js"></script>

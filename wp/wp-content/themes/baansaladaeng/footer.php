@@ -107,7 +107,7 @@ if ($arrayContact) {
     </div>
     <div class="col-md-6">
         <div class="contact-right wow fadeInLeft" data-wow-delay="0.4s">
-            <?php $_SESSION['captcha_contact_us'] = contact_us_captcha();?>
+            <?php $_SESSION['captcha_contact_us'] = contact_us_captcha(); ?>
             <form id="form_contact_us" method="post">
                 <input type="text" class="text" placeholder="Name..." id="send_name" name="send_name">
                 <input type="text" class="text" placeholder="Email..." id="send_email" name="send_email">
@@ -115,7 +115,11 @@ if ($arrayContact) {
 
                 <input type="text" class="text" placeholder="Security Code"
                        id="security_code" name="security_code" autocomplete="off">
-                <img class="" src="<?php echo $_SESSION['captcha_contact_us']['image_src']; ?>"/>
+                <img class="" id="captcha_contact_us"
+                     src="<?php echo $_SESSION['captcha_contact_us']['image_src']; ?>"/>
+                <img src="<?php bloginfo('template_directory'); ?>/library/images/refresh.png"
+                     style="cursor: pointer;" onclick="getCaptchaContactUs();"
+                    title="New Captcha"/>
                 <input class="wow shake" data-wow-delay="0.3s" type="submit" value="Send Message"/>
             </form>
         </div>
@@ -134,10 +138,13 @@ if ($arrayContact) {
             background-color: #FFF;
             width: 0px;
             height: 0px;
-            z-index: 10;
+            z-index: 9998;
         }
+
         .img_loading {
-            position: fixed; top: 40%; left: 50%;
+            position: fixed;
+            top: 40%;
+            left: 50%;
             z-index: 9999;
         }
     </style>
@@ -145,107 +152,29 @@ if ($arrayContact) {
         var send_mail_contact_us = false;
         var str_loading = '<div class="img_loading"><img src="<?php bloginfo('template_directory'); ?>/library/images/loading.gif" width="40"/></div>';
 
-        $(document).ready(function () {
-            /*
-             var defaults = {
-             containerID: 'toTop', // fading element id
-             containerHoverID: 'toTopHover', // fading element hover id
-             scrollSpeed: 1200,
-             easingType: 'linear'
-             };
-             */
-
-            $().UItoTop({ easingType: 'easeOutQuart' });
-            $("#form_contact_us").submit(function () {
-                var $this = this;
-                if (send_mail_contact_us)
-                    return false;
-
-                var charCheck = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                var checkEmail = charCheck.test(this.send_email.value);
-                if ($this.send_name.value == "" || $this.send_name.value == "Name...") {
-                    alert("Please add your name.");
-                    $this.send_name.focus();
-                } else if ($this.send_email.value == "" || $this.send_email.value == "Email..." || !checkEmail) {
-                    alert("Please add your email.");
-                    $this.send_email.focus();
-                } else if ($this.send_message.value == "" || $this.send_message.value == "Message..") {
-                    alert("Please add your message.");
-                    $this.send_message.focus();
-                } else if ($this.security_code.value == "") {
-                    alert("Please add security code.");
-                    $this.security_code.focus();
-                } else {
-                    var data = $($this).serialize();
-                    data = data + '&' + $.param({
-                        contact_us_send_email: 'true'
-                    });
-                    showImgLoading();
-                    send_mail_contact_us = true;
-                    $.ajax({
-                        type: "POST",
-                        cache: false,
-                        url: '',
-                        data: data,
-                        success: function (result) {
-                            if (result == 'error_captcha') {
-                                alert("Please check security code.");
-                                $this.security_code.focus();
-                            }else if(result == 'success') {
-                                alert("Send success.\nThank you.");
-                                window.location.reload();
-                            } else {
-                                alert(result);
-                            }
-                            send_mail_contact_us = false;
-                            hideImgLoading();
-                        }
-                    })
-                        .done(function () {
-                            //alert("second success");
-                        })
-                        .fail(function () {
-                            alert("เกิดข้อผิดพลาด");
-                            hideImgLoading();
-                        })
-                        .always(function () {
-                            //alert("finished");
-                        });
-                }
-                return false;
-            });
-        });
-
-
-        function showImgLoading() {
-//            scrollToTop();
-            $("body").append(str_loading);
-            $('<div id="screenBlock"></div>').appendTo('body');
-            $('#screenBlock').css( { opacity: 0, width: $(document).width(), height: $(document).height() } );
-            $('#screenBlock').addClass('blockDiv');
-            $('#screenBlock').animate({opacity: 0.7}, 200);
-        }
-
-        function hideImgLoading() {
-            $(".img_loading").remove();
-            $('#screenBlock').animate({opacity: 0}, 200, function() {
-                $('#screenBlock').remove();
-            });
-        }
-
-        function scrollToTop(fade_in) {
-            fade_in = fade_in || false;
-            $("body, html").animate({
-                    scrollTop: $("body").position().top
-                },
-                500,
-                function () {
-                    if (fade_in)
-                        $(fade_in).fadeIn();
-                });
-        }
     </script>
+    <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/footer.js"></script>
+
     <a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+
+    <div class="modal fade" id="modal_show_message" tabindex="-1" role="dialog"
+         aria-labelledby="myModalMassage" aria-hidden="true"
+         style="font-size: 12px;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalMassage">Error</h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!--- copy-right ---->
 </section>
@@ -255,15 +184,6 @@ if ($arrayContact) {
 
 <?php // all js scripts are loaded in library/bones.php ?>
 <?php wp_footer(); ?>
-
-<script>
-    $("#personInfo").hide();
-
-    $('#in').click(function () {
-        $('#checkIn').fadeIn().animate({ opacity: 1, left: "50%" });
-    });
-
-</script>
 
 </body>
 

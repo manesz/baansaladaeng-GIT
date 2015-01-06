@@ -27,11 +27,11 @@ $jConflict(document).ready(function () {
             //                selectHelper: true,
             /*dayClick: function (date, jsEvent, view) {
 
-             //                alert('Clicked on: ' + date);
+             //                showModalMessage('Clicked on: ' + date);
              //
-             //                alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+             //                showModalMessage('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
              //
-             //                alert('Current view: ' + console.log(view));
+             //                showModalMessage('Current view: ' + console.log(view));
              //                console.log(view)
              var strDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
              //                if (!removeBookingDate(strDate)) {
@@ -90,7 +90,7 @@ $jConflict(document).ready(function () {
                 //                            , { "id": calEvent.id }
                 //                        );
                 // delete in frontend
-//                alert(calEvent._id)
+//                showModalMessage(calEvent._id)
                 if (calEvent.title != "X") {
                     $jConflict("#calendar").fullCalendar('removeEvents', calEvent._id);
                     check_add_event = false;
@@ -114,24 +114,23 @@ $jConflict(document).ready(function () {
     }
 
     $("#frm_long_stay").submit(function () {
-        $this = this;
-
+        var $frm = this;
         var charCheck = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        var checkEmail = charCheck.test($this.email.value);
-        if ($this.full_name.value == '') {
-            alert("Please add your full name.");
-            $this.full_name.focus();
-        } else if ($this.email.value == "" || !checkEmail) {
-            alert("Please add your email.");
-            $this.email.focus();
-        } else if ($this.questions.value == "") {
-            alert("Please add your questions.");
-            $this.questions.focus();
-        } else if ($this.security_code.value == "") {
-            alert("Please add security code.");
-            $this.security_code.focus();
+        var checkEmail = charCheck.test($frm.email.value);
+        if ($frm.full_name.value == '') {
+            showModalMessage("Please add your full name.");
+            $frm.full_name.focus();
+        } else if ($frm.email.value == "" || !checkEmail) {
+            showModalMessage("Please add your email.");
+            $frm.email.focus();
+        } else if ($frm.questions.value == "") {
+            showModalMessage("Please add your questions.");
+            $frm.questions.focus();
+        } else if ($frm.security_code.value == "") {
+            showModalMessage("Please add security code.");
+            $frm.security_code.focus();
         } else {
-            var data = $($this).serialize();
+            var data = $($frm).serialize();
             data += "&"+ $.param({
                 long_stay_post: 'true'
             });
@@ -142,18 +141,19 @@ $jConflict(document).ready(function () {
                 data: data,
                 success: function (result) {
                     if (result == 'error_captcha') {
-                        alert("Please check security code.");
-                        $this.security_code.focus();
+                        showModalMessage("Please check security code.");
+                        $frm.security_code.focus();
                     }else if(result == 'success') {
-                        alert("Send email success.");
-                        window.location.reload();
+                        getCaptchaLongStay();
+                        showModalMessage("Send email success.\nThank you.");
+                        $($frm).find(':input[type=text]:not([type=hidden]), textarea').val('');
                     } else {
-                        alert(result);
+                        showModalMessage(result);
                     }
                     hideImgLoading();
                 },
                 error: function (result) {
-                    alert("Error:\n" + result.responseText);
+                    showModalMessage("Error:\n" + result.responseText);
                     hideImgLoading();
                 }
             });
@@ -190,7 +190,7 @@ function sortBookingDate() {
     }
     if (array_booking_date.length > 0)
         array_booking_date_group.push(checkIn + oldDate);
-    alert(array_booking_date_group);
+    showModalMessage(array_booking_date_group);
 }
 
 function removeBookingDate(checkIn, checkOut) {
@@ -229,14 +229,14 @@ $jConflict(document).on("submit", "#form_room_submit", function (e) {
  success: function (data) {
  if (data != 'yes') {
  check_post_data = false;
- alert(data);
+ showModalMessage(data);
  } else {
  check_post_data = true;
  $jConflict("#form_room_submit").submit();
  }
  },
  error: function (result) {
- alert("Error:\n" + result.responseText);
+ showModalMessage("Error:\n" + result.responseText);
  }
  });
  }*/
@@ -267,7 +267,7 @@ function checkDateRoom(start, end, allDay, resourceId) {
     var strDateCheckIn = start.getFullYear() + "-" + (start.getMonth() + 1) + "-" + start.getDate();
     var strDateCheckOut = end.getFullYear() + "-" + (end.getMonth() + 1) + "-" + end.getDate();
     if (!checkDateInArray(strDateCheckIn, strDateCheckOut)) {
-        //alert("Please check your date.");
+        //showModalMessage("Please check your date.");
         return;
     }
     var data = {
@@ -285,7 +285,7 @@ function checkDateRoom(start, end, allDay, resourceId) {
         success: function (data) {
             if (data != 'yes') {
                 //check_post_data = false;
-                alert(data);
+                showModalMessage(data);
             } else {
                 addBookingDateToArray(strDateCheckIn, strDateCheckOut);
                 $jConflict('#calendar').fullCalendar('renderEvent',
@@ -303,7 +303,7 @@ function checkDateRoom(start, end, allDay, resourceId) {
             hideImgLoading();
         },
         error: function (result) {
-            alert("Error:\n" + result.responseText);
+            showModalMessage("Error:\n" + result.responseText);
             hideImgLoading();
         }
     });
@@ -328,14 +328,14 @@ function postAddBooking() {
         success: function (data) {
             if (data != 'success') {
                 //check_post_data = false;
-                alert(data);
+                showModalMessage(data);
                 hideImgLoading();
             } else {
                 window.location.href = webUrl + 'reservation?payment=true'
             }
         },
         error: function (result) {
-            alert("Error:\n" + result.responseText);
+            showModalMessage("Error:\n" + result.responseText);
             hideImgLoading();
         }
     });

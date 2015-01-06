@@ -184,4 +184,17 @@ if ($_REQUEST) {
         }
         exit;
     }
+
+    $get_captcha = empty($_REQUEST['get_captcha']) ? false: $_REQUEST['get_captcha'];
+
+//    require_once("class/simple-php-captcha-master/simple-php-captcha.php");
+    if ($get_captcha == "contact_us") {
+        $_SESSION['captcha_contact_us'] = contact_us_captcha();
+        echo $_SESSION['captcha_contact_us']['image_src'];
+        exit;
+    } else if ($get_captcha == "long_stay"){
+        $_SESSION['captcha_long_stay'] = long_stay_captcha();
+        echo $_SESSION['captcha_long_stay']['image_src'];
+        exit;
+    }
 }
