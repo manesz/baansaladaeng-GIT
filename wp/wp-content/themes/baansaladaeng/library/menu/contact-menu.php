@@ -43,6 +43,10 @@ function render_contact_page()
     $link_tripadvisor = "";
     $latitude = "";
     $longitude = "";
+    $title_youtube = "";
+    $link_youtube = "";
+    $title_instagram = "";
+    $link_instagram = "";
     if ($arrayContact) {
         extract((array)$arrayContact[0]);
     }
@@ -125,13 +129,29 @@ function render_contact_page()
                     </tr>
                     <tr class="alternate">
                         <td><label for="title_tripadvisor">Title Tripadvisor :</label></td>
-                        <td colspan="3"><input type="text" id="title_tripadvisor" name="title_tripadvisor"
+                        <td><input type="text" id="title_tripadvisor" name="title_tripadvisor"
                                                value="<?php echo $title_tripadvisor; ?>"/></td>
+                        <td><label for="title_youtube">Title Youtube :</label></td>
+                        <td><input type="text" id="title_youtube" name="title_youtube"
+                                               value="<?php echo $title_youtube; ?>"/></td>
                     </tr>
                     <tr class="alternate">
                         <td><label for="link_tripadvisor">Link Tripadvisor :</label></td>
-                        <td colspan="3"><input type="text" id="link_tripadvisor" name="link_tripadvisor"
+                        <td><input type="text" id="link_tripadvisor" name="link_tripadvisor"
                                                value="<?php echo $link_tripadvisor; ?>"/></td>
+                        <td><label for="link_youtube">Link Youtube :</label></td>
+                        <td><input type="text" id="link_youtube" name="link_youtube"
+                                               value="<?php echo $link_youtube; ?>"/></td>
+                    </tr>
+                    <tr class="alternate">
+                        <td><label for="title_instagram">Title Instagram :</label></td>
+                        <td colspan="3"><input type="text" id="title_instagram" name="title_instagram"
+                                               value="<?php echo $title_instagram; ?>"/></td>
+                    </tr>
+                    <tr class="alternate">
+                        <td><label for="link_instagram">Link Instagram :</label></td>
+                        <td colspan="3"><input type="text" id="link_instagram" name="link_instagram"
+                                               value="<?php echo $link_instagram; ?>"/></td>
                     </tr>
                     <tr class="alternate">
                         <td><label for="latitude">Latitude :</label></td>

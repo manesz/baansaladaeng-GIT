@@ -19,6 +19,10 @@ $title_tripadvisor = "";
 $link_tripadvisor = "";
 $latitude = "";
 $longitude = "";
+$title_youtube = "";
+$link_youtube = "";
+$title_instagram = "";
+$link_instagram = "";
 if ($arrayContact) {
     extract((array)$arrayContact[0]);
 }
@@ -99,6 +103,22 @@ if ($arrayContact) {
                                         style="max-width: 32px;margin-right: 0.3em;"/><?php echo $title_line; ?>
                                 </a></p>
                         <?php endif; ?>
+                        <?php if ($title_youtube): ?>
+                            <p><a
+                                    href="<?php echo $link_youtube; ?>">
+                                    <img
+                                        src="<?php echo get_template_directory_uri(); ?>/library/images/youtube_circle_color-512.png"
+                                        style="max-width: 32px;margin-right: 0.3em;"/><?php echo $title_youtube; ?>
+                                </a></p>
+                        <?php endif; ?>
+                        <?php if ($title_instagram): ?>
+                            <p><a
+                                    href="<?php echo $link_instagram; ?>">
+                                    <img
+                                        src="<?php echo get_template_directory_uri(); ?>/library/images/instagram-circle.png"
+                                        style="max-width: 32px;margin-right: 0.3em;"/><?php echo $title_instagram; ?>
+                                </a></p>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -115,11 +135,13 @@ if ($arrayContact) {
 
                 <input type="text" class="text" placeholder="Security Code"
                        id="security_code" name="security_code" autocomplete="off">
-                <img class="" id="captcha_contact_us"
-                     src="<?php echo $_SESSION['captcha_contact_us']['image_src']; ?>"/>
-                <img src="<?php bloginfo('template_directory'); ?>/library/images/refresh.png"
-                     style="cursor: pointer;" onclick="getCaptchaContactUs();"
-                    title="New Captcha"/>
+                <div class="border-captcha">
+                    <img class="" id="captcha_contact_us"
+                         src="<?php echo $_SESSION['captcha_contact_us']['image_src']; ?>"/>
+                    <img src="<?php bloginfo('template_directory'); ?>/library/images/refresh.png"
+                         style="cursor: pointer;" onclick="getCaptchaContactUs();"
+                        title="New Captcha"/>
+                </div>
                 <input class="wow shake" data-wow-delay="0.3s" type="submit" value="Send Message"/>
             </form>
         </div>
@@ -146,6 +168,14 @@ if ($arrayContact) {
             top: 40%;
             left: 50%;
             z-index: 9999;
+        }
+
+        .border-captcha {
+            border-width:5px;
+            border-style:double;
+            border-color:#336699;
+            background-color: beige;
+            display: inline-table;
         }
     </style>
     <script type="text/javascript">
