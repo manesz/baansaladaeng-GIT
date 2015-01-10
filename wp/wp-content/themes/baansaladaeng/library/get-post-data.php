@@ -110,7 +110,7 @@ if ($_REQUEST) {
                 require_once("content-email/booking_send_email.php");
                 $message = ob_get_contents();
                 ob_end_clean();
-                $subject = "Order reservation: Baansaladaeng";
+                $subject = "Booking Confirmation from Bannsaladaeng";
                 if ($_REQUEST['status_send'] == 'true')
                     if (wp_mail($_REQUEST['email'], $subject, $message)) {
                         wp_mail($mailCC, $subject, $message);
