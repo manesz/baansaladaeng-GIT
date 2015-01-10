@@ -405,6 +405,27 @@ class Booking
         return true;
     }
 
+    function setAdults($booking_id, $adults)
+    {
+            $result = $this->wpdb->update(
+                $this->tableBooking,
+                array(
+                    'adults' => $adults,
+                    'update_time' => date_i18n('Y-m-d H:i:s'),
+                ),
+                array('id' => $booking_id),
+                array(
+                    '%d',
+                    '%s'
+                ),
+                array('%d')
+            );
+            if (!$result) {
+                return false;
+            }
+        return true;
+    }
+
     function groupArrayDate($array_date)
     {
         //$datearray = array("2013-05-05", "2013-05-06", "2013-05-07", "2013-05-08", "2013-06-19", "2013-06-20", "2013-06-21");

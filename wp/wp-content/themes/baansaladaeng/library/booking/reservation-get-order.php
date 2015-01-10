@@ -78,7 +78,7 @@ if (!$arrayOrder) {
                 <tr>
                     <td style="width: 80%">Adults :</td>
                     <td style="width: 20%">
-                        <select>
+                        <select onchange="setAdults(<?php echo $value->booking_id; ?>, this);">
                             <option value="1" <?php echo @$value->adults==1? "selected":""; ?>>1</option>
                             <option value="2" <?php echo @$value->adults==2? "selected":""; ?>>2</option>
                         </select>

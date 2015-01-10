@@ -436,6 +436,41 @@ function deleteOrder(bookingId) {
     return true;
 }
 
+var check_set_adults = false;
+function setAdults(bookingId, elm) {
+    var setAdults = $(elm).val();
+    if (!check_set_adults) {
+        showImgLoading();
+        $.ajax({
+            type: "POST",
+            url: '',
+            data: {
+                booking_post: 'true',
+                reservation_post: 'set_adults',
+                booking_id: bookingId,
+                set_adults: setAdults
+            },
+            success: function (data) {
+                if (data == 'success')
+                    getOrder();
+                else alert(data);
+                check_set_adults = false;
+                hideImgLoading();
+                getSummaryOrder();
+            },
+            error: function (result) {
+                hideImgLoading();
+                alert("Error:\n" + result.responseText);
+            }
+        });
+    } else {
+        return true;
+
+    }
+    check_set_adults = true;
+    return true;
+}
+
 var check_set_pickup = false;
 function setPickup(bookingId, elm) {
     var setPickup = $(elm).val();
