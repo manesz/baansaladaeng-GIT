@@ -286,11 +286,15 @@ else:
                 <div class="col-md-7 alpha omega">
                     <input type="text" maxlength="50" id="security_code" name="security_code"
                            class="form-control col-md-12" autocomplete="off"/>
-                    <img class="col-md-12" style="margin-top: 20px; padding: 0;z-index: -1" id="captcha_long_stay"
-                         src="<?php echo $_SESSION['captcha_long_stay']['image_src']; ?>"/>
-                    <img src="<?php bloginfo('template_directory'); ?>/library/images/refresh.png"
-                         style="cursor: pointer;margin-top: -60px;z-index: 10;text-align: right" onclick="getCaptchaLongStay();"
-                         title="New Captcha"/>
+
+                    <div class="border-captcha">
+                        <img class="" style="" id="captcha_long_stay"
+                             src="<?php echo $_SESSION['captcha_long_stay']['image_src']; ?>"/>
+                        <img src="<?php bloginfo('template_directory'); ?>/library/images/refresh.png"
+                             style="cursor: pointer;"
+                             onclick="getCaptchaLongStay();"
+                             title="New Captcha"/>
+                    </div>
                 </div>
             </div>
             <div class="col-md-12 margin-bottom-10 alpha omega">
