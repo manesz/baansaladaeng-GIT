@@ -66,24 +66,19 @@
                         </div>
                         <div class="col-md-8 alpha omega">
                             <a href="<?php the_permalink(); ?>?long-stay=true"><h3><?php the_title(); ?></h3></a>
-                            <?php //the_excerpt();
 
-                            ?>
                             <p class="font-12 padding-10">
-                                Type: <?php echo $type; ?><br/>
-                                Size: <?php echo $size; ?> sq.mtrs<br/>
-                                Price: <?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night (Incl
-                                Breakfast)
+                                <?php echo $type ? "Type: $type <br/>" : ""; ?>
+                                <?php echo $size ? "Size: $size sq.mtrs<br/>" : ""; ?>
+                                <?php if ($price || $recommend_price) : ?>
+                                    Price: <?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night (Incl
+                                    Breakfast)
+                                <?php endif; ?>
                             </p>
 
                             <p class="font-12 padding-10" style="">
                                 <?php
-                                $excerpt = get_the_content();
-                                $excerpt = strip_shortcodes($excerpt);
-                                $excerpt = strip_tags($excerpt);
-                                $the_str = substr($excerpt, 0, 150);
-                                $the_str = strlen($the_str) < strlen($excerpt) ? $the_str . '...' : $the_str;
-                                echo $the_str;
+                                the_excerpt();
                                 ?>
                             </p>
 
@@ -144,7 +139,9 @@
 
                             <div class="col-md-8 alpha" style="">
                                 <?php if ($recommend_price): ?>
-                                    <span style="margin-top: 0px; padding-top: 10px; font-size: 20px;">PRICE : <?php echo $price; ?> BAHT</span>
+                                    <span
+                                        style="margin-top: 0px; padding-top: 10px; font-size: 20px;">PRICE : <?php echo $price; ?>
+                                        BAHT</span>
                                     <h3 style="margin-top: 0px; padding-top: 10px; color: red; padding-left: 0;">PRICE :
                                         <?php echo $recommend_price; ?> BAHT</h3>
                                 <?php else: ?>
@@ -155,19 +152,22 @@
                             <!--                            <div class="col-md-4 bg-ED2024" style="text-align: center; padding: 10px 0 10px 0; color: #fff; cursor: pointer;"-->
                             <!--                                onclick="$('form #frm_content_room').submit();">RESERVATION</div>-->
 
-<!--                            <form id="frm_content_room" class="form" method="post"-->
-<!--                                  action="--><?php //echo network_site_url('/') . "reservation"; ?><!--">-->
-<!--                                <input type="hidden" value="true" name="booking_post"/>-->
-<!--                                <input type="hidden" value="1" name="step"/>-->
-<!--                                <input type="hidden" value="--><?php //the_title(); ?><!--" name="room_name"/>-->
-<!--                                <input type="hidden" value="--><?php //echo $postID; ?><!--" name="room_id"/>-->
-<!--                                <input type="hidden" value="" id="check_in_date" name="check_in_date"/>-->
-<!--                                <input type="hidden" value="" id="check_out_date" name="check_out_date"/>-->
-<!--                                <button class="col-md-4 col-xs-12 bg-ED2024 alpha omega"-->
-<!--                                        style="text-align: center; padding: 10px 0 10px 0; color: #fff; border: 0px;"-->
-<!--                                    >RESERVATION-->
-<!--                                </button>-->
-<!--                            </form>-->
+                            <!--                            <form id="frm_content_room" class="form" method="post"-->
+                            <!--                                  action="-->
+                            <?php //echo network_site_url('/') . "reservation"; ?><!--">-->
+                            <!--                                <input type="hidden" value="true" name="booking_post"/>-->
+                            <!--                                <input type="hidden" value="1" name="step"/>-->
+                            <!--                                <input type="hidden" value="-->
+                            <?php //the_title(); ?><!--" name="room_name"/>-->
+                            <!--                                <input type="hidden" value="-->
+                            <?php //echo $postID; ?><!--" name="room_id"/>-->
+                            <!--                                <input type="hidden" value="" id="check_in_date" name="check_in_date"/>-->
+                            <!--                                <input type="hidden" value="" id="check_out_date" name="check_out_date"/>-->
+                            <!--                                <button class="col-md-4 col-xs-12 bg-ED2024 alpha omega"-->
+                            <!--                                        style="text-align: center; padding: 10px 0 10px 0; color: #fff; border: 0px;"-->
+                            <!--                                    >RESERVATION-->
+                            <!--                                </button>-->
+                            <!--                            </form>-->
                         </div>
                         <div class="clearfix"></div>
                     </div>

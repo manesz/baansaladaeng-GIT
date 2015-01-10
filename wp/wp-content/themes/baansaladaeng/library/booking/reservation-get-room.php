@@ -83,9 +83,12 @@ if ($loopPostTypeRoom->have_posts()):
                 <a href="<?php the_permalink(); ?>"><h4 style="padding: 0 10px 0 10px;"><?php the_title(); ?></h4></a>
 
                 <p class="font-12" style="padding: 0 10px 0 10px;">
-                    Type: <?php echo $type; ?><br/>
-                    Size: <?php echo $size; ?> sq.mtrs<br/>
-                    Price: <?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night (Incl Breakfast)
+                    <?php echo $type ? "Type: $type <br/>" : ""; ?>
+                    <?php echo $size ? "Size: $size sq.mtrs<br/>" : ""; ?>
+                    <?php if ($price || $recommend_price) : ?>
+                        Price: <?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night (Incl
+                        Breakfast)
+                    <?php endif; ?>
                 </p>
 
                 <p class="font-12" style="padding: 0 10px 0 10px;">
