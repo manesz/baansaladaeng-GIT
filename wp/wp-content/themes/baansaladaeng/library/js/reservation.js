@@ -187,11 +187,11 @@ function validateFormPayment(elm) {
         alert("Please add Estimated arrival Time.");
         elm.payment_est_arrival1.focus();
         return false;
-    } else if (elm.payment_no_of_person.value == "") {
+    } /*else if (elm.payment_no_of_person.value == "") {
         alert("Please select no of person.");
         elm.payment_no_of_person.focus();
         return false;
-    }
+    }*/
     return true;
 }
 
@@ -398,7 +398,7 @@ function setSummaryConfirm() {
     $('#confirm_email').html($this.payment_email.value);
     $('#confirm_time').html($this.payment_est_arrival1.value + ":" + $this.payment_est_arrival2.value + ":" + $this.payment_est_arrival3.value);
     $('#confirm_tel').html($this.payment_tel.value);
-    $('#confirm_no_of_person').html($this.payment_no_of_person.value);
+//    $('#confirm_no_of_person').html($this.payment_no_of_person.value);
 //    $('#confirm_need_airport_pickup').html($('#payment_need_airport_pickup').prop('checked') ? '(YES)' : "(NO)");
     $('#confirm_note').html($this.payment_note.value);
 }

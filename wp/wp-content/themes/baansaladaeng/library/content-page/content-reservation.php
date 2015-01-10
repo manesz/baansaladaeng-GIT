@@ -220,17 +220,17 @@ get_template_part('nav');
                                                              maxlength="50"
                                                              class="form-control col-md-12"/></div>
                 </div>
-                <div class="col-md-12 margin-bottom-10 alpha omega">
-                    <div class="col-md-3 alpha"><label for="payment_no_of_person">No. of Person <font
-                                color="#FF0000">*</font></label></div>
-                    <div class="col-md-9 alpha omega">
-                        <select id="payment_no_of_person" name="payment_no_of_person" class="col-md-6">
-                            <option value="">---- Select ----</option>
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </select></div>
-                </div>
+<!--                <div class="col-md-12 margin-bottom-10 alpha omega">-->
+<!--                    <div class="col-md-3 alpha"><label for="payment_no_of_person">No. of Person <font-->
+<!--                                color="#FF0000">*</font></label></div>-->
+<!--                    <div class="col-md-9 alpha omega">-->
+<!--                        <select id="payment_no_of_person" name="payment_no_of_person" class="col-md-6">-->
+<!--                            <option value="">---- Select ----</option>-->
+<!--                            <option value="0">0</option>-->
+<!--                            <option value="1">1</option>-->
+<!--                            <option value="2">2</option>-->
+<!--                        </select></div>-->
+<!--                </div>-->
                 <div class="col-md-12 margin-bottom-10 alpha omega">
                     <div class="col-md-3 alpha"><label for="payment_note">Note (if any)</label></div>
                     <div class="col-md-9 alpha omega"><textarea id="payment_note" name="payment_note"
@@ -292,10 +292,10 @@ get_template_part('nav');
                 <td>Tel/Mobile No.:</td>
                 <td id="confirm_tel"></td>
             </tr>
-            <tr>
-                <td>No. of Person:</td>
-                <td id="confirm_no_of_person"></td>
-            </tr>
+<!--            <tr>-->
+<!--                <td>No. of Person:</td>-->
+<!--                <td id="confirm_no_of_person"></td>-->
+<!--            </tr>-->
 <!--            <tr>-->
 <!--                <td>require airport pickup:</td>-->
 <!--                <td id="confirm_need_airport_pickup"></td>-->
