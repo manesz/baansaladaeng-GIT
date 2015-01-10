@@ -93,52 +93,52 @@
                                     ?>
                                     <img title="FREE WIFI"
                                          src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-wifi.png' ?>"
-                                         style="width: 32px; height: 32px;"/>
+                                         style="width: 70px; height: 70px;"/>
                                 <?php endif;
                                 if ($arrayFacilities[1]):?>
                                     <img title="BREAKFAST"
                                          src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-breakfast.png' ?>"
-                                         style="width: 32px; height: 32px;"/>
+                                         style="width: 70px; height: 70px;"/>
                                 <?php endif;
                                 if ($arrayFacilities[2]):?>
                                     <img title="EN-SUITE BATHROOM"
                                          src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-ensuite-bathroom.png' ?>"
-                                         style="width: 32px; height: 32px;"/>
+                                         style="width: 70px; height: 70px;"/>
                                 <?php endif;
                                 if ($arrayFacilities[3]):?>
                                     <img title="FLAT SCREEN TV"
                                          src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-flat-tv.png' ?>"
-                                         style="width: 32px; height: 32px;"/>
+                                         style="width: 70px; height: 70px;"/>
                                 <?php endif;
                                 if ($arrayFacilities[4]):?>
                                     <img title="MINI BAR"
                                          src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-mini-bar.png' ?>"
-                                         style="width: 32px; height: 32px;"/>
+                                         style="width: 70px; height: 70px;"/>
                                 <?php endif;
                                 if ($arrayFacilities[5]):?>
                                     <img title="SAFETY DEPOSIT BOX"
                                          src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-safety-deposit-box.png' ?>"
-                                         style="width: 32px; height: 32px;"/>
+                                         style="width: 70px; height: 70px;"/>
                                 <?php endif;
                                 if ($arrayFacilities[6]):?>
                                     <img title="KING SIZE BED"
                                          src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-king-size-bed.png' ?>"
-                                         style="width: 32px; height: 32px;"/>
+                                         style="width: 70px; height: 70px;"/>
                                 <?php endif;
                                 if ($arrayFacilities[7]):?>
                                     <img title="QUEEN SIZE BED"
                                          src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-queen-size-bed.png' ?>"
-                                         style="width: 32px; height: 32px;"/>
+                                         style="width: 70px; height: 70px;"/>
                                 <?php endif;
                                 if ($arrayFacilities[8]):?>
                                     <img title="TWIN BED"
                                          src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-twin-bed.png' ?>"
-                                         style="width: 32px; height: 32px;"/>
+                                         style="width: 70px; height: 70px;"/>
                                 <?php endif;
                                 if ($arrayFacilities[9]):?>
                                     <img title="PRIVATE BALCONY"
                                          src="<?php echo get_template_directory_uri() . '/library/images/baansaladaeng-icon-private-balcony.png' ?>"
-                                         style="width: 32px; height: 32px;"/>
+                                         style="width: 70px; height: 70px;"/>
                                 <?php endif; ?>
                             </p>
 
