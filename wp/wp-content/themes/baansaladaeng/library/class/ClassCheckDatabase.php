@@ -87,6 +87,10 @@ class CheckDatabase
               `link_pinterest` text,
               `title_tripadvisor` varchar(120) DEFAULT NULL,
               `link_tripadvisor` text,
+              `title_youtube` varchar(120) DEFAULT NULL,
+              `link_youtube` text,
+              `title_instagram` varchar(120) DEFAULT NULL,
+              `link_instagram` text,
               `latitude` varchar(50) DEFAULT NULL,
               `longitude` varchar(50) DEFAULT NULL,
               PRIMARY KEY (`id`)
