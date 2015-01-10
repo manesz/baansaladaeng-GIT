@@ -64,6 +64,12 @@ if ($_REQUEST) {
                 else echo "fail";
                 exit;
                 break;
+            case 'set_adults' :
+                if ($objClassBooking->setAdults(@$_REQUEST['booking_id'], @$_REQUEST['set_adults']))
+                    echo "success";
+                else echo "fail";
+                exit;
+                break;
             case 'set_pickup' :
                 if ($objClassBooking->updateBookingTotal(@$_REQUEST['booking_id'], @$_REQUEST['set_pickup']))
                     echo "success";

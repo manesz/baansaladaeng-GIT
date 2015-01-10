@@ -224,7 +224,7 @@ function create_post_type() {
 
 //require_once("library/check-database.php");
 require_once("library/menu-control.php");
-require_once("library/booking.php");
+require_once("library/get-post-data.php");
 
 /************* CUSTOMS : Admin Menus *********************/
 add_action( 'wp_enqueue_scripts', 'load_dashicons_front_end' );
