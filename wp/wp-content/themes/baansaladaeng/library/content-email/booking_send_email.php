@@ -928,10 +928,14 @@ h4 {
                                     mc:edit="left_column_content">
                                     <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
 
-                                    <p>Type: <?php echo $type; ?><br/>
-                                        Size: <?php echo $size; ?> sq.mtrs<br/>
-                                        Designer: <?php echo $designer; ?><br/>
-                                        Price: <?php echo $recommend_price ? $recommend_price : $price; ?> THB/night (Incl Breakfast)<br/><br/>
+                                    <p>
+
+                                        <?php echo $type ? "Type: $type <br/>" : ""; ?>
+                                        <?php echo $size ? "Size: $size sq.mtrs<br/>" : ""; ?>
+                                        <?php if ($price || $recommend_price) : ?>
+                                            Price: <?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night (Incl
+                                            Breakfast)
+                                        <?php endif; ?><br/><br/>
                                         <?php
                                         $excerpt = get_the_content();
                                         $excerpt = strip_shortcodes($excerpt);
