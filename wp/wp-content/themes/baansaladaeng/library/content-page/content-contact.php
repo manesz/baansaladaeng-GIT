@@ -33,30 +33,59 @@ get_header(); ?>
             <div class="col-md-12 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
                 <div class="col-md-4"
                      style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
-                    <button onclick="window.print();"
+                    <button onclick="PopupPrint();" id="btn_print"
                             class="btn btn-default col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
                         Print
                     </button>
                 </div>
             </div>
+            <style type="text/css">
+
+                #btn_print {
+                    display: block;
+                }
+
+                @media print {
+                    #btn_print {
+                        display: none;
+                    }
+                }
+            </style>
 
         </div>
     </div>
-
+    <head>
+    </head>
     <!-- JS script -->
     <script type="text/javascript">
         $(function () {
 //            demo.add(function () {
-                $('#map_canvas').gmap({
-                    'center': '<?php echo $latitude; ?>,<?php echo $longitude; ?>',
-                    'zoom': 15,
-                    'disableDefaultUI': false, 'callback': function () {
-                        var self = this;
-                        self.addMarker({'position': this.get('map').getCenter() }).click(function () {
-                            self.openInfoWindow({ 'content': 'Baansaladaeng' }, this);
-                        });
-                    }});
+            $('#map_canvas').gmap({
+                'center': '<?php echo $latitude; ?>,<?php echo $longitude; ?>',
+                'zoom': 15,
+                'disableDefaultUI': false, 'callback': function () {
+                    var self = this;
+                    self.addMarker({'position': this.get('map').getCenter() }).click(function () {
+                        self.openInfoWindow({ 'content': 'Baansaladaeng' }, this);
+                    });
+                }});
 //            }).load();
         });
+
+        function PopupPrint() {
+            var $contents = $('.row').html();
+            var mywindow = window.open('', 'my div', 'height=400,width=600');
+            mywindow.document.write('<html><head><title>Contact</title>');
+            /*optional stylesheet*/ //mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+            mywindow.document.write('</head><body >');
+            mywindow.document.write($contents);
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10
+
+            mywindow.print();
+            mywindow.close();
+        }
     </script>
 <?php get_footer(); ?>
