@@ -865,10 +865,10 @@ h4 {
                 <td>Tel/Mobile No.:</td>
                 <td id="confirm_tel"><?php echo @$tel; ?></td>
             </tr>
-            <tr>
-                <td>No. of Person:</td>
-                <td id="confirm_no_of_person"><?php echo @$no_of_person; ?></td>
-            </tr>
+<!--            <tr>-->
+<!--                <td>No. of Person:</td>-->
+<!--                <td id="confirm_no_of_person">--><?php //echo @$no_of_person; ?><!--</td>-->
+<!--            </tr>-->
             <tr>
                 <td>Note:</td>
                 <td id="confirm_note"><?php echo @$note ? $note: "-"; ?></td>
