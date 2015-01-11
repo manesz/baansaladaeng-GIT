@@ -105,7 +105,7 @@ if ($loopPostTypeRoom->have_posts()):
                 <div class="col-md-8 alpha" style="">
                     <?php if ($recommend_price): ?>
 						<div style="padding: 0 10px 0 10px;">
-							<span style="margin-top: 0px; padding-top: 10px; font-size: 20px;">PRICE : <?php echo $price; ?> BAHT</span>
+							<s><span style="margin-top: 0px; padding-top: 10px; font-size: 20px;">PRICE : <?php echo $price; ?> BAHT</span></s>
 							<h3 style="margin-top: 0px; padding-top: 10px; color: red; padding-left: 0;">PRICE : <?php echo $recommend_price; ?> BAHT</h3>
 						</div>
                     <?php else: ?>

@@ -1,1 +1,1 @@
-a:1:{s:15:"promotion_title";s:9:"Promotion";}
+a:1:{s:15:"promotion_title";s:10:"Promotions";}

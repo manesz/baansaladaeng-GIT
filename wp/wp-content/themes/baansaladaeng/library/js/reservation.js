@@ -524,6 +524,15 @@ $(document).ready(function () {
         showSelectRoom();
         return false;
     });
+    $(document).on("click", ".btn_reservation_nav", function (e) {
+        $(".btn_reservation_nav").each(function () {
+            if ($(this).hasClass('active')){
+                //alert($(this).hasClass('active'));
+                $(this).removeClass('active');
+            }
+        });
+        $(this).addClass("active");
+    });
     $(document).on("click", "#linkPayment, .btn_payment", function (e) {
         showPayment();
         return false;

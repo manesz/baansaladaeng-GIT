@@ -5,8 +5,8 @@ require_once("class/ClassBookingListBackend.php");
 $objClassContact = new Contact($wpdb);
 $objContact = $objClassContact->getContact(1);
 //$sendTo = 'ruxchuk@gmail.com'; //email info
-$sendTo = $objContact[0]->email; //email info
-$mailCC = "info@ideacorders.com";
+$sendTo = $objContact[0]->email; //info@baansaladaeng.com
+//$mailCC = "info@ideacorders.com";
 //$headersSendEmail[] = "Cc: info@ideacorders.com"; // note you can just use a simple email address
 if ($_REQUEST) {
 
@@ -100,6 +100,7 @@ if ($_REQUEST) {
                 exit;
                 break;
             case 'booking_send_email' :
+                $email = $_REQUEST['email'];
                 function wp_mail_set_content_type()
                 {
                     return "text/html";
@@ -112,8 +113,8 @@ if ($_REQUEST) {
                 ob_end_clean();
                 $subject = "Booking Confirmation from Bannsaladaeng";
                 if ($_REQUEST['status_send'] == 'true')
-                    if (wp_mail($_REQUEST['email'], $subject, $message)) {
-                        wp_mail($mailCC, $subject, $message);
+                    if (wp_mail($email, $subject, $message, array("Cc: $sendTo"))) {
+//                        wp_mail($mailCC, $subject, $message);
                         echo 'success';
                     } else {
                         echo 'fail';
@@ -164,7 +165,7 @@ if ($_REQUEST) {
             $result = wp_mail($sendTo, $subject, $message);
             if ($result) {
                 echo 'success';
-                $result = wp_mail($mailCC, $subject, $message);
+//                $result = wp_mail($mailCC, $subject, $message);
             }
             else echo 'fail';
         }
@@ -178,6 +179,7 @@ if ($_REQUEST) {
         if ($_SESSION['captcha_long_stay']['code'] != @$security_code) {
             echo 'error_captcha';
         } else {
+            $email = $_REQUEST['email'];
             function wp_mail_set_content_type()
             {
                 return "text/html";
@@ -189,10 +191,10 @@ if ($_REQUEST) {
             require_once("content-email/long_stay_email.php");
             $message = ob_get_contents();
             ob_end_clean();
-            $result = wp_mail($sendTo, $subject, $message);
+            $result = wp_mail($sendTo, $subject, $message, array("Cc: $email"));
             if ($result) {
                 echo 'success';
-                $result = wp_mail($mailCC, $subject, $message);
+//                $result = wp_mail($mailCC, $subject, $message);
             }
             else echo 'fail';
             exit;
