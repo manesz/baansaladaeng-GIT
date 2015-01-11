@@ -9,10 +9,12 @@
                 <?php
                 $loop = new WP_Query(array(
                     'post_type' => 'room',
-                    'orderby' => 'date',
                     'category_name' => 'long-stay', //name of category by slug
-                    'order' => 'DESC',
-                    'posts_per_page' => -1));
+                    'orderby' => 'menu_order',
+                    'order' => 'ASC',
+                    'post_status' => 'publish',
+                    'posts_per_page' => -1
+                ));
                 if ($loop->have_posts()): while ($loop->have_posts()) : $loop->the_post();
                     ?>
                     <div class="col-md-12 alpha omega bg-fafafa clearfix margin-bottom-20 wow fadeInRight"

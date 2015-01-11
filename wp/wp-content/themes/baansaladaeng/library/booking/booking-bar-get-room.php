@@ -1,5 +1,11 @@
 <?php
-$argc =  array('post_type' => 'room', 'posts_per_page' => -1);
+$argc =  array(
+    'post_type' => 'room',
+    'posts_per_page' => -1,
+    'orderby' => 'menu_order',
+    'order' => 'ASC',
+    'post_status' => 'publish',
+);
 
 $loopPostTypeRoom = new WP_Query($argc);
 if ($loopPostTypeRoom->have_posts()):

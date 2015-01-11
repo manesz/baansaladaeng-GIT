@@ -523,7 +523,10 @@ class Booking
         $roomID = @$post['room_id'];
         $query = new WP_Query(array(
             'post_type' => 'room',
-            'post__in' => array($roomID)
+            'post__in' => array($roomID),
+            'orderby' => 'menu_order',
+            'order' => 'ASC',
+            'post_status' => 'publish',
         ));
         $posts = $query->get_posts();
         $customField = get_post_custom($roomID);

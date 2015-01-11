@@ -886,7 +886,9 @@ h4 {
                 'post_type' => 'room',
                 'post_status' => 'publish',
                 'posts_per_page' => -1,
-                'caller_get_posts' => 1
+                'caller_get_posts' => 1,
+                'orderby' => 'menu_order',
+                'order' => 'ASC'
             );
             $loopPostTypeRoom = new WP_Query($argc);
             if ($loopPostTypeRoom->have_posts()):

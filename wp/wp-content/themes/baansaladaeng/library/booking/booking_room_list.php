@@ -7,7 +7,13 @@
  */
 ?>
 <?php
-$loop = new WP_Query(array('post_type' => 'room', 'posts_per_page' => 10));
+$loop = new WP_Query(array(
+    'post_type' => 'room',
+    'posts_per_page' => 10,
+    'post_status' => 'publish',
+    'orderby' => 'menu_order',
+    'order' => 'ASC'
+));
 while ($loop->have_posts()) : $loop->the_post();
     echo '<div class="menupageContent">';
     the_post_thumbnail("thumbnail");

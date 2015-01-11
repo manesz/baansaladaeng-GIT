@@ -30,6 +30,8 @@ get_template_part('nav', 'front'); ?>
         'posts_per_page' => 6,
         'meta_key' => 'recommend',
         'meta_value' => '1',
+        'orderby' => 'menu_order',
+        'order' => 'ASC'
 //		'order' => 'ASC',
     ));
     if ($loopPostTypeRoom->have_posts()):
