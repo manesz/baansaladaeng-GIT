@@ -72,15 +72,15 @@
                             <p class="font-12 padding-10">
                                 <?php echo $type ? "Type: $type <br/>" : ""; ?>
                                 <?php echo $size ? "Size: $size sq.mtrs<br/>" : ""; ?>
-                                <?php if ($price || $recommend_price) : ?>
+                                <?php /*if ($price || $recommend_price) : ?>
                                     Price: <?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night (Incl
                                     Breakfast)
-                                <?php endif; ?>
+                                <?php endif;*/ ?>
                             </p>
 
                             <p class="font-12 padding-10" style="">
                                 <?php
-                                the_excerpt();
+                                the_content();
                                 ?>
                             </p>
 
@@ -139,8 +139,8 @@
                                 <?php endif; ?>
                             </p>
 
-                            <div class="col-md-8 alpha" style="">
-                                <?php if ($recommend_price): ?>
+<!--                            <div class="col-md-8 alpha" style="">-->
+                                <?php /*if ($recommend_price): ?>
                                     <span
                                         style="margin-top: 0px; padding-top: 10px; font-size: 20px;">PRICE : <?php echo $price; ?>
                                         BAHT</span>
@@ -149,8 +149,8 @@
                                 <?php else: ?>
                                     <h3 style="margin-top: 0px; padding-top: 10px;">PRICE
                                         : <?php echo $price; ?> BAHT</h3>
-                                <?php endif; ?>
-                            </div>
+                                <?php endif;*/ ?>
+<!--                            </div>-->
                             <!--                            <div class="col-md-4 bg-ED2024" style="text-align: center; padding: 10px 0 10px 0; color: #fff; cursor: pointer;"-->
                             <!--                                onclick="$('form #frm_content_room').submit();">RESERVATION</div>-->
 
