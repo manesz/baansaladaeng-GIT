@@ -779,11 +779,12 @@ h4 {
 }
 
 #templateBody tr td {
-    padding: 10px 20px 20px 20px;
+    /*padding: 10px 20px 20px 20px;*/
+    padding: 5px;
 }
 
 #templateBody tr td:first-child {
-    padding: 20px;
+    padding: 5px;
 }
 </style>
 </head>
@@ -818,16 +819,16 @@ h4 {
             <tr class="confirm_summary_order">
                 <td width="30%">Room:</td>
                 <td width="70%">
-                    <?php echo $arrayRoomName ? implode('<br/>', $arrayRoomName) : "No data"; ?>
+                    <?php echo @$arrayRoomName ? implode('<br/>', @$arrayRoomName) : "No data"; ?>
                 </td>
             </tr>
             <tr class="confirm_summary_order">
                 <td>Arrival Date:</td>
-                <td><?php echo $arrayArrivalDate ? implode('<br/>', $arrayArrivalDate) : "No data"; ?></td>
+                <td><?php echo @$arrayArrivalDate ? implode('<br/>', @$arrayArrivalDate) : "No data"; ?></td>
             </tr>
             <tr class="confirm_summary_order">
                 <td>Sub Total:</td>
-                <td><?php echo number_format($subTotal); ?> bath</td>
+                <td><?php echo number_format(@$subTotal); ?> bath</td>
             </tr>
             <tr>
                 <td>Name:</td>
@@ -843,7 +844,7 @@ h4 {
             </tr>
             <tr>
                 <td>Date of Birth:</td>
-                <td id="confirm_dob"><?php echo date_i18n("d/m/Y", strtotime($date_of_birth)); ?></td>
+                <td id="confirm_dob"><?php echo date_i18n("d/m/Y", strtotime(@$date_of_birth)); ?></td>
             </tr>
             <tr>
                 <td>Passport No.:</td>
