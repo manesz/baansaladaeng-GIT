@@ -84,3 +84,10 @@ endif; ?>
         <td><?php echo number_format($subTotal); ?> bath</td>
     </tr>
 </table>
+<script>
+<?php if (!$subTotal):?>
+$("#payment_post").hide();
+<?php else: ?>
+$("#payment_post").show();
+<?php endif; ?>
+</script>
