@@ -57,14 +57,28 @@ class Booking
     {
         $strAnd = $room_id ? " AND a.room_id=$room_id" : "";
         if ($check_in && $check_out) {
-            $strAnd .= $check_in == $check_out ?
+            $strAnd .= /*$check_in == $check_out ?
                 " AND a.check_in_date='$check_in'
-            AND a.check_out_date='$check_out'" :
-                " AND (
-                a.`check_in_date`
-                AND a.`check_out_date` BETWEEN '$check_in'
-                AND '$check_out'
-              )";
+            AND a.check_out_date='$check_out'" :*/
+                "
+                AND (
+                    a.`check_in_date` BETWEEN '$check_in'
+                    AND '$check_out'
+                    OR
+                    a.`check_out_date` BETWEEN '$check_in'
+                    AND '$check_out'
+                    OR (
+                    a.`check_in_date` <= '$check_in'
+                    AND
+                    a.`check_out_date` >= '$check_in'
+                    )
+                    OR (
+                    a.`check_in_date` <= '$check_out'
+                    AND
+                    a.`check_out_date` >= '$check_out'
+                    )
+                )
+              ";
         }
         $sql = "
             SELECT
@@ -110,15 +124,15 @@ class Booking
         $roomId = empty($room_id) ? 0 : $room_id;
         $result = $this->getRoomByDateCheckInCheckOut($checkIn, $checkOut, $roomId);
         if (count($result) > 0) {
-            $getPaid = $result[0]->paid;
-            if ($getPaid) {
-                return false;
-            }
-            $getDateCreate = $result[0]->create_time;
-            $getTimeOut = $result[0]->timeout;
-            if ($this->checkTimeOut($getDateCreate, $getTimeOut)) {
-                return true;
-            }
+//            $getPaid = $result[0]->paid;
+//            if ($getPaid) {
+//                return false;
+//            }
+//            $getDateCreate = $result[0]->create_time;
+//            $getTimeOut = $result[0]->timeout;
+//            if ($this->checkTimeOut($getDateCreate, $getTimeOut)) {
+//                return true;
+//            }
             return false;
         } else {
             return true;
