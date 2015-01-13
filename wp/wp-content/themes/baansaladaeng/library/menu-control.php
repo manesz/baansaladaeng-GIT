@@ -1,6 +1,7 @@
 <?php
 
 //require class for post data
+require_once("class/ClassPostTypeOrderWalker.php");
 require_once("class/ClassContact.php");
 require_once("class/ClassImageGallery.php");
 require_once("class/ClassBannerSlide.php");
@@ -17,6 +18,8 @@ require_once('menu/booking-room-menu.php');
 require_once('menu/contact-menu.php');
 require_once('menu/image-gallery-menu.php');
 require_once('menu/sort-room-menu.php');
+require_once('menu/sort-recommend-room-menu.php');
+require_once('menu/sort-long-stay-menu.php');
 
 //Captcha
 require_once("class/simple-php-captcha-master/long-stay-captcha.php");

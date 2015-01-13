@@ -5,22 +5,22 @@
  * Time: 20:30 น.
  */
 
-function add_sort_room_menu_items()
+function add_sort_recommend_room_menu_items()
 {
     add_submenu_page(
         'ics_theme_settings',
-        'Sort Room',
-        'Sort Room',
+        'Sort Recommend Room',
+        'Sort Recommend Room',
         'manage_options',
-        'sort_room',
-        'render_sort_room_page'
+        'sort_recommend_room',
+        'render_sort_recommend_room_page'
     );
 }
 
 
-add_action('admin_menu', 'add_sort_room_menu_items');
+add_action('admin_menu', 'add_sort_recommend_room_menu_items');
 
-function ajax_save_sort_room()
+function ajax_save_sort_recommend_room()
 {
     global $wpdb;
 
@@ -45,7 +45,7 @@ function ajax_save_sort_room()
         }
 }
 
-function room_list_pages($args = '')
+function recommend_room_list_pages($args = '')
 {
     $defaults = array(
         'depth' => 0, 'show_date' => '',
@@ -73,7 +73,10 @@ function room_list_pages($args = '')
         'posts_per_page' => -1,
         'orderby' => 'menu_order',
         'order' => 'ASC',
-        'category_name' => 'guest-house',
+
+
+        'meta_key' => 'recommend',
+        'meta_value' => '1',
     );
 
     $the_query = new WP_Query($args);
@@ -83,7 +86,7 @@ function room_list_pages($args = '')
         if ($r['title_li'])
             $output .= '<li class="pagenav intersect">' . $r['title_li'] . '<ul>';
 
-        $output .= room_walk_tree($pages, $r['depth'], $r);
+        $output .= recommend_room_walk_tree($pages, $r['depth'], $r);
 
         if ($r['title_li'])
             $output .= '</ul></li>';
@@ -98,7 +101,7 @@ function room_list_pages($args = '')
     return true;
 }
 
-function room_walk_tree($pages, $depth, $r)
+function recommend_room_walk_tree($pages, $depth, $r)
 {
     if (empty($r['walker']))
         $walker = new Post_Types_Order_Walker;
@@ -109,7 +112,7 @@ function room_walk_tree($pages, $depth, $r)
     return call_user_func_array(array(&$walker, 'walk'), $args);
 }
 
-function render_sort_room_page()
+function render_sort_recommend_room_page()
 {
     global $objClassContact;
 //    if ( $this->current_post_type != null )
@@ -128,6 +131,7 @@ function render_sort_room_page()
         #order-post-type {
             width: 50%;
         }
+
         #icon-settings {background-image:url("../images/admin-icon-settings.gif");background-repeat:no-repeat;}
         h2.subtitle {font-size: 15px; font-style: italic; font-weight: bold}
         .wrap .example { color: #666666; font-size: 11px; font-weight: bold}
@@ -149,7 +153,7 @@ function render_sort_room_page()
     </style>
         <div class="wrap">
             <div class="icon32" id="icon-edit"><br></div>
-            <h2>Room - Re-Order</h2>
+            <h2>Recommend Room - Re-Order</h2>
 
             <div id="ajax-response"></div>
 
@@ -161,7 +165,7 @@ function render_sort_room_page()
 
             <div id="order-post-type">
                 <ul id="sortable" class="ui-sortable">
-                    <?php room_list_pages('hide_empty=0&title_li=&post_type=room'); ?>
+                    <?php recommend_room_list_pages('hide_empty=0&title_li=&post_type=room'); ?>
                 </ul>
                 <div class="clear"></div>
             </div>
@@ -184,7 +188,7 @@ function render_sort_room_page()
                     jQuery("#save-order").bind("click", function () {
 //                        alert(jQuery("#sortable").sortable("serialize"));
                         jQuery.post(ajaxurl, {
-                            action: 'update-sort-room',
+                            action: 'update-sort-recommend-room',
                             order: jQuery("#sortable").sortable("serialize") }, function (result) {
                             jQuery("#ajax-response").html('<div class="message updated fade">' +
                                 '<p>Items Order Updated</p></div>');
@@ -198,8 +202,8 @@ function render_sort_room_page()
 }
 
 if ($_REQUEST) {
-    if ($_REQUEST['action'] == 'update-sort-room') {
-        ajax_save_sort_room();
+    if ($_REQUEST['action'] == 'update-sort-recommend-room') {
+        ajax_save_sort_recommend_room();
         exit;
     }
 }
