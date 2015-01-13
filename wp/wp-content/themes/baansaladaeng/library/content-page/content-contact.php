@@ -38,16 +38,25 @@ get_header(); ?>
 <!--            <div class="col-md-12 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">-->
 <!--                <div class="col-md-4"-->
 <!--                     style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">-->
-<!--                    <button onclick="PopupPrint();" id="btn_print"-->
+<!--                    <button id="btn_print"-->
 <!--                            class="btn btn-default col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">-->
 <!--                        Print-->
 <!--                    </button>-->
 <!--                </div>-->
 <!--            </div>-->
+            <div id="print_version"><?php
+                $page = get_page_by_title('Print Version');
+                $content = apply_filters('the_content', $page->post_content);
+                echo $content;
+                ?></div>
             <style type="text/css">
 
                 #btn_print {
                     display: block;
+                }
+
+                #print_version {
+                    display: none;
                 }
 
                 @media print {
@@ -77,7 +86,6 @@ get_header(); ?>
 //            }).load();
 
 
-
             $("#btn_print").click(function () {
                 PopupPrint();
             });
@@ -85,20 +93,18 @@ get_header(); ?>
 
 
         function PopupPrint() {
-//            var $contents = $('.row').html();
-            var $contents = '<?php echo $printVersion; ?>';
+            var $contents = $("#print_version").html();
             var mywindow = window.open('', 'my div', 'height=400,width=600');
             mywindow.document.write('<html><head><title>Contact</title>');
-            /*optional stylesheet*/ //mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
-            mywindow.document.write('</head><body >');
-            mywindow.document.write('<?php echo $printVersion; ?>');
+            mywindow.document.write('</head><body style="text-align: center;">');
+            mywindow.document.write($contents);
             mywindow.document.write('</body></html>');
 
             mywindow.document.close(); // necessary for IE >= 10
             mywindow.focus(); // necessary for IE >= 10
 
-//            mywindow.print();
-//            mywindow.close();
+            mywindow.print();
+            mywindow.close();
         }
     </script>
 <?php get_footer(); ?>
