@@ -95,12 +95,13 @@ if ($loopPostTypeRoom->have_posts()):
 
                 <p class="font-12" style="padding: 0 10px 0 10px;">
                     <?php
-                    $excerpt = get_the_content();
+                    /*$excerpt = get_the_content();
                     $excerpt = strip_shortcodes($excerpt);
                     $excerpt = strip_tags($excerpt);
                     $the_str = substr($excerpt, 0, 150);
                     $the_str = strlen($the_str) < strlen($excerpt) ? $the_str . '...' : $the_str;
-                    echo $the_str;
+                    echo $the_str;*/
+                    the_excerpt();
                     ?>
                 </p>
 
