@@ -521,6 +521,15 @@ class Booking
             $newGroupDate = $this->groupArrayDate($post['array_booking']);
 
             foreach ($newGroupDate as $key => $value) {
+                list($checkInDate, $checkOutDate) = explode('|', $value);
+                $timeDiff = abs(strtotime($checkOutDate) - strtotime($checkInDate));
+                $numberDays = $timeDiff / 86400;
+                $numberDays = ceil($numberDays);
+                if ($numberDays < 1){
+                    return $this->returnMessage('Please check departure date.', true);
+                }
+            }
+            foreach ($newGroupDate as $key => $value) {
                 $expDate = explode('|', $value);
                 $checkInDate = $expDate[0];
                 $checkOutDate = $expDate[1];
