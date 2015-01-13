@@ -21,15 +21,15 @@ $(document).ready(function () {
         var checkEmail = charCheck.test(this.send_email.value);
         if ($frm.send_name.value == "" || $frm.send_name.value == "Name...") {
             $frm.send_name.focus();
-            showModalMessage("Please add your name.");
+            showModalMessage("Please add your name.", false, true);
         } else if ($frm.send_email.value == "" || $frm.send_email.value == "Email..." || !checkEmail) {
-            showModalMessage("Please add your email.");
+            showModalMessage("Please add your email.", false, true);
             $frm.send_email.focus();
         } else if ($frm.send_message.value == "" || $frm.send_message.value == "Message..") {
-            showModalMessage("Please add your message.");
+            showModalMessage("Please add your message.", false, true);
             $frm.send_message.focus();
         } else if ($frm.security_code.value == "") {
-            showModalMessage("Please add security code.");
+            showModalMessage("Please add security code.", false, true);
             $frm.security_code.focus();
         } else {
             var data = $($frm).serialize();
@@ -45,28 +45,22 @@ $(document).ready(function () {
                 data: data,
                 success: function (result) {
                     if (result == 'error_captcha') {
-                        showModalMessage("Please check security code.");
+                        showModalMessage("Please check security code.", false, true);
                         $frm.security_code.focus();
                     } else if (result == 'success') {
-                        showModalMessage("Send email success.\nThank you.");
+                        showModalMessage("Send email success.\nThank you.", false, false);
                         $($frm).find(':input[type=text]:not([type=hidden]), textarea').val('');
                         getCaptchaContactUs();
                     } else {
-                        showModalMessage(result);
+                        showModalMessage(result, false, true);
                     }
                     send_mail_contact_us = false;
                     hideImgLoading();
                 }
             })
-                .done(function () {
-                    //showModalMessage("second success");
-                })
                 .fail(function () {
-                    showModalMessage("เกิดข้อผิดพลาด");
+                    showModalMessage("เกิดข้อผิดพลาด", false, true);
                     hideImgLoading();
-                })
-                .always(function () {
-                    //showModalMessage("finished");
                 });
         }
         return false;
@@ -88,7 +82,7 @@ function getCaptchaContactUs() {
         }
     })
         .fail(function () {
-            showModalMessage("เกิดข้อผิดพลาด");
+            showModalMessage("เกิดข้อผิดพลาด", false, true);
             hideImgLoading();
         })
 }
@@ -108,15 +102,18 @@ function getCaptchaLongStay() {
         }
     })
         .fail(function () {
-            showModalMessage("เกิดข้อผิดพลาด");
+            showModalMessage("เกิดข้อผิดพลาด", false, true);
             hideImgLoading();
         })
 }
 
 
-function showModalMessage(msg, title, calBack) {
+function showModalMessage(msg, title, error, calBack) {
     title = title || "Message";
+    error = error || false;
     calBack = calBack || false;
+    msg = error ? '<span class="font-color-BF2026">' + msg + '</span>':
+        '<span class="font-color-4BB748">' + msg + '</span>';
     $("#modal_show_message .modal-body").html(msg);
     $("#modal_show_message #myModalMassage").html(title);
     $('#modal_show_message').modal('show');

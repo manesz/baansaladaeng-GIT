@@ -118,16 +118,16 @@ $jConflict(document).ready(function () {
         var charCheck = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         var checkEmail = charCheck.test($frm.email.value);
         if ($frm.full_name.value == '') {
-            showModalMessage("Please add your full name.");
+            showModalMessage("Please add your full name.", false, true);
             $frm.full_name.focus();
         } else if ($frm.email.value == "" || !checkEmail) {
-            showModalMessage("Please add your email.");
+            showModalMessage("Please add your email.", false, true);
             $frm.email.focus();
         } else if ($frm.questions.value == "") {
-            showModalMessage("Please add your questions.");
+            showModalMessage("Please add your questions.", false, true);
             $frm.questions.focus();
         } else if ($frm.security_code.value == "") {
-            showModalMessage("Please add security code.");
+            showModalMessage("Please add security code.", false, true);
             $frm.security_code.focus();
         } else {
             var data = $($frm).serialize();
@@ -141,19 +141,19 @@ $jConflict(document).ready(function () {
                 data: data,
                 success: function (result) {
                     if (result == 'error_captcha') {
-                        showModalMessage("Please check security code.");
+                        showModalMessage("Please check security code.", false, true);
                         $frm.security_code.focus();
                     }else if(result == 'success') {
                         getCaptchaLongStay();
-                        showModalMessage("Send email success.\nThank you.");
+                        showModalMessage("Send email success.\nThank you.", false, false);
                         $($frm).find(':input[type=text]:not([type=hidden]), textarea').val('');
                     } else {
-                        showModalMessage(result);
+                        showModalMessage(result, false, true);
                     }
                     hideImgLoading();
                 },
                 error: function (result) {
-                    showModalMessage("Error:\n" + result.responseText);
+                    showModalMessage("Error:\n" + result.responseText, false, true);
                     hideImgLoading();
                 }
             });
@@ -287,7 +287,7 @@ function checkDateRoom(start, end, allDay, resourceId) {
         success: function (data) {
             if (data.error) {
                 //check_post_data = false;
-                showModalMessage(data.msg);
+                showModalMessage(data.msg, false, true);
             } else {
                 addBookingDateToArray(strDateCheckIn, strDateCheckOut);
                 $jConflict('#calendar').fullCalendar('renderEvent',
@@ -305,7 +305,7 @@ function checkDateRoom(start, end, allDay, resourceId) {
             hideImgLoading();
         },
         error: function (result) {
-            showModalMessage("Error:\n" + result.responseText);
+            showModalMessage("Error:\n" + result.responseText, false, true);
             hideImgLoading();
         }
     });
@@ -331,7 +331,7 @@ function postAddBooking() {
         },
         success: function (data) {
             hideImgLoading();
-            showModalMessage(data.msg);
+            showModalMessage(data.msg, false, data.error);
             if (data.error) {
                 //check_post_data = false;
                 hideImgLoading();
@@ -342,7 +342,7 @@ function postAddBooking() {
             }
         },
         error: function (result) {
-            showModalMessage("Error:\n" + result.responseText);
+            showModalMessage("Error:\n" + result.responseText, false, true);
             hideImgLoading();
         }
     });

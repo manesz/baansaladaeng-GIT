@@ -38,11 +38,11 @@ get_template_part('nav');
     <!--                <h2 class="col-md-12">Select Rooms <span class="font-color-999 font-size-14">Mediterranean Suite</span> </h2>-->
     <ol class="breadcrumb" style="padding: 15px 0 15px 15px;">
         <?php //if (!$roomID): ?>
-        <li><a class="btn_reservation_nav" id="linkSelectRoom" href="#">ROOM SELECTION</a></li>
+        <li><span class="btn_reservation_nav" id="linkSelectRoom" href="#">ROOM SELECTION</span></li>
         <?php //endif; ?>
-        <li><a class="btn_reservation_nav"  id="linkSelectDate" href="#">SELECT DATES</a></li>
-        <li><a class="btn_reservation_nav"  id="linkPayment" href="#">PAYMENT</a></li>
-        <li><a class="btn_reservation_nav"  id="linkConfirm" href="#">CONFIRM</a></li>
+        <li><span class="btn_reservation_nav"  id="linkSelectDate" href="#">SELECT DATES</span></li>
+        <li><span class="btn_reservation_nav"  id="linkPayment" href="#">PAYMENT</span></li>
+        <li><span class="btn_reservation_nav"  id="linkConfirm" href="#">CONFIRM</span></li>
     </ol>
     <hr class=""/>
 

@@ -1527,6 +1527,11 @@ button.btn-service:hover {
 .content-thumb p { color: #444; min-height: 100px; }
 .content-thumb p, h3, a h3 { padding: 10px; }
 .active {color: #ED2024}
+.btn_reservation_nav {
+    cursor: pointer;
+}
+
+
 /*----------------------- Font color style -----------------------*/
 .font-color-BF2026 { color: #BF2026; }
 .font-color-4BB748 { color: #4BB748; }

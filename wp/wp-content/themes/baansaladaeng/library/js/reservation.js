@@ -1,4 +1,4 @@
-$(document).on("click", '#linkSelectDate, #btn_list_room_back', function () {
+$(document).on("click", '#btn_list_room_back', function () {
     showSelectDate();
     return false;
 });
@@ -70,6 +70,8 @@ function chooseRoom(id, name) {
 }
 
 function showSelectRoom() {
+    removeClassActive();
+    $("#linkSelectRoom").addClass('active');
     $('#section_select_date').hide();
     $('#section_payment').hide();
     $('#section_confirm_order').hide();
@@ -77,6 +79,8 @@ function showSelectRoom() {
 }
 
 function showSelectDate() {
+    removeClassActive();
+    $("#linkSelectRoom").addClass('active');
     $('#list_room').hide();
     $('#section_payment').hide();
     $('#section_confirm_order').hide();
@@ -84,6 +88,8 @@ function showSelectDate() {
 }
 
 function showPayment() {
+    removeClassActive();
+    $("#linkPayment").addClass('active');
     getSummaryOrder();
     scrollToTop('#section_payment');
     $('#section_select_date').hide();
@@ -121,27 +127,27 @@ function postSendEmail(paymentID) {
 
 function validateFormCreditCard(elm) {
     if (elm.card_type.value == "") {
-        showModalMessage("Please select Card Type.");
+        showModalMessage("Please select Card Type.", false, true);
         elm.card_type.focus();
         return false;
     } else if (elm.card_holder_name.value == "") {
-        showModalMessage("Please add Card Holder's Name.");
+        showModalMessage("Please add Card Holder's Name.", false, true);
         elm.card_holder_name.focus();
         return false;
     } else if (elm.card_number.value == "") {
-        showModalMessage("Please add Card No.");
+        showModalMessage("Please add Card No.", false, true);
         elm.card_number.focus();
         return false;
     } else if (elm.tree_digit_id.value == "") {
-        showModalMessage("Please add 3-Digit ID#.");
+        showModalMessage("Please add 3-Digit ID#.", false, true);
         elm.tree_digit_id.focus();
         return false;
     } else if (elm.card_expiry_date1.value == "" || elm.card_expiry_date2.value == "") {
-        showModalMessage("Please add Card Expiry Date.");
+        showModalMessage("Please add Card Expiry Date.", false, true);
         elm.card_expiry_date1.focus();
         return false;
     } else if (!$("#term").prop('checked')) {
-        showModalMessage("Please accept term and condition.");
+        showModalMessage("Please accept term and condition.", false, true);
         return false;
     }
     return true;
@@ -151,39 +157,39 @@ function validateFormPayment(elm) {
     var charCheck = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     var checkEmail = charCheck.test(elm.payment_email.value);
     if (elm.payment_name.value == "") {
-        showModalMessage("Please add name.");
+        showModalMessage("Please add name.", false, true);
         elm.payment_name.focus();
         return false;
     } else if (elm.payment_last_name.value == "") {
-        showModalMessage("Please add last name.");
+        showModalMessage("Please add last name.", false, true);
         elm.payment_last_name.focus();
         return false;
     } else if (elm.payment_date_of_birth_1.value == "" ||
         elm.payment_date_of_birth_2.value == "" ||
         elm.payment_date_of_birth_3.value == "") {
-        showModalMessage("Please add date of birth.");
+        showModalMessage("Please add date of birth.", false, true);
         elm.payment_date_of_birth_1.focus();
         return false;
     } else if (elm.payment_passport_no.value == "") {
-        showModalMessage("Please add passport no.");
+        showModalMessage("Please add passport no.", false, true);
         elm.payment_passport_no.focus();
         return false;
     } else if (elm.payment_nationality.value == "") {
-        showModalMessage("Please add nationality.");
+        showModalMessage("Please add nationality.", false, true);
         elm.payment_nationality.focus();
         return false;
     } else if (elm.payment_email.value == "") {
-        showModalMessage("Please add email.");
+        showModalMessage("Please add email.", false, true);
         elm.payment_email.focus();
         return false;
     } else if (!checkEmail) {
-        showModalMessage("Please check email.");
+        showModalMessage("Please check email.", false, true);
         elm.payment_email.focus();
         return false;
     } else if (elm.payment_est_arrival1.value == "" ||
         elm.payment_est_arrival2.value == "" ||
         elm.payment_est_arrival3.value == "") {
-        showModalMessage("Please add Estimated arrival Time.");
+        showModalMessage("Please add Estimated arrival Time.", false, true);
         elm.payment_est_arrival1.focus();
         return false;
     }
@@ -199,12 +205,12 @@ function step1Click() {
     var arrivalDate = $("#arrival_date");
     var departureDate = $("#departure_date");
     if (arrivalDate.val() == "") {
-        showModalMessage("Please select \"Arrival Date\"");
+        showModalMessage("Please select \"Arrival Date\"", false, true);
         arrivalDate.select();
         return false;
     }
     else if (departureDate.val() == "") {
-        showModalMessage("Please select \"Departure Date\"");
+        showModalMessage("Please select \"Departure Date\"", false, true);
         departureDate.select();
         return false;
     }
@@ -213,21 +219,23 @@ function step1Click() {
     var parts2 = departureDate.val().split('/');
     var myDate2 = new Date(parts2[2], parts2[1], parts2[0]);
     if (myDate2 < myDate1) {
-        showModalMessage("Please check \"Departure Date\"");
+        showModalMessage("Please check \"Departure Date\"", false, true);
         departureDate.select();
         return false;
     }
     if (new Date() > myDate1) {
-        showModalMessage("Please check \"Arrival Date\"");
+        showModalMessage("Please check \"Arrival Date\"", false, true);
         arrivalDate.select();
         return false;
     }
+    if (departureDate.val() == arrivalDate.val()) {
+        showModalMessage("Please select \"Departure Date\"", false, true);
+        departureDate.select();
+        return false;
+    }
     if (!room_id) {
-        showModalMessage("Please select rooms.");
-        $('#section_select_date').hide();
-        $('#section_payment').hide();
-        $('#section_confirm_order').hide();
-        $('#list_room').fadeIn();
+        showModalMessage("Please select rooms.", false, true);
+        showSelectRoom();
         return false;
     }
     if (room_id) {
@@ -276,7 +284,7 @@ function getRoom() {
         $("#list_room").html(data);
         hideImgLoading();
     }).fail(function (result) {
-        showModalMessage("Error:\n" + result.responseText);
+        showModalMessage("Error:\n" + result.responseText, false, true);
         hideImgLoading();
     });
 }
@@ -313,12 +321,12 @@ function addOrder(roomID) {
 //                        window.location.href = web_url + "reservation";
 //                    }
                 }
-                showModalMessage(data.msg);
+                showModalMessage(data.msg, false, data.error);
                 check_add_room = false;
             },
             error: function (result) {
                 hideImgLoading();
-                showModalMessage("Error:\n" + result.responseText);
+                showModalMessage("Error:\n" + result.responseText, false, true);
                 check_add_room = false;
             }
         });
@@ -344,12 +352,12 @@ function checkDateRoom(roomID) {
                 addOrder(roomID);
                 //$('#section_payment').fadeIn();
             } else {
-                showModalMessage(data.msg);
+                showModalMessage(data.msg, false, true);
                 $('#section_select_date').fadeIn();
             }
         },
         error: function (result) {
-            showModalMessage("Error:\n" + result.responseText);
+            showModalMessage("Error:\n" + result.responseText, false, true);
         }
     });
 }
@@ -389,7 +397,7 @@ function getOrder() {
         }
         $("#show_count_order").html("Room " + count_order);
     }).fail(function (result) {
-        showModalMessage(result.responseText, 'error');
+        showModalMessage(result.responseText, 'error', true);
         hideImgLoading();
     });
 }
@@ -423,7 +431,7 @@ function getSummaryOrder() {
         setSummaryConfirm();
         hideImgLoading();
     }).fail(function (result) {
-        showModalMessage(result.responseText, 'error');
+        showModalMessage(result.responseText, 'error', true);
         hideImgLoading();
     });
 }
@@ -465,12 +473,12 @@ function deleteOrder(bookingId) {
                     hideImgLoading();
                     if (data == 'success')
                         getOrder();
-                    else showModalMessage(data);
+                    else showModalMessage(data, 'error', true);
                     check_delete_room = false;
                 },
                 error: function (result) {
                     hideImgLoading();
-                    showModalMessage("Error:\n" + result.responseText);
+                    showModalMessage("Error:\n" + result.responseText, false, true);
                 }
             });
         } else {
@@ -498,14 +506,14 @@ function setAdults(bookingId, elm) {
             success: function (data) {
                 if (data == 'success')
                     getOrder();
-                else showModalMessage(data);
+                else showModalMessage(data, 'Error', true);
                 check_set_adults = false;
                 hideImgLoading();
                 getSummaryOrder();
             },
             error: function (result) {
                 hideImgLoading();
-                showModalMessage("Error:\n" + result.responseText);
+                showModalMessage("Error:\n" + result.responseText, false, true);
             }
         });
     } else {
@@ -533,14 +541,14 @@ function setPickup(bookingId, elm) {
             success: function (data) {
                 if (data == 'success')
                     getOrder();
-                else showModalMessage(data);
+                else showModalMessage(data, "Error", true);
                 check_set_pickup = false;
                 hideImgLoading();
                 getSummaryOrder();
             },
             error: function (result) {
                 hideImgLoading();
-                showModalMessage("Error:\n" + result.responseText);
+                showModalMessage("Error:\n" + result.responseText, false, true);
             }
         });
     } else {
@@ -551,25 +559,33 @@ function setPickup(bookingId, elm) {
     return true;
 }
 
-$(document).ready(function () {
+function removeClassActive(){
+    $(".btn_reservation_nav").each(function () {
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+        }
+    });
+}
 
-    $('#linkSelectRoom').click(function () {
-        showSelectRoom();
-        return false;
-    });
-    $(document).on("click", ".btn_reservation_nav", function (e) {
-        $(".btn_reservation_nav").each(function () {
-            if ($(this).hasClass('active')) {
-                //showModalMessage($(this).hasClass('active'));
-                $(this).removeClass('active');
-            }
-        });
-        $(this).addClass("active");
-    });
-    $(document).on("click", "#linkPayment, .btn_payment", function (e) {
-        showPayment();
-        return false;
-    });
+$(document).on("click", ".btn_reservation_nav", function (e) {
+    switch (this.id){
+        case "linkSelectRoom": showSelectRoom();
+            break;
+        case "linkSelectDate":showSelectDate();
+            break;
+        case "linkPayment":showPayment();
+            break;
+        case "linkConfirm":return false;
+            break;
+    }
+    removeClassActive();
+    $(this).addClass("active");
+});
+$(document).on("click", ".btn_payment", function (e) {
+    showPayment();
+    return false;
+});
+$(document).ready(function () {
 
     $("#btn_step1").click(function (e) {
     });
@@ -580,6 +596,8 @@ $(document).ready(function () {
         getOrder();
     });
 
+    getOrder();
+    getRoom();
     if (show_payment) {
         showPayment();
     } else if (room_id) {
@@ -590,6 +608,4 @@ $(document).ready(function () {
     } else {
         showSelectRoom();
     }
-    getOrder();
-    getRoom();
 });
