@@ -151,23 +151,31 @@ else:
 <div class="<?php echo $colWidthMain; ?> wow fadeInLeft margin-bottom-20" data-wow-delay="1s">
     <p>
     <table class="">
-        <tr>
-            <td>Type:</td>
-            <td><?php echo $type; ?></td>
-        </tr>
-        <tr>
-            <td>Size:</td>
-            <td><?php echo $size; ?> sq.mtrs</td>
-        </tr>
-        <tr>
-            <td>Designer:</td>
-            <td><?php echo $designer; ?></td>
-        </tr>
-        <tr>
-            <td>Price:</td>
-            <td><?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night
-                <i>(Incl.Breakfast)</i></td>
-        </tr>
+        <?php if ($type): ?>
+            <tr>
+                <td>Type:</td>
+                <td><?php echo $type; ?></td>
+            </tr>
+        <?php endif; ?>
+        <?php if ($size): ?>
+            <tr>
+                <td>Size:</td>
+                <td><?php echo $size; ?> sq.mtrs</td>
+            </tr>
+        <?php endif; ?>
+        <?php if ($designer): ?>
+            <tr>
+                <td>Designer:</td>
+                <td><?php echo $designer; ?></td>
+            </tr>
+        <?php endif; ?>
+        <?php if ($recommend_price || $price): ?>
+            <tr>
+                <td>Price:</td>
+                <td><?php echo !$recommend_price ? $price : $recommend_price; ?> THB/night
+                    <i>(Incl.Breakfast)</i></td>
+            </tr>
+        <?php endif; ?>
     </table>
     </p>
     <p class="font-color-999">
