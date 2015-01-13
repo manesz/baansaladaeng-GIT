@@ -9,6 +9,7 @@ class Booking
     private $tableBooking = "ics_booking";
     private $tablePayment = "ics_payment";
     private $tablePost = "wp_posts";
+    public $pickupPrice = 1200;
 
     public function __construct($wpdb)
     {
@@ -94,12 +95,12 @@ class Booking
 //            echo $check_in = $dateCheckIn[2] . "-".$dateCheckIn[1] . "-".$dateCheckIn[0];
 //            $check_out = $dateCheckOut[2] . "-".$dateCheckOut[1] . "-".$dateCheckOut[0];
 //        }
-        list($dd,$mm,$yyyy) = explode('/',$check_in);
-        if (checkdate($mm,$dd,$yyyy)) {
-            $dateCheckIn = explode('/', $check_in);//DateTime::createFromFormat('d/m/Y', $check_in);
+        list($dd, $mm, $yyyy) = explode('/', $check_in);
+        if (checkdate($mm, $dd, $yyyy)) {
+            $dateCheckIn = explode('/', $check_in); //DateTime::createFromFormat('d/m/Y', $check_in);
             $dateCheckOut = explode('/', $check_out);
-            $check_in = $dateCheckIn[2] . "-".$dateCheckIn[1] . "-".$dateCheckIn[0];
-            $check_out = $dateCheckOut[2] . "-".$dateCheckOut[1] . "-".$dateCheckOut[0];
+            $check_in = $dateCheckIn[2] . "-" . $dateCheckIn[1] . "-" . $dateCheckIn[0];
+            $check_out = $dateCheckOut[2] . "-" . $dateCheckOut[1] . "-" . $dateCheckOut[0];
         }
         $checkIn = date_i18n("Y-m-d", strtotime($check_in));
         $checkOut = date_i18n("Y-m-d", strtotime($check_out));
@@ -156,13 +157,16 @@ class Booking
         $result = $this->getRoomByDateCheckInCheckOut($arrivalDate,
             $departureDate, $roomID);
         if ($result) {
-            return "Sorry, $roomName customer request.";
+            return $this->returnMessage("Sorry, $roomName customer request.", true);
         }
         $timeDiff = abs(strtotime($departureDate) - strtotime($arrivalDate));
         $numberDays = $timeDiff / 86400;
         $numberDays = ceil($numberDays);
-        $total = ($numberDays + 1) * $price;
-        $total += $needAirportPickup ? 1200 : 0;
+        if ($numberDays < 1) {
+            return $this->returnMessage('Please select date.', true);
+        }
+        $total = ($numberDays) * $price; // 2 วัน 1 คืน คิดเงิน แค่ 1 วัน
+        $total += $needAirportPickup ? $this->pickupPrice : 0;
 
         $result = $this->wpdb->insert(
             $this->tableBooking,
@@ -192,9 +196,9 @@ class Booking
             )
         );
         if (!$result) {
-            return 'fail';
+            return $this->returnMessage('Sorry, booking error.', true);
         }
-        return $result;
+        return $this->returnMessage('Booking success.<br/> Thank you.', false);
     }
 
     public function bookingEdit($data)
@@ -376,11 +380,11 @@ class Booking
         $objData = $this->bookingList(0, $booking_id);
         if ($objData) {
             extract((array)$objData[0]);
-            $needAirportPickUpBath = @$need_airport_pickup_new ? 1200 : 0;
+            $needAirportPickUpBath = @$need_airport_pickup_new ? $this->pickupPrice : 0;
             $timeDiff = abs(strtotime($check_in_date) - strtotime($check_out_date));
             $numberDays = $timeDiff / 86400;
             $numberDays = ceil($numberDays);
-            $total = ($numberDays + 1) * $price;
+            $total = ($numberDays) * $price;
             $total = $total + $needAirportPickUpBath;
             $result = $this->wpdb->update(
                 $this->tableBooking,
@@ -407,22 +411,22 @@ class Booking
 
     function setAdults($booking_id, $adults)
     {
-            $result = $this->wpdb->update(
-                $this->tableBooking,
-                array(
-                    'adults' => $adults,
-                    'update_time' => date_i18n('Y-m-d H:i:s'),
-                ),
-                array('id' => $booking_id),
-                array(
-                    '%d',
-                    '%s'
-                ),
-                array('%d')
-            );
-            if (!$result) {
-                return false;
-            }
+        $result = $this->wpdb->update(
+            $this->tableBooking,
+            array(
+                'adults' => $adults,
+                'update_time' => date_i18n('Y-m-d H:i:s'),
+            ),
+            array('id' => $booking_id),
+            array(
+                '%d',
+                '%s'
+            ),
+            array('%d')
+        );
+        if (!$result) {
+            return false;
+        }
         return true;
     }
 
@@ -445,10 +449,10 @@ class Booking
         asort($arrDateSort1);
 
         foreach ($arrDateSort1 as $sort1) {
-            foreach($array_date as $sort2) {
+            foreach ($array_date as $sort2) {
                 $expDate = explode('|', $sort2);
                 if (date("Y-m-d", strtotime($expDate[0])) == $sort1) {
-                    $arrDateSort2[] = date("Y-m-d", strtotime($expDate[0])) . "|". date("Y-m-d", strtotime($expDate[1]));
+                    $arrDateSort2[] = date("Y-m-d", strtotime($expDate[0])) . "|" . date("Y-m-d", strtotime($expDate[1]));
                 }
             }
         }
@@ -498,6 +502,7 @@ class Booking
     {
         if (!@$post['array_booking'] || !@$post['room_id'])
             return false;
+        $result = $this->returnMessage('Noting select date.', true);
         if ($post['array_booking']) {
             $newGroupDate = $this->groupArrayDate($post['array_booking']);
 
@@ -509,12 +514,13 @@ class Booking
                 $post['departure_date'] = $checkOutDate;
                 $post['need_airport_pickup'] = 0;
                 $result = $this->addSessionOrder($post);
-                if ($result != true) {
+                if ($result['error']) {
                     return $result;
                 }
             }
+            return $result;
         }
-        return true;
+        return $result;
     }
 
     function addSessionOrder($post)
@@ -530,7 +536,7 @@ class Booking
         ));
         $posts = $query->get_posts();
         $customField = get_post_custom($roomID);
-        $roomPrice = empty($customField["price"][0]) ? 0: $customField["price"][0];
+        $roomPrice = empty($customField["price"][0]) ? 0 : $customField["price"][0];
         $roomName = @$posts[0]->post_title;
         $recommend_price = get_post_meta($roomID, 'recommend_price', true);
         $recommend_price = is_array($recommend_price) ? @$recommend_price[intval(date_i18n('m')) - 1] : null;
@@ -571,21 +577,18 @@ class Booking
         $arrivalDate = @$post['arrival_date'];
         $departureDate = @$post['departure_date'];
         try {
-            if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $arrivalDate))
-            {
+            if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $arrivalDate)) {
                 $dateCheckIn = DateTime::createFromFormat('d/m/Y', $arrivalDate);
                 $dateCheckOut = DateTime::createFromFormat('d/m/Y', $departureDate);
                 $arrivalDate = $dateCheckIn->format('Y-m-d');
                 $departureDate = $dateCheckOut->format('Y-m-d');
             }
         } catch (Exception $e) {
-
+            return $this->returnMessage('Error format date', true);
         }
         $post['arrival_date'] = $arrivalDate;
         $post['departure_date'] = $departureDate;
         $result = $this->bookingAdd($post);
-        if (!$result)
-            return false;
         $_SESSION['array_reservation_order'] = $arrayOrder;
         return $result;
     }
@@ -672,5 +675,22 @@ class Booking
         $sendTo = $post['email'];
         return wp_mail($sendTo, $subject, $message, $headersSendEmail, $attachments);
 //        return true;
+    }
+
+
+    function returnMessage($msg, $error, $jsonEncode = false)
+    {
+        if ($error) {
+            $arrayReturn = (array('msg' => '<div class="font-color-BF2026">' . $msg .
+                '</div>', 'error' => $error));
+        } else {
+            if (is_array($msg)) {
+                $arrayReturn = $msg;
+                $msg = $msg['msg'];
+            }
+            $arrayReturn['msg'] = '<div class="font-color-4BB748">' . $msg . '</div>';
+            $arrayReturn['error'] = $error;
+        }
+        return $jsonEncode ? json_encode($arrayReturn) : $arrayReturn;
     }
 }

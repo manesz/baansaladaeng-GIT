@@ -282,10 +282,12 @@ function checkDateRoom(start, end, allDay, resourceId) {
         type: "POST",
         url: '',
         data: data,
+        dataType: 'json',
+        cache: false,
         success: function (data) {
-            if (data != 'yes') {
+            if (data.error) {
                 //check_post_data = false;
-                showModalMessage(data);
+                showModalMessage(data.msg);
             } else {
                 addBookingDateToArray(strDateCheckIn, strDateCheckOut);
                 $jConflict('#calendar').fullCalendar('renderEvent',
@@ -318,6 +320,8 @@ function postAddBooking() {
     $jConflict.ajax({
         type: "POST",
         url: '',
+        cache: false,
+        dataType: 'json',
         data: {
             booking_post: 'true',
             reservation_post: 'add_array_booking',
@@ -326,12 +330,15 @@ function postAddBooking() {
             array_booking: array_booking_date
         },
         success: function (data) {
-            if (data != 'success') {
+            hideImgLoading();
+            showModalMessage(data.msg);
+            if (data.error) {
                 //check_post_data = false;
-                showModalMessage(data);
                 hideImgLoading();
             } else {
-                window.location.href = webUrl + 'reservation?payment=true'
+                setTimeout(function() {
+                    window.location.href = webUrl + 'reservation?payment=true'
+                }, 3000);
             }
         },
         error: function (result) {

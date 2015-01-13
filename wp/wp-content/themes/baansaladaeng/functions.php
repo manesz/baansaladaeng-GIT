@@ -10,6 +10,9 @@ sidebars, comments, ect.
 
 // LOAD BONES CORE (if you remove this, the theme will break)
 require_once( 'library/bones.php' );
+//require_once("library/check-database.php");
+require_once("library/menu-control.php");
+require_once("library/get-post-data.php");
 
 // USE THIS TEMPLATE TO CREATE CUSTOM POST TYPES EASILY
 //require_once( 'library/post-type-room.php' );
@@ -222,9 +225,6 @@ function create_post_type() {
     );
 }*/
 
-//require_once("library/check-database.php");
-require_once("library/menu-control.php");
-require_once("library/get-post-data.php");
 
 /************* CUSTOMS : Admin Menus *********************/
 add_action( 'wp_enqueue_scripts', 'load_dashicons_front_end' );

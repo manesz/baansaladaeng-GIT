@@ -42,20 +42,18 @@ if ($_REQUEST) {
             case "check_room" :
                 $result = $objClassBooking->checkRoom($_REQUEST);
                 if ($result)
-                    echo "yes";
-                else echo "Sorry, there is no room on the day of your choice.";
+                    echo $objClassBooking->returnMessage('yes', false, true);
+                else echo $objClassBooking->returnMessage( "Sorry, there is no room on the day of your choice.", true, true);
                 exit;
                 break;
             case "add_order" :
-                if ($objClassBooking->addSessionOrder($_REQUEST))
-                    echo "success";
-                else echo "fail";
+                $result = $objClassBooking->addSessionOrder($_REQUEST);
+                echo json_encode($result);
                 exit;
                 break;
             case "add_array_booking" :
-                if ($objClassBooking->addArrayBooking($_REQUEST))
-                    echo "success";
-                else echo "fail";
+                $result = $objClassBooking->addArrayBooking($_REQUEST);
+                echo json_encode($result);
                 exit;
                 break;
             case 'delete_room' :

@@ -114,11 +114,15 @@ function getCaptchaLongStay() {
 }
 
 
-function showModalMessage(msg, title) {
+function showModalMessage(msg, title, calBack) {
     title = title || "Message";
+    calBack = calBack || false;
     $("#modal_show_message .modal-body").html(msg);
     $("#modal_show_message #myModalMassage").html(title);
     $('#modal_show_message').modal('show');
+    if (calBack) {
+        calBack();
+    }
 }
 
 function showImgLoading() {

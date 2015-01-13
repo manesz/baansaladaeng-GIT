@@ -60,7 +60,7 @@ if ($arrayOrder) : foreach ($arrayOrder as $key => $value):
         strtotime($value->check_in_date));
     $numberDays = $timeDiff / 86400;
     $numberDays = ceil($numberDays);
-    $total = ($numberDays + 1) * $price;
+    $total = ($numberDays) * $price;
     $total += $needAirportPickup ? 1200 : 0;
     $totalFormat = number_format($total);
     $subTotal += $total;
