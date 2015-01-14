@@ -22,7 +22,7 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             cache: false,
-            url: '',
+            url: url_post,
             data: $(this).serialize(),
             success: function (data) {
                 if (data == "fail") {
@@ -43,7 +43,7 @@ $(document).ready(function () {
             type: "GET",
             cache: false,
             dataType: 'json',
-            url: '',
+            url: url_post,
             data: $(this).serialize(),
             success: function (data) {
                 if (data.error) {

@@ -137,7 +137,7 @@ function getJsonAdd() {
     statusUpdate('Loading...', '#0C6');
     /*$.ajax({
         //url: $('input#siteurl').val() + '?tabPage=tab1',
-        url: "",
+        url: url_post,
         async: false,
         jsonpCallback: 'jsonCallback',
         contentType: "application/json",

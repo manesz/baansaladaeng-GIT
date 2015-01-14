@@ -67,7 +67,7 @@ $(document).ready(function () {
             $.ajax({
                 type: "GET",
                 cache: false,
-                url: '',
+                url: url_post,
                 data: data,
                 success: function (result) {
                     if (result == 'error_captcha') {
@@ -98,7 +98,7 @@ function getCaptchaContactUs() {
     $.ajax({
         type: "GET",
         cache: false,
-        url: '',
+        url: url_post,
         data: {
             get_captcha: 'contact_us'
         },
@@ -118,7 +118,7 @@ function getCaptchaLongStay() {
     $.ajax({
         type: "GET",
         cache: false,
-        url: '',
+        url: url_post,
         data: {
             get_captcha: 'long_stay'
         },

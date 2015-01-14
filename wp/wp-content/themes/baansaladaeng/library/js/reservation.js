@@ -57,6 +57,8 @@ $(document).on("submit", "#payment_post", function (e) {
 });
 
 function chooseRoom(id, name) {
+    removeClassActive();
+    $("#linkSelectDate").addClass('active');
     room_id = id;
     $("#room_id").val(id);
     $("#room_name").val(name);

@@ -22,7 +22,7 @@ $(document).on("click", ".btn_delete_booking", function (e) {
        $.ajax({
            type: "GET",
            cache: false,
-           url: '',
+           url: url_post,
            data: {
                booking_post: 'true',
                reservation_post: 'delete_payment',
@@ -61,7 +61,7 @@ $(document).on("submit", "#frm_booking", function (e) {
     $.ajax({
         type: "GET",
         cache: false,
-        url: '',
+        url: url_post,
         data: $(this).serialize(),
         success: function (data) {
             if (data != "success") {
@@ -120,7 +120,7 @@ function setApprove(elm, paymentID) {
     $.ajax({
         type: "GET",
         cache: false,
-        url: '',
+        url: url_post,
         data: {
             booking_post: 'true',
             reservation_post: 'approve_booking',
