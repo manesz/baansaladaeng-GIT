@@ -136,8 +136,8 @@ $jConflict(document).ready(function () {
             });
             showImgLoading();
             $jConflict.ajax({
-                type: "POST",
-                url: '',
+                type: "GET",
+                url: url_post,
                 data: data,
                 success: function (result) {
                     if (result == 'error_captcha') {
@@ -223,8 +223,8 @@ $jConflict(document).on("submit", "#form_room_submit", function (e) {
  check_out: elm.check_out_date.value
  };
  $jConflict.ajax({
- type: "POST",
- url: '',
+ type: "GET",
+ url: url_post,
  data: data,
  success: function (data) {
  if (data != 'yes') {
@@ -279,8 +279,8 @@ function checkDateRoom(start, end, allDay, resourceId) {
     };
     showImgLoading();
     $jConflict.ajax({
-        type: "POST",
-        url: '',
+        type: "GET",
+        url: url_post,
         data: data,
         dataType: 'json',
         cache: false,
@@ -309,6 +309,30 @@ function checkDateRoom(start, end, allDay, resourceId) {
             hideImgLoading();
         }
     });
+
+//    $.get( url_post + "?" + data, function( data ) {
+//        hideImgLoading();
+//        if (data.error) {
+//            //check_post_data = false;
+//            showModalMessage(data.msg, false, true);
+//        } else {
+//            addBookingDateToArray(strDateCheckIn, strDateCheckOut);
+//            $jConflict('#calendar').fullCalendar('renderEvent',
+//                {
+//                    title: '*',
+//                    start: start,
+//                    end: end,
+//                    allDay: allDay,
+//                    backgroundColor: '#00A2E8',
+//                    resourceId: resourceId
+//                },
+//                true // make the event "stick"
+//            );
+//        }
+//    }).fail(function(result){
+//        showModalMessage("Error:\n" + result.responseText, false, true);
+//        hideImgLoading();
+//    });
 }
 
 function postAddBooking() {
@@ -318,8 +342,8 @@ function postAddBooking() {
     }
     showImgLoading();
     $jConflict.ajax({
-        type: "POST",
-        url: '',
+        type: "GET",
+        url: url_post,
         cache: false,
         dataType: 'json',
         data: {

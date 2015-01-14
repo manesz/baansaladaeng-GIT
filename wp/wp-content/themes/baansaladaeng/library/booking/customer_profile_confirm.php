@@ -5,13 +5,13 @@
  * Date: 10/10/2557
  * Time: 16:19 น.
  */
-$getRoomID = @$_POST['room_id'];
-$postData = $_POST;
+$getRoomID = @$_REQUEST['room_id'];
+$postData = $_REQUEST;
 ?>
 
 <form method="post" action="<?php echo get_site_url(); ?>/booking/">
-    <input type="hidden" id="rmonth" name="rmonth" value="<?php echo $_POST['rmonth']; ?>"/>
-    <input type="hidden" id="ryear" name="ryear" value="<?php echo $_POST['ryear']; ?>"/>
+    <input type="hidden" id="rmonth" name="rmonth" value="<?php echo $_REQUEST['rmonth']; ?>"/>
+    <input type="hidden" id="ryear" name="ryear" value="<?php echo $_REQUEST['ryear']; ?>"/>
     <input type="hidden" id="customer_profile" name="customer_profile" value="add"/>
     <input type="hidden" id="room_id" name="room_id" value="<?php echo $getRoomID; ?>"/>
 Name <input type="text" id="name" name="name" /><br/>

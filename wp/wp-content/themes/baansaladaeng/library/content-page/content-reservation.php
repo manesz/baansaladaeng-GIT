@@ -4,10 +4,10 @@ if (!session_id())
 $arrayOrder = @$_SESSION['array_reservation_order'];
 $objClassBooking = new Booking($wpdb);
 
-$checkInDate = empty($_POST['check_in_date']) ? date_i18n('d/m/Y'):  $_POST['check_in_date'];
-$checkOutDate = empty($_POST['check_out_date']) ? date_i18n('d/m/Y', strtotime("+1 day")):  $_POST['check_out_date'];
-$roomID = @$_POST['room_id'] ? $_POST['room_id'] : '0';
-$roomName = @$_POST['room_name'] ? $_POST['room_name'] : '';
+$checkInDate = empty($_REQUEST['check_in_date']) ? date_i18n('d/m/Y') : $_REQUEST['check_in_date'];
+$checkOutDate = empty($_REQUEST['check_out_date']) ? date_i18n('d/m/Y', strtotime("+1 day")) : $_REQUEST['check_out_date'];
+$roomID = @$_REQUEST['room_id'] ? $_REQUEST['room_id'] : '0';
+$roomName = @$_REQUEST['room_name'] ? $_REQUEST['room_name'] : '';
 $showPayment = @$_REQUEST['payment'] ? $_REQUEST['payment'] : false;
 $payment_id = empty($arrayOrder) ? 0 : $arrayOrder['payment_id'];
 
@@ -40,9 +40,11 @@ get_template_part('nav');
         <?php //if (!$roomID): ?>
         <li><span class="btn_reservation_nav" id="linkSelectRoom" href="#">ROOM SELECTION</span></li>
         <?php //endif; ?>
-        <li><span class="btn_reservation_nav"  id="linkSelectDate" href="#">SELECT DATES</span></li>
-        <li><span class="btn_reservation_nav"  id="linkPayment" href="#">PAYMENT</span></li>
-        <li><span class="btn_reservation_nav"  id="linkConfirm" href="#">CONFIRM</span></li>
+        <li><span class="btn_reservation_nav<?php echo $roomID ? " active" : ""; ?>"
+                  id="linkSelectDate" href="#">SELECT DATES</span>
+        </li>
+        <li><span class="btn_reservation_nav" id="linkPayment" href="#">PAYMENT</span></li>
+        <li><span class="btn_reservation_nav" id="linkConfirm" href="#">CONFIRM</span></li>
     </ol>
     <hr class=""/>
 
@@ -89,7 +91,7 @@ get_template_part('nav');
                            style="margin-right: 20px;"/>Need Airport Pickup (THB 1,200 one way)
                 </div>
             </div>
-            <div class="form-group col-md-12">
+            <div class="margin-bottom-10 col-md-12">
                 <?php if ($roomID): ?>
                     <div class="col-md-4"
                          style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
@@ -111,7 +113,8 @@ get_template_part('nav');
         </div>
     </div>
 
-    <div id="list_room"></div>
+    <div id="list_room"
+         style="display: none"><?php require_once(ABSPATH . "wp-content/themes/baansaladaeng/library/booking/reservation-get-room.php"); ?></div>
 
     <div id="section_payment" class="form-group">
         <form id="payment_post">
@@ -221,17 +224,17 @@ get_template_part('nav');
                                                              maxlength="50"
                                                              class="form-control col-md-12"/></div>
                 </div>
-<!--                <div class="col-md-12 margin-bottom-10 alpha omega">-->
-<!--                    <div class="col-md-3 alpha"><label for="payment_no_of_person">No. of Person <font-->
-<!--                                color="#FF0000">*</font></label></div>-->
-<!--                    <div class="col-md-9 alpha omega">-->
-<!--                        <select id="payment_no_of_person" name="payment_no_of_person" class="col-md-6">-->
-<!--                            <option value="">---- Select ----</option>-->
-<!--                            <option value="0">0</option>-->
-<!--                            <option value="1">1</option>-->
-<!--                            <option value="2">2</option>-->
-<!--                        </select></div>-->
-<!--                </div>-->
+                <!--                <div class="col-md-12 margin-bottom-10 alpha omega">-->
+                <!--                    <div class="col-md-3 alpha"><label for="payment_no_of_person">No. of Person <font-->
+                <!--                                color="#FF0000">*</font></label></div>-->
+                <!--                    <div class="col-md-9 alpha omega">-->
+                <!--                        <select id="payment_no_of_person" name="payment_no_of_person" class="col-md-6">-->
+                <!--                            <option value="">---- Select ----</option>-->
+                <!--                            <option value="0">0</option>-->
+                <!--                            <option value="1">1</option>-->
+                <!--                            <option value="2">2</option>-->
+                <!--                        </select></div>-->
+                <!--                </div>-->
                 <div class="col-md-12 margin-bottom-10 alpha omega">
                     <div class="col-md-3 alpha"><label for="payment_note">Note (if any)</label></div>
                     <div class="col-md-9 alpha omega"><textarea id="payment_note" name="payment_note"
@@ -241,10 +244,11 @@ get_template_part('nav');
                 <div class="col-md-12 margin-bottom-10 alpha">
 
                     <div class="col-md-4"
-                         style="text-align: center; padding: 10px 0 10px 0; color: #fff; "><button type="submit" class="col-md-12 btn btn-success btn-lg"
-                            style="border-radius: 0;">
-                        SUBMIT
-                    </button>
+                         style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
+                        <button type="submit" class="col-md-12 btn btn-success btn-lg"
+                                style="border-radius: 0;">
+                            SUBMIT
+                        </button>
                     </div>
                 </div>
 
@@ -293,14 +297,14 @@ get_template_part('nav');
                 <td>Tel/Mobile No.:</td>
                 <td id="confirm_tel"></td>
             </tr>
-<!--            <tr>-->
-<!--                <td>No. of Person:</td>-->
-<!--                <td id="confirm_no_of_person"></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td>require airport pickup:</td>-->
-<!--                <td id="confirm_need_airport_pickup"></td>-->
-<!--            </tr>-->
+            <!--            <tr>-->
+            <!--                <td>No. of Person:</td>-->
+            <!--                <td id="confirm_no_of_person"></td>-->
+            <!--            </tr>-->
+            <!--            <tr>-->
+            <!--                <td>require airport pickup:</td>-->
+            <!--                <td id="confirm_need_airport_pickup"></td>-->
+            <!--            </tr>-->
             <tr>
                 <td>Note:</td>
                 <td id="confirm_note"></td>
@@ -370,7 +374,8 @@ get_template_part('nav');
                 <div class="col-md-3 alpha"></div>
                 <div class="col-md-9 alpha omega">
                     <label><input type="checkbox" id="term"/> Accept Term</label>
-                    <a target="_blank" style="color: blue;" href="<?php echo network_site_url('/terms-and-conditions'); ?>">Terms</a>
+                    <a target="_blank" style="color: blue;"
+                       href="<?php echo network_site_url('/terms-and-conditions'); ?>">Terms</a>
                 </div>
             </div>
             <div class="col-md-12 margin-bottom-10 alpha omega">
@@ -383,12 +388,12 @@ get_template_part('nav');
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-4"
-                           style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
+                     style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
                     <button type="submit" class="col-md-12 btn btn-success btn-lg"
                             style="border-radius: 0;">
                         SUBMIT
                     </button>
-            </div>
+                </div>
             </div>
         </form>
     </div>
@@ -402,5 +407,22 @@ get_template_part('nav');
     </div>
     </div>
     </div>
+    <script>
+        $(document).ready(function () {
+
+            getOrder();
+//    getRoom();
+            if (show_payment) {
+                showPayment();
+            } else if (room_id) {
+                $('#list_room').hide();
+                $('#section_select_date').show();
+                $('#section_payment').hide();
+                $('#section_confirm_order').hide();
+            } else {
+                showSelectRoom();
+            }
+        });
+    </script>
 
 <?php get_footer(); ?>

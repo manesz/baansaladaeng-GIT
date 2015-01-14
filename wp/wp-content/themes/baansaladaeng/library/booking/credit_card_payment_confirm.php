@@ -5,8 +5,8 @@
  * Date: 10/10/2557
  * Time: 16:19 น.
  */
-$getRoomID = @$_POST['room_id'];
-$dataCustomerProfile = @$_POST;
+$getRoomID = @$_REQUEST['room_id'];
+$dataCustomerProfile = @$_REQUEST;
 ?>
 <script>
     var $jConflict = jQuery.noConflict();

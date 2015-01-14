@@ -127,12 +127,12 @@ function service_save_details()
 {
     global $post;
 
-    update_post_meta($post->ID, "price", $_POST["price"]);
+    update_post_meta($post->ID, "price", $_REQUEST["price"]);
 
 
     $imageUrlName = "image_url";
     $post_type = get_post_type_object($post->post_type);
-    $new_meta_value = (isset($_POST[$imageUrlName]) ? $_POST[$imageUrlName] : FALSE);
+    $new_meta_value = (isset($_REQUEST[$imageUrlName]) ? $_REQUEST[$imageUrlName] : FALSE);
     if (!current_user_can($post_type->cap->edit_post, $post->ID))
         return $post->ID;
     $meta_key = 'service_image_gallery';

@@ -22,6 +22,8 @@ if (have_posts()) :
             get_template_part('library/content-page/content-about', get_post_format());
         }   elseif (is_page('term-and-conditions')) {
             get_template_part('library/content-page/content-term-and-condition', get_post_format());
+        }  elseif (is_page('get-post-data')) {
+            require_once("library/get-post-data.php");
         } else {
             get_template_part('library/content-page/content-single-page', get_post_format());
         }//END: if check not in category name

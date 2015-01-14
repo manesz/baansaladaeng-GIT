@@ -4,8 +4,8 @@
 //$arrayOrder = @$_SESSION['array_reservation_order'];
 /*
 $objClassBooking = new Booking($wpdb);
-$getCheckInDate = $_POST['check_in'];
-$getCheckOutDate = $_POST['check_out'];
+$getCheckInDate = $_REQUEST['check_in'];
+$getCheckOutDate = $_REQUEST['check_out'];
 $dateNow = date_i18n("Y-m-d");
 $dateCheckIn = DateTime::createFromFormat('d/m/Y', $getCheckInDate);
 $dateCheckOut = DateTime::createFromFormat('d/m/Y', $getCheckOutDate);
@@ -132,8 +132,7 @@ if ($loopPostTypeRoom->have_posts()):
 <!--        </div>-->
 <!--    </div>-->
     <?php
-    exit;
-endif;
+else:
 
 ?>
     <div align="center">Sorry, there is no room on the day of your choice.</div>
@@ -146,4 +145,5 @@ endif;
         </div>
     </div>
 <?php
+    endif;
 ?>

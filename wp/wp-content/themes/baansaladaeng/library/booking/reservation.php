@@ -7,8 +7,8 @@
  */
 $thisMonth = date_i18n('m');
 $thisYear = date_i18n('Y');
-$getMonth = @$_POST['rmonth'];
-$getYear = @$_POST['ryear'];
+$getMonth = @$_REQUEST['rmonth'];
+$getYear = @$_REQUEST['ryear'];
 
 $arrayMonth = array(
     1 => "Janaury",

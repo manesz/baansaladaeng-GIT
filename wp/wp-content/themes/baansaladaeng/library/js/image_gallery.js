@@ -95,7 +95,7 @@ function getGalleryList(url) {
      }
      });*/
     $.ajax({
-        type: "POST",
+        type: "GET",
         cache: false,
 //        contentType: "application/json",
         dataType: 'json',
@@ -164,7 +164,7 @@ function getJsonAdd() {
 
     var myurl = $('input#siteurl').val();
     $.ajax({
-        type: "POST",
+        type: "GET",
         cache: false,
 //        contentType: "application/json",
         dataType: 'json',

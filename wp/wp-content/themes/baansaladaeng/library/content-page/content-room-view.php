@@ -316,7 +316,7 @@ else:
         </form>
     <?php else: ?>
         <div class="calendar" id="calendar"></div>
-        <form id="form_room_submit" method="post"
+        <form id="form_room_submit" method="get"
               action="<?php echo network_site_url('/') . "reservation"; ?>">
             <input type="hidden" value="true" name="booking_post"/>
             <input type="hidden" value="1" name="step"/>

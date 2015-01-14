@@ -162,7 +162,7 @@
                             <!--                            <div class="col-md-4 bg-ED2024" style="text-align: center; padding: 10px 0 10px 0; color: #fff; cursor: pointer;"-->
                             <!--                                onclick="$('form #frm_content_room').submit();">RESERVATION</div>-->
 
-                            <form id="frm_content_room" class="form" method="post"
+                            <form id="frm_content_room" class="form" method="get"
                                   action="<?php echo network_site_url('/') . "reservation"; ?>">
                                 <input type="hidden" value="true" name="booking_post"/>
                                 <input type="hidden" value="1" name="step"/>

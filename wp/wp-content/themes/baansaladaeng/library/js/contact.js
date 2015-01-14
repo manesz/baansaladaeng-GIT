@@ -20,7 +20,7 @@ $(document).ready(function () {
     };
     $("#contact-post").submit(function(){
         $.ajax({
-            type: "POST",
+            type: "GET",
             cache: false,
             url: '',
             data: $(this).serialize(),
@@ -40,7 +40,7 @@ $(document).ready(function () {
     });
     $("#promotion-post").submit(function(){
         $.ajax({
-            type: "POST",
+            type: "GET",
             cache: false,
             dataType: 'json',
             url: '',

@@ -24,7 +24,7 @@ function ajax_save_sort_long_stay()
 {
     global $wpdb;
 
-    parse_str($_POST['order'], $data);
+    parse_str($_REQUEST['order'], $data);
     if (is_array($data))
         foreach ($data as $key => $values) {
             if ($key == 'item') {

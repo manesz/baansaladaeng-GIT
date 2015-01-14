@@ -176,14 +176,14 @@ class Contact
 }
 
 $objClassContact = new Contact($wpdb);
-if (@$_POST) {
-    $getContactPost = empty($_POST['contact_post']) ? false : $_POST['contact_post'];
+if (@$_REQUEST) {
+    $getContactPost = empty($_REQUEST['contact_post']) ? false : $_REQUEST['contact_post'];
     if ($getContactPost == 'true') {
         $checkIsContact = $objClassContact->checkIsContact();
         if ($checkIsContact) {
-            $result = $objClassContact->editContact($_POST);
+            $result = $objClassContact->editContact($_REQUEST);
         } else {
-            $result = $objClassContact->addContact($_POST);
+            $result = $objClassContact->addContact($_REQUEST);
         }
         if ($result)
             echo $result;
@@ -191,9 +191,9 @@ if (@$_POST) {
             echo 'fail';
         exit;
     }
-    $getPromotionPost = empty($_POST['promotion_post']) ? false : $_POST['promotion_post'];
+    $getPromotionPost = empty($_REQUEST['promotion_post']) ? false : $_REQUEST['promotion_post'];
     if ($getPromotionPost == 'true') {
-        echo $objClassContact->saveTitlePromotion($_POST['title']);
+        echo $objClassContact->saveTitlePromotion($_REQUEST['title']);
         exit;
     }
 }

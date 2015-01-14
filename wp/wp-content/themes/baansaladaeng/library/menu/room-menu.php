@@ -363,22 +363,22 @@ function meta_room_option()
 function save_details()
 {
     global $post;
-//var_dump($_POST);exit;
-    update_post_meta($post->ID, "room_plan", trim($_POST["room_plan"]));
-    update_post_meta($post->ID, "type", trim($_POST["type"]));
-    update_post_meta($post->ID, "size", trim($_POST["size"]));
-    update_post_meta($post->ID, "designer", trim($_POST["designer"]));
-    update_post_meta($post->ID, "price", trim($_POST["price"]));
-    update_post_meta($post->ID, "recommend_price", $_POST["recommend_price"]);
-    update_post_meta($post->ID, "recommend", $_POST["recommend"]);
-    update_post_meta($post->ID, "facilities", $_POST['facilities']);
-//    update_post_meta($post->ID, "designers", $_POST["designers"]);
-//    update_post_meta($post->ID, "developers", $_POST["developers"]);
-//    update_post_meta($post->ID, "producers", $_POST["producers"]);
+//var_dump($_REQUEST);exit;
+    update_post_meta($post->ID, "room_plan", trim($_REQUEST["room_plan"]));
+    update_post_meta($post->ID, "type", trim($_REQUEST["type"]));
+    update_post_meta($post->ID, "size", trim($_REQUEST["size"]));
+    update_post_meta($post->ID, "designer", trim($_REQUEST["designer"]));
+    update_post_meta($post->ID, "price", trim($_REQUEST["price"]));
+    update_post_meta($post->ID, "recommend_price", $_REQUEST["recommend_price"]);
+    update_post_meta($post->ID, "recommend", $_REQUEST["recommend"]);
+    update_post_meta($post->ID, "facilities", $_REQUEST['facilities']);
+//    update_post_meta($post->ID, "designers", $_REQUEST["designers"]);
+//    update_post_meta($post->ID, "developers", $_REQUEST["developers"]);
+//    update_post_meta($post->ID, "producers", $_REQUEST["producers"]);
 
     $imageUrlName = "image_url";
     $post_type = get_post_type_object($post->post_type);
-    $new_meta_value = (isset($_POST[$imageUrlName]) ? $_POST[$imageUrlName] : FALSE);
+    $new_meta_value = (isset($_REQUEST[$imageUrlName]) ? $_REQUEST[$imageUrlName] : FALSE);
     if (!current_user_can($post_type->cap->edit_post, $post->ID))
         return $post->ID;
     $meta_key = 'room_image_gallery';

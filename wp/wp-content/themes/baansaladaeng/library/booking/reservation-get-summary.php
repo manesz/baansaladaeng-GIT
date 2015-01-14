@@ -89,5 +89,6 @@ endif; ?>
 $("#payment_post").hide();
 <?php else: ?>
 $("#payment_post").show();
+setSummaryConfirm();
 <?php endif; ?>
 </script>

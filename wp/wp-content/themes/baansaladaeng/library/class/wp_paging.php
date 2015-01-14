@@ -15,10 +15,10 @@ add_action('admin_menu', array($wp_paging, 'admin_add_menu'));
 add_action('admin_head', array($wp_paging, 'admin_add_css'));
 add_action('wp_head', array($wp_paging, 'front_add_css'));
 
-if (isset($_POST['submitter']))
+if (isset($_REQUEST['submitter']))
     $wp_paging->data_save();
 
-if (isset($_POST['deleter']))
+if (isset($_REQUEST['deleter']))
     $wp_paging->data_delete();
 
 /**
@@ -112,40 +112,40 @@ class wp_paging {
 
         ### Values to paginate_links
         # Input check
-        $options['prev_next'] = (isset($_POST['prev_next'])) ? (bool) true : (bool) false;
-        $options['show_all'] = (isset($_POST['show_all'])) ? (bool) true : (bool) false;
-        $options['page_of'] = (isset($_POST['page_of'])) ? (bool) true : (bool) false;
-        $options['enable_styles'] = (isset($_POST['enable_styles'])) ? (bool) true : (bool) false;
-        $options['enable_gradients'] = (isset($_POST['enable_gradients'])) ? (bool) true : (bool) false;
-        $options['enable_rounded'] = (isset($_POST['enable_rounded'])) ? (bool) true : (bool) false;
+        $options['prev_next'] = (isset($_REQUEST['prev_next'])) ? (bool) true : (bool) false;
+        $options['show_all'] = (isset($_REQUEST['show_all'])) ? (bool) true : (bool) false;
+        $options['page_of'] = (isset($_REQUEST['page_of'])) ? (bool) true : (bool) false;
+        $options['enable_styles'] = (isset($_REQUEST['enable_styles'])) ? (bool) true : (bool) false;
+        $options['enable_gradients'] = (isset($_REQUEST['enable_gradients'])) ? (bool) true : (bool) false;
+        $options['enable_rounded'] = (isset($_REQUEST['enable_rounded'])) ? (bool) true : (bool) false;
 
         # Input text
-        if (isset($_POST['end_size']))
-            $options['end_size'] = (int) $_POST['end_size'];
-        if (isset($_POST['mid_size']))
-            $options['mid_size'] = (int) $_POST['mid_size'];
-        if (isset($_POST['prev_text']) && $_POST['prev_text'] != '')
-            $options['prev_text'] = $_POST['prev_text'];
-        if (isset($_POST['next_text']) && $_POST['next_text'] != '')
-            $options['next_text'] = $_POST['next_text'];
-        if (isset($_POST['page_text']) && $_POST['page_text'] != '')
-            $options['page_text'] = $_POST['page_text'];
-        if (isset($_POST['of_text']) && $_POST['of_text'] != '')
-            $options['of_text'] = $_POST['of_text'];
-        if (isset($_POST['separator_text']) && $_POST['separator_text'] != '')
-            $options['separator_text'] = $_POST['separator_text'];
+        if (isset($_REQUEST['end_size']))
+            $options['end_size'] = (int) $_REQUEST['end_size'];
+        if (isset($_REQUEST['mid_size']))
+            $options['mid_size'] = (int) $_REQUEST['mid_size'];
+        if (isset($_REQUEST['prev_text']) && $_REQUEST['prev_text'] != '')
+            $options['prev_text'] = $_REQUEST['prev_text'];
+        if (isset($_REQUEST['next_text']) && $_REQUEST['next_text'] != '')
+            $options['next_text'] = $_REQUEST['next_text'];
+        if (isset($_REQUEST['page_text']) && $_REQUEST['page_text'] != '')
+            $options['page_text'] = $_REQUEST['page_text'];
+        if (isset($_REQUEST['of_text']) && $_REQUEST['of_text'] != '')
+            $options['of_text'] = $_REQUEST['of_text'];
+        if (isset($_REQUEST['separator_text']) && $_REQUEST['separator_text'] != '')
+            $options['separator_text'] = $_REQUEST['separator_text'];
 
         # Select
-        if (isset($_POST['page_of_position']))
-            $options['page_of_position'] = $_POST['page_of_position'];
-        if (isset($_POST['behind_color']))
-            $options['behind_color'] = $_POST['behind_color'];
-        if (isset($_POST['page_bkg']))
-            $options['page_bkg'] = $_POST['page_bkg'];
-        if (isset($_POST['current_page_bkg']))
-            $options['current_page_bkg'] = $_POST['current_page_bkg'];
-        if (isset($_POST['alignment']))
-            $options['alignment'] = $_POST['alignment'];
+        if (isset($_REQUEST['page_of_position']))
+            $options['page_of_position'] = $_REQUEST['page_of_position'];
+        if (isset($_REQUEST['behind_color']))
+            $options['behind_color'] = $_REQUEST['behind_color'];
+        if (isset($_REQUEST['page_bkg']))
+            $options['page_bkg'] = $_REQUEST['page_bkg'];
+        if (isset($_REQUEST['current_page_bkg']))
+            $options['current_page_bkg'] = $_REQUEST['current_page_bkg'];
+        if (isset($_REQUEST['alignment']))
+            $options['alignment'] = $_REQUEST['alignment'];
 
         $profiles['settings_profiles'][$profile_name] = $options;
         $profiles['settings_global']['current_profile'] = $profile_name;

@@ -76,7 +76,7 @@ $objClassContact = new Contact($wpdb);
                                     <td style="width: 20%"><?php echo $recMonth3; ?></td>
                                     <td style="width: 20%"><?php echo $recMonth4; ?></td>
                                     <td style="width: 20%">
-                                        <form class="form" method="post"
+                                        <form class="form" method="get"
                                               action="<?php echo network_site_url('/') . "reservation"; ?>">
                                             <input type="hidden" value="true" name="booking_post"/>
                                             <input type="hidden" value="1" name="step"/>

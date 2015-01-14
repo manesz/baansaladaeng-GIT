@@ -51,41 +51,12 @@
         <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/lightbox.min.js"></script>
 		
 		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-        <script>
-            jQuery(document).ready(function($) {
-                $(".scroll").click(function(event){
-                    event.preventDefault();
-                    $('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
-                });
-
-                $(".datePicker").datepicker();
-            });
-
-            new WOW().init();
-
-            $(function() {
-                var pull 		= $('#pull');
-                menu 		= $('nav ul');
-                menuHeight	= menu.height();
-                $(pull).on('click', function(e) {
-                    e.preventDefault();
-                    menu.slideToggle();
-                });
-                $(window).resize(function(){
-                    var w = $(window).width();
-                    if(w > 320 && menu.is(':hidden')) {
-                        menu.removeAttr('style');
-                    }
-                });
-            });
+        <script type="text/javascript">
+            var str_loading = '';
+            var home_url = "<?php echo home_url(); ?>/";
+            var url_post = home_url + "get-post-data";
         </script>
-        <script type="application/x-javascript">
-            addEventListener("load"
-                , function() {setTimeout(hideURLbar, 0); }
-                , false);
-
-            function hideURLbar(){ window.scrollTo(0,1); }
-        </script>
+        <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/header.js"></script>
 
 		<?php // wordpress head functions ?>
 		<?php wp_head(); ?>
@@ -97,3 +68,6 @@
 	</head>
 
 	<body <?php body_class(); ?>>
+    <div id="screenBlock" style="display: none;">
+        <div class="img_loading"><img src="<?php bloginfo('template_directory'); ?>/library/images/loading.gif" width="40"/></div>
+    </div>

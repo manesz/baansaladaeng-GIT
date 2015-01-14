@@ -20,7 +20,7 @@ $(document).on("click", ".btn_delete_booking", function (e) {
     var paymentID = $(this).attr("pm-id");
    if (confirm("Do you want to delete order id " + paymentID)) {
        $.ajax({
-           type: "POST",
+           type: "GET",
            cache: false,
            url: '',
            data: {
@@ -59,7 +59,7 @@ $(document).on("submit", "#frm_booking", function (e) {
 //    if (!validateFormCreditCard(this))
 //        return false;
     $.ajax({
-        type: "POST",
+        type: "GET",
         cache: false,
         url: '',
         data: $(this).serialize(),
@@ -118,7 +118,7 @@ function setApprove(elm, paymentID) {
         }
     }
     $.ajax({
-        type: "POST",
+        type: "GET",
         cache: false,
         url: '',
         data: {

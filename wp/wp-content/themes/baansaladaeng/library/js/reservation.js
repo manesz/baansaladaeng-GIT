@@ -18,8 +18,8 @@ $(document).on("submit", "#form_credit_card_payment", function (e) {
     });
     showImgLoading();
     $.ajax({
-        type: "POST",
-        url: '',
+        type: "GET",
+        url: url_post,
         data: data,
         success: function (data) {
             if (data != 'fail') {
@@ -100,8 +100,8 @@ function showPayment() {
 function postSendEmail(paymentID) {
     var email = $("#payment_email").val();
     $.ajax({
-        type: "POST",
-        url: '',
+        type: "GET",
+        url: url_post,
         data: {
             booking_post: 'true',
             reservation_post: 'booking_send_email',
@@ -241,10 +241,6 @@ function step1Click() {
     if (room_id) {
         checkDateRoom(room_id);
     }
-    else {
-        $('#section_payment').hide();
-        getRoom();
-    }
     return false;
 }
 
@@ -257,8 +253,8 @@ function clearSelectRoom() {
 function getRoom() {
     showImgLoading();
 //    $.ajax({
-//        type: "POST",
-//        url: '',
+//        type: "GET",
+//        url: url_post,
 //        dataType: 'json',
 //        data: {
 //            booking_post: 'true',
@@ -275,7 +271,7 @@ function getRoom() {
 //            hideImgLoading();
 //        }
 //    });
-    $.post(window.location.href, {
+    $.get(url_post, {
         booking_post: 'true',
         reservation_post: 'get_room',
         check_in: $("#arrival_date").val(),
@@ -294,8 +290,8 @@ function addOrder(roomID) {
     if (!check_add_room) {
         showImgLoading();
         $.ajax({
-            type: "POST",
-            url: '',
+            type: "GET",
+            url: url_post,
             cache: false,
             dataType: 'json',
             data: {
@@ -313,7 +309,6 @@ function addOrder(roomID) {
                     $('#section_select_date').hide();
                     $('#section_confirm_order').hide();
                     getOrder();
-                    getRoom();
                     clearSelectRoom();
                     showSelectRoom();
 //                    showPayment();
@@ -336,8 +331,8 @@ function addOrder(roomID) {
 
 function checkDateRoom(roomID) {
     $.ajax({
-        type: "POST",
-        url: '',
+        type: "GET",
+        url: url_post,
         dataType: 'json',
         cache: false,
         data: {
@@ -365,8 +360,8 @@ function checkDateRoom(roomID) {
 function getOrder() {
     getSummaryOrder();
 //    $.ajax({
-//        type: "POST",
-//        url: '',
+//        type: "GET",
+//        url: url_post,
 //        data: {
 //            booking_post: 'true',
 //            reservation_post: 'get_order'
@@ -385,7 +380,7 @@ function getOrder() {
 //        }
 //    });
 
-    $.post(window.location.href, {
+    $.get(url_post, {
             booking_post: 'true',
             reservation_post: 'get_order'
     },function (data) {
@@ -405,8 +400,8 @@ function getOrder() {
 function getSummaryOrder() {
     showImgLoading();
 //    $.ajax({
-//        type: "POST",
-//        url: '',
+//        type: "GET",
+//        url: url_post,
 //        data: {
 //            booking_post: 'true',
 //            reservation_post: 'get_summary_order'
@@ -423,12 +418,11 @@ function getSummaryOrder() {
 //    });
 
 
-    $.post(window.location.href, {
+    $.get(url_post, {
         booking_post: 'true',
         reservation_post: 'get_summary_order'
     },function (data) {
         $("#summary_order").html(data);
-        setSummaryConfirm();
         hideImgLoading();
     }).fail(function (result) {
         showModalMessage(result.responseText, 'error', true);
@@ -462,8 +456,8 @@ function deleteOrder(bookingId) {
         if (confirm('Do you want delete room ?')) {
             showImgLoading();
             $.ajax({
-                type: "POST",
-                url: '',
+                type: "GET",
+                url: url_post,
                 data: {
                     booking_post: 'true',
                     reservation_post: 'delete_room',
@@ -495,8 +489,8 @@ function setAdults(bookingId, elm) {
     if (!check_set_adults) {
         showImgLoading();
         $.ajax({
-            type: "POST",
-            url: '',
+            type: "GET",
+            url: url_post,
             data: {
                 booking_post: 'true',
                 reservation_post: 'set_adults',
@@ -530,8 +524,8 @@ function setPickup(bookingId, elm) {
     if (!check_set_pickup) {
         showImgLoading();
         $.ajax({
-            type: "POST",
-            url: '',
+            type: "GET",
+            url: url_post,
             data: {
                 booking_post: 'true',
                 reservation_post: 'set_pickup',
@@ -585,27 +579,7 @@ $(document).on("click", ".btn_payment", function (e) {
     showPayment();
     return false;
 });
-$(document).ready(function () {
-
-    $("#btn_step1").click(function (e) {
-    });
-
-
-    $(document).on("click", ".btn_choose", function (e) {
-        $("#reservation_order").fadeOut();
-        getOrder();
-    });
-
+$(document).on("click", ".btn_choose", function (e) {
+    $("#reservation_order").fadeOut();
     getOrder();
-    getRoom();
-    if (show_payment) {
-        showPayment();
-    } else if (room_id) {
-        $('#list_room').hide();
-        $('#section_select_date').show();
-        $('#section_payment').hide();
-        $('#section_confirm_order').hide();
-    } else {
-        showSelectRoom();
-    }
 });

@@ -196,11 +196,6 @@ if ($arrayContact) {
             display: inline-table;
         }
     </style>
-    <script type="text/javascript">
-        var send_mail_contact_us = false;
-        var str_loading = '<div class="img_loading"><img src="<?php bloginfo('template_directory'); ?>/library/images/loading.gif" width="40"/></div>';
-
-    </script>
     <script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/footer.js"></script>
 
     <a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
