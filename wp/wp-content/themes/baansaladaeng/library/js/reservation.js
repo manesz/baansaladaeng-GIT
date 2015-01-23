@@ -317,8 +317,8 @@ function addOrder(roomID) {
 //                    if (room_id) {
 //                        window.location.href = web_url + "reservation";
 //                    }
-                }
-                showModalMessage(data.msg, false, data.error);
+                } else
+                    showModalMessage(data.msg, false, data.error);
                 check_add_room = false;
             },
             error: function (result) {

@@ -8,10 +8,6 @@ if ($arrayContact) {
 $latitude = @$latitude ? $latitude : "13.72631";
 $longitude = @$longitude ? $longitude : "100.537379";
 
-$printVersion = get_the_content("http://127.0.0.1:11001/baansaladaeng-GIT/wp/print-version/");
-$printVersion = trim(preg_replace('/\s\s+/', ' ', $printVersion));
-$printVersion = str_replace("'", '"', $printVersion);
-
 get_header(); ?>
 <?php get_template_part('nav'); ?>
     <style>
@@ -35,15 +31,15 @@ get_header(); ?>
                 <?php the_content(); ?>
             </div>
 
-<!--            <div class="col-md-12 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">-->
-<!--                <div class="col-md-4"-->
-<!--                     style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">-->
-<!--                    <button id="btn_print"-->
-<!--                            class="btn btn-default col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">-->
-<!--                        Print-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--            </div>-->
+            <!--            <div class="col-md-12 wow fadeInLeft margin-bottom-20" data-wow-delay="1s">-->
+            <!--                <div class="col-md-4"-->
+            <!--                     style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">-->
+            <!--                    <button id="btn_print"-->
+            <!--                            class="btn btn-default col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">-->
+            <!--                        Print-->
+            <!--                    </button>-->
+            <!--                </div>-->
+            <!--            </div>-->
             <div id="print_version"><?php
                 $page = get_page_by_title('Print Version');
                 $content = apply_filters('the_content', $page->post_content);
@@ -99,12 +95,14 @@ get_header(); ?>
             mywindow.document.write('</head><body style="text-align: center;">');
             mywindow.document.write($contents);
             mywindow.document.write('</body></html>');
-
             mywindow.document.close(); // necessary for IE >= 10
             mywindow.focus(); // necessary for IE >= 10
 
-            mywindow.print();
-            mywindow.close();
+            if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                // some code..
+                mywindow.print();
+                mywindow.close();
+            }
         }
     </script>
 <?php get_footer(); ?>

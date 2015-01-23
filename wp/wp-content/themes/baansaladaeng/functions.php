@@ -13,7 +13,14 @@ require_once('library/bones.php');
 //require_once("library/check-database.php");
 require_once("library/menu-control.php");
 require_once("library/get-post-data.php");
-
+global $pagenow;
+if ($pagenow == "admin.php") {
+    ?>
+<script>
+    var url_post = "<?php echo home_url(); ?>";
+</script>
+<?php
+}
 // USE THIS TEMPLATE TO CREATE CUSTOM POST TYPES EASILY
 //require_once( 'library/post-type-room.php' );
 
