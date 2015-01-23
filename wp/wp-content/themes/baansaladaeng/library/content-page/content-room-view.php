@@ -31,18 +31,42 @@ $arrayImageGallery = get_post_meta($postID, 'room_image_gallery', true);
 $objEventCalendar = $classBooking->bookingList(0, 0, 0, $postID);
 
 $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booking_icon.png';
+
+
+$strSetDate = "";
+if (!$getLongStay) {
+    $arrSetDate = array();
+    foreach ($objEventCalendar as $key => $value) {
+//        $getPaid = $value->paid;
+        $checkAddEvent = true;
+//        if ($classBooking->checkTimeOut($value->create_time, $value->timeout) && $getPaid == 0) {
+//            $checkAddEvent = false;
+//        }
+        if ($checkAddEvent) {
+//            $dateCheckIn = date_i18n('Y-m-d', strtotime($value->check_in_date));
+//            $dateCheckIn = date_i18n('Y-m-d', strtotime($value->check_in_date));
+//            $dateCheckOut = date_i18n('Y, m, d', strtotime($value->check_out_date));
+            if ($value->check_in_date != $value->check_out_date) {
+                $arrayDate = $classBooking->explodeDateToArray($value->check_in_date, $value->check_out_date);
+                foreach($arrayDate as $value2){
+                    $arrSetDate[] = "'$value2'";
+                }
+            }else
+                $arrSetDate[] = "'$value->check_in_date'";
+//            $arrSetDate[] = "getSetDate('$dateCheckIn', $strDay)";
+        }
+    }
+    $strSetDate = implode(', ', $arrSetDate);
+}
 ?>
-<!-- Fullcalendar -->
-<link rel="stylesheet"
-      href="<?php bloginfo('template_directory'); ?>/library/css/fullcalendar/fullcalendar.css">
-<link rel="stylesheet"
-      href="<?php bloginfo('template_directory'); ?>/library/css/fullcalendar/fullcalendar.print.css"
-      media="print">
+<script type="text/javascript"
+        src="<?php bloginfo('template_directory'); ?>/library/js/multi-dates-picker/js/jquery-ui-1.11.1.js"></script>
+<!-- loads mdp -->
+<script type="text/javascript"
+        src="<?php bloginfo('template_directory'); ?>/library/js/multi-dates-picker/jquery-ui.multidatespicker.js"></script>
 
-<!-- FullCalendar -->
-<script
-    src="<?php bloginfo('template_directory'); ?>/library/js/fullcalendar/fullcalendar.min.js"></script>
-
+<link rel="stylesheet" type="text/css"
+      href="<?php bloginfo('template_directory'); ?>/library/js/multi-dates-picker/css/mdp.css">
 
 <style>
     .span6 {
@@ -69,10 +93,12 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
     var date_now = "<?php echo date_i18n('Y-m-d')?>";
     var webUrl = "<?php echo get_site_url(); ?>/";
     var $jConflict = jQuery.noConflict();
+    var date = new Date("<?php echo date_i18n('Y-m-d')?>");
+    var array_set_date = <?php echo $strSetDate? "[$strSetDate]": "''"; ?>;
     var obj_event =
         [
             <?php
-            if (!$getLongStay)
+            /*if (!$getLongStay)
             foreach($objEventCalendar as $key => $value):
             $getPaid = $value->paid;
             $checkAddEvent = true;
@@ -92,12 +118,8 @@ $urlCheckImageTrue = get_template_directory_uri() . '/library/images/check_booki
                 //url: 'http://google.com/'
 //                className: ["event", "redEvent"]
             },
-            <?php } endforeach; ?>
+            <?php } endforeach; */  ?>
         ];
-
-    // $jConflict(document).ready(function () {
-    // $jConflict(".fancybox").fancybox();
-    // });
 </script>
 <style>
     .bg-select {
@@ -315,7 +337,8 @@ else:
             </div>
         </form>
     <?php else: ?>
-        <div class="calendar" id="calendar"></div>
+<!--        <div class="calendar" id="calendar"></div>-->
+        <div id="calendar_select_room" class="box"></div>
         <form id="form_room_submit" method="get"
               action="<?php echo network_site_url('/') . "reservation"; ?>">
             <input type="hidden" value="true" name="booking_post"/>

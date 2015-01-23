@@ -54,7 +54,7 @@ if (!$arrayOrder) {
         $timeDiff = abs(strtotime($value->check_out_date) -
             strtotime($value->check_in_date));
         $numberDays = $timeDiff / 86400;
-        $numberDays = ceil($numberDays);
+        $numberDays = ceil($numberDays) + 1;
         $total = ($numberDays) * $price;
         $total += $needAirportPickup ? 1200 : 0;
         $totalFormat = number_format($total);
@@ -62,7 +62,7 @@ if (!$arrayOrder) {
 
         ?>
         <li class="text-left" style="margin-top: 20px; padding: 10px; border-bottom: 1px #999 dashed;">
-            <h5 class="pull-left" style="margin-top: 0px; font-weight: bold;">ROOM <?php echo $key + 1; ?></h5>
+            <h5 class="pull-left" style="margin-top: 0px; font-weight: bold;"><?php echo $roomName; ?></h5>
             <span class="pull-right"><a href="#" style="color: blue;"
                                         onclick="deleteOrder(<?php echo $value->booking_id; ?>);return false;">Delete</a></span>
             <hr/>
@@ -85,7 +85,7 @@ if (!$arrayOrder) {
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 80%"><?php echo $roomName; ?></td>
+                    <td style="width: 80%">Price :</td>
                     <td style="width: 20%"><?php echo $priceFormat; ?> ฿</td>
                 </tr>
                 <tr>
@@ -101,6 +101,9 @@ if (!$arrayOrder) {
                 <tr>
                     <td style="width: 80%; font-weight: bold;">TOTAL :</td>
                     <td style="width: 20%; font-weight: bold;"><?php echo $totalFormat; ?> ฿</td>
+                </tr>
+                <tr>
+                    <td colspan="" style="width: 100%;">Note: Booking <?php echo $numberDays; ?> nights</td>
                 </tr>
             </table>
         </li>

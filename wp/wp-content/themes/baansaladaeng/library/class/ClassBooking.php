@@ -53,7 +53,7 @@ class Booking
         return $myrows;
     }
 
-    public function getRoomByDateCheckInCheckOut($check_in, $check_out, $room_id = 0)
+    public function checkRoomByDate($check_in, $check_out, $room_id = 0)
     {
         $strAnd = $room_id ? " AND a.room_id=$room_id" : "";
         if ($check_in && $check_out) {
@@ -97,7 +97,7 @@ class Booking
               $strAnd
         ";
         $rows = $this->wpdb->get_results($sql);
-        return $rows;
+        return count($rows) > 0 ? false : true;
     }
 
     public function checkRoom($post)
@@ -122,8 +122,8 @@ class Booking
         if ($checkIn < $dateNow || $checkOut < $dateNow)
             return false;
         $roomId = empty($room_id) ? 0 : $room_id;
-        $result = $this->getRoomByDateCheckInCheckOut($checkIn, $checkOut, $roomId);
-        if (count($result) > 0) {
+        return $this->checkRoomByDate($checkIn, $checkOut, $roomId);
+        /*if (count($result) > 0) {
 //            $getPaid = $result[0]->paid;
 //            if ($getPaid) {
 //                return false;
@@ -136,7 +136,7 @@ class Booking
             return false;
         } else {
             return true;
-        }
+        }*/
     }
 
     /**
@@ -168,14 +168,14 @@ class Booking
         $payment_id = @$data['payment_id'];
         $price = @$data['price'];
         $needAirportPickup = @$data['need_airport_pickup'];
-        $result = $this->getRoomByDateCheckInCheckOut($arrivalDate,
+        $result = $this->checkRoomByDate($arrivalDate,
             $departureDate, $roomID);
-        if ($result) {
+        if (!$result) {
             return $this->returnMessage("Sorry, $roomName customer request.", true);
         }
         $timeDiff = abs(strtotime($departureDate) - strtotime($arrivalDate));
         $numberDays = $timeDiff / 86400;
-        $numberDays = ceil($numberDays);
+        $numberDays = ceil($numberDays) + 1;
         if ($numberDays < 1) {
             return $this->returnMessage('Please select date.', true);
         }
@@ -397,7 +397,7 @@ class Booking
             $needAirportPickUpBath = @$need_airport_pickup_new ? $this->pickupPrice : 0;
             $timeDiff = abs(strtotime($check_in_date) - strtotime($check_out_date));
             $numberDays = $timeDiff / 86400;
-            $numberDays = ceil($numberDays);
+            $numberDays = ceil($numberDays) + 1;
             $total = ($numberDays) * $price;
             $total = $total + $needAirportPickUpBath;
             $result = $this->wpdb->update(
@@ -444,8 +444,63 @@ class Booking
         return true;
     }
 
+    function explodeDateToArray($check_in, $check_out)
+    {
+        if ($check_in == $check_out)
+            return array($check_in);
+        $startTime = strtotime($check_in);
+        $endTime = strtotime($check_out);
+        $arrayDate = array();
+        for ($i = $startTime; $i <= $endTime; $i = $i + 86400) {
+            $arrayDate[] = date('Y-m-d', $i); // 2010-05-01, 2010-05-02, etc
+        }
+        return $arrayDate;
+    }
+
     function groupArrayDate($array_date)
     {
+//        $datearray = array("2013-05-05", "2013-05-06", "2013-05-07", "2013-05-08", "2013-06-19", "2013-06-20", "2013-06-21");
+        asort($array_date);
+        $resultArray = array();
+        $index = -1;
+        $last = 0;
+        $arrSaveDate = array();
+
+        foreach ($array_date as $date) {
+            $ts = strtotime($date);
+            if (false !== $ts) {
+                $diff = $ts - $last;
+
+                if ($diff > 86400) {
+                    $index = $index + 1;
+                    $resultArray[$index][] = $date;
+                } elseif ($diff > 0) {
+                    $resultArray[$index][] = $date;
+                } else {
+                    // Error! dates are not in order from small to large
+                }
+                $last = $ts;
+            }
+        }
+
+        foreach ($resultArray as $a) {
+            if (count($a) > 1) {
+                $firstDate = $a[0];
+                $firstDateBits = explode('-', $firstDate);
+                $lastDate = $a[count($a) - 1];
+                $lastDateBits = explode('-', $lastDate);
+
+//                if ($firstDateBits[1] === $lastDateBits[1]) {
+//                    $out[]= intval($firstDateBits[2]) . '-' . intval($lastDateBits[2]) . ' ' . date("m",strtotime($firstDate)) . ', ';
+//                } else {
+//                    $out[] .= date("Y-m-d",strtotime($firstDate)) . '-' . date("Y-m-d",strtotime($lastDate)) . ', ';
+//                }
+                $arrSaveDate[] = $firstDate . "|" . $lastDate;
+            } else {
+                $arrSaveDate[] = $a[0] . "|" . $a[0];
+            }
+        }
+        return $arrSaveDate;
         //$datearray = array("2013-05-05", "2013-05-06", "2013-05-07", "2013-05-08", "2013-06-19", "2013-06-20", "2013-06-21");
 //        asort($array_date);
         $resultArray = array();
@@ -456,11 +511,11 @@ class Booking
         $arrDateSort1 = array();
         $arrDateSort2 = array();
 
-        foreach ($array_date as $sort1) {
-            $expDate = explode('|', $sort1);
-            $arrDateSort1[] = date("Y-m-d", strtotime($expDate[0]));
-        }
-        asort($arrDateSort1);
+//        foreach ($array_date as $sort1) {
+//            $expDate = explode('|', $sort1);
+//            $arrDateSort1[] = date("Y-m-d", strtotime($expDate[0]));
+//        }
+        asort($array_date);
 
         foreach ($arrDateSort1 as $sort1) {
             foreach ($array_date as $sort2) {
@@ -518,7 +573,7 @@ class Booking
             return false;
         $result = $this->returnMessage('Noting select date.', true);
         if ($post['array_booking']) {
-            $newGroupDate = $this->groupArrayDate($post['array_booking']);
+            /*$newGroupDate = $this->groupArrayDate($post['array_booking']);
 
             foreach ($newGroupDate as $key => $value) {
                 list($checkInDate, $checkOutDate) = explode('|', $value);
@@ -530,6 +585,24 @@ class Booking
                 }
             }
             foreach ($newGroupDate as $key => $value) {
+                $expDate = explode('|', $value);
+                $checkInDate = $expDate[0];
+                $checkOutDate = $expDate[1];
+                $post['arrival_date'] = $checkInDate;
+                $post['departure_date'] = $checkOutDate;
+                $post['need_airport_pickup'] = 0;
+                $result = $this->addSessionOrder($post);
+                if ($result['error']) {
+                    return $result;
+                }
+            }*/
+            foreach ($post['array_booking'] as $value) {
+                if (!$this->checkRoomByDate($value, $value, $post['room_id']))
+                    return $this->returnMessage('Sorry for the selected dates are already booked.', true);
+            }
+            $newGroupDate = $this->groupArrayDate($post['array_booking']);
+            //var_dump($newGroupDate);return false;
+            foreach ($newGroupDate as $value) {
                 $expDate = explode('|', $value);
                 $checkInDate = $expDate[0];
                 $checkOutDate = $expDate[1];

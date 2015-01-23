@@ -16,7 +16,7 @@ foreach ($objDataBooking as $key => $value) {
 
     $timeDiff = abs(strtotime($value->check_out_date) - strtotime($value->check_in_date));
     $numberDays = $timeDiff / 86400;
-    $numberDays = ceil($numberDays);
+    $numberDays = ceil($numberDays) + 1;
     $total = ($numberDays + 1) * $price;
     $total += $needAirportPickup ? 1200 : 0;
     $totalFormat = number_format($total);
@@ -250,6 +250,9 @@ extract((array)$objDataBooking[0]);
                                     <br>
                                     <table id="content" style="width: 100%; text-align: left;">
                                         <tr>
+                                            <td width="100%" colspan="2" width="30%"><h3>Summary Order:</h3></td>
+                                        </tr>
+                                        <tr>
                                             <td width="30%">Room</td>
                                             <td width="70%"><?php echo @$arrayRoomName ? implode('<br/>', @$arrayRoomName) : "No data"; ?></td>
                                         </tr>
@@ -262,6 +265,9 @@ extract((array)$objDataBooking[0]);
                                             <td width="70%"><?php echo empty($subTotal) ? 0 : number_format($subTotal); ?>
                                                 Bath
                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="100%" colspan="2" width="30%"><h3>Payment Information:</h3></td>
                                         </tr>
                                         <tr>
                                             <td width="30%">Name</td>
@@ -324,7 +330,6 @@ extract((array)$objDataBooking[0]);
 
 <div class='movableContent'>
     <?php
-
     $argc = array(
         'post__in' => $arrayRoomID,
         'post_type' => 'room',
