@@ -6,19 +6,112 @@ var countClick = 0;
 var check_add_event = false;
 var check_post_data = false;
 var $jConflict = jQuery.noConflict();
-var array_date_select = [];
 $jConflict(document).ready(function () {
-    $jConflict('#calendar_select_room').multiDatesPicker({
-        dateFormat: "yy-mm-dd",
-        minDate: 0,
-//        numberOfMonths: [3,4],
-        addDates: array_set_date,
-        addDisabledDates: array_set_date,
-        altField: '#altField',
-        onSelect: function (dateText, inst) {
-            array_date_select = addDate(dateText, array_date_select);
-        }
-    });
+    if ($jConflict('#calendar').length > 0) {
+        $jConflict('#calendar').fullCalendar({
+            header: {
+                left: '',
+                center: 'prev,title,next',
+//                    center: 'title',
+                right: ''
+//                    right: 'month,today'
+            },
+//            eventLimit: true,
+//                buttonText: {
+//                    today: 'Today',
+//                    month: 'Month'
+//                },
+//            editable: false,
+            events: obj_event,
+            selectable: true,
+            //                selectHelper: true,
+            /*dayClick: function (date, jsEvent, view) {
+
+             //                showModalMessage('Clicked on: ' + date);
+             //
+             //                showModalMessage('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+             //
+             //                showModalMessage('Current view: ' + console.log(view));
+             //                console.log(view)
+             var strDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+             //                if (!removeBookingDate(strDate)) {
+             //                    addBookingDateToArray(strDate);
+             //                }
+             // change the day's background color just for fun
+             var bg = $(this).css('background-color');
+             if (bg == 'rgb(30, 236, 255)')
+             $(this).css('background-color', '#ffffff');
+             else //if (bg == "rgba(0, 0, 0, 0)")
+             $(this).css('background-color', '#1EECFF');
+
+             //                var hasClass = $(this).hasClass('bg-select');
+             //                if (hasClass) {
+             //                    $(this).addClass('bg-no-select');
+             //                    $(this).removeClass('bg-select');
+             //                    removeBookingDate(strDate);
+             //                } else {
+             //                    checkDateRoom(strDate, strDate, this);
+             //                }
+
+             },*/
+            select: function (start, end, allDay, resourceId) {
+//                    var title = prompt('Event Title:');
+//                    if (title) {
+                if (!check_add_event) {
+//                    $jConflict("#check_in_date").val(strDateCheckIn);
+//                    $jConflict("#check_out_date").val(strDateCheckOut);
+//                    addBookingDateToArray(strDateCheckIn, strDateCheckOut);
+                    checkDateRoom(start, end, allDay, resourceId);
+                }
+//                check_add_event = true;
+                /**
+                 * ajax call to store event in DB
+                 */
+                /*jQuery.post(
+                 "event/new" // your url
+                 , { // re-use event's data
+                 title: title,
+                 start: start,
+                 end: end,
+                 allDay: allDay
+                 }
+                 );*/
+                //                    }
+                //                    calendar.fullCalendar('unselect');
+            },
+            eventClick: function (calEvent, jsEvent, view) {
+                /**
+                 * calEvent is the event object, so you can access it's properties
+                 */
+//                        if(confirm("Really delete event " + calEvent.title + " ?")){
+                // delete event in backend
+                //                        jQuery.post(
+                //                            "/vacation/deleteEvent"
+                //                            , { "id": calEvent.id }
+                //                        );
+                // delete in frontend
+//                showModalMessage(calEvent._id)
+                if (calEvent.title != "X") {
+                    $jConflict("#calendar").fullCalendar('removeEvents', calEvent._id);
+                    check_add_event = false;
+                    $jConflict("#check_in_date").val("");
+                    $jConflict("#check_out_date").val("");
+
+                    var strDateCheckIn = calEvent.start.getFullYear() + "-" + (calEvent.start.getMonth() + 1) + "-" + calEvent.start.getDate();
+                    var strDateCheckOut = strDateCheckIn;
+                    if (calEvent.end) {
+                        strDateCheckOut = calEvent.end.getFullYear() + "-" + (calEvent.end.getMonth() + 1) + "-" + calEvent.end.getDate();
+                    }
+
+                    removeBookingDate(strDateCheckIn, strDateCheckOut);
+                } else {
+                    return false;
+                }
+
+                //                        }
+            }
+        });
+    }
 
     $("#frm_long_stay").submit(function () {
         var $frm = this;
@@ -38,7 +131,7 @@ $jConflict(document).ready(function () {
             $frm.security_code.focus();
         } else {
             var data = $($frm).serialize();
-            data += "&" + $.param({
+            data += "&"+ $.param({
                 long_stay_post: 'true'
             });
             showImgLoading();
@@ -50,7 +143,7 @@ $jConflict(document).ready(function () {
                     if (result == 'error_captcha') {
                         showModalMessage("Please check security code.", false, true);
                         $frm.security_code.focus();
-                    } else if (result == 'success') {
+                    }else if(result == 'success') {
                         getCaptchaLongStay();
                         showModalMessage("Send email success.\nThank you.", false, false);
                         $($frm).find(':input[type=text]:not([type=hidden]), textarea').val('');
@@ -114,6 +207,7 @@ function removeBookingDate(checkIn, checkOut) {
     return checkRemove;
 }
 
+var array_date_select = [];
 function addDate(date, array_date) {
     var idx = array_date.indexOf(date);
     var delValue = idx > 0 ? true : false;
@@ -128,7 +222,6 @@ function addDate(date, array_date) {
     } else {
         array_date[array_date.length] = date;
     }
-    array_date.sort();
     return array_date;
 }
 
@@ -266,7 +359,7 @@ function postAddBooking() {
     if (array_date_select.length == 0) {
         window.location.href = webUrl + 'reservation'
         return false;
-    }
+    }alert(array_date_select);return ;
     showImgLoading();
     $jConflict.ajax({
         type: "GET",
@@ -287,7 +380,7 @@ function postAddBooking() {
                 //check_post_data = false;
                 hideImgLoading();
             } else {
-                setTimeout(function () {
+                setTimeout(function() {
                     window.location.href = webUrl + 'reservation?payment=true'
                 }, 3000);
             }
