@@ -167,7 +167,8 @@ class Booking
         $departureDate = @$data['departure_date'];
         $payment_id = @$data['payment_id'];
         $price = @$data['price'];
-        $needAirportPickup = @$data['need_airport_pickup'];
+        $needAirportPickup = empty($data['need_airport_pickup'])? 0 : $data['need_airport_pickup'];
+        $adults = empty($data['adults'])? 1 : $data['adults'];
         $result = $this->checkRoomByDate($arrivalDate,
             $departureDate, $roomID);
         if (!$result) {
@@ -187,6 +188,7 @@ class Booking
             array(
                 'room_id' => $roomID,
                 'payment_id' => $payment_id,
+                'adults' => $adults,
                 'check_in_date' => $arrivalDate,
                 'check_out_date' => $departureDate,
                 'need_airport_pickup' => $needAirportPickup,
@@ -197,6 +199,7 @@ class Booking
                 'publish' => 1
             ),
             array(
+                '%d',
                 '%d',
                 '%d',
                 '%s',
@@ -572,6 +575,8 @@ class Booking
         if (!@$post['array_booking'] || !@$post['room_id'])
             return false;
         $result = $this->returnMessage('Noting select date.', true);
+        $need_airport_pickup = empty($post['need_airport_pickup'])? 0: $post['need_airport_pickup'];
+        $adult = empty($post['adult'])? 0: $post['adult'];
         if ($post['array_booking']) {
             /*$newGroupDate = $this->groupArrayDate($post['array_booking']);
 
@@ -608,7 +613,7 @@ class Booking
                 $checkOutDate = $expDate[1];
                 $post['arrival_date'] = $checkInDate;
                 $post['departure_date'] = $checkOutDate;
-                $post['need_airport_pickup'] = 0;
+                $post['need_airport_pickup'] = $need_airport_pickup;
                 $result = $this->addSessionOrder($post);
                 if ($result['error']) {
                     return $result;

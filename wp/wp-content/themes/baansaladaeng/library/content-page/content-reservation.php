@@ -1,4 +1,5 @@
 <?php
+global $wpdb;
 if (!session_id())
     session_start();
 $arrayOrder = @$_SESSION['array_reservation_order'];
@@ -6,16 +7,10 @@ $objClassBooking = new Booking($wpdb);
 
 $checkInDate = empty($_REQUEST['check_in_date']) ? date_i18n('d/m/Y') : $_REQUEST['check_in_date'];
 $checkOutDate = empty($_REQUEST['check_out_date']) ? date_i18n('d/m/Y', strtotime("+1 day")) : $_REQUEST['check_out_date'];
-$roomID = @$_REQUEST['room_id'] ? $_REQUEST['room_id'] : '0';
-$roomName = @$_REQUEST['room_name'] ? $_REQUEST['room_name'] : '';
-$showPayment = @$_REQUEST['payment'] ? $_REQUEST['payment'] : false;
+$roomName = empty($_REQUEST['room_name']) ? '': $_REQUEST['room_name'];
+$roomID = empty($_REQUEST['room_id']) ? 0: $_REQUEST['room_id'];
+$showPayment = empty($_REQUEST['payment']) ? false: $_REQUEST['payment'];
 $payment_id = empty($arrayOrder) ? 0 : $arrayOrder['payment_id'];
-
-if ($payment_id) {
-    $objDataBooking = $objClassBooking->bookingList($payment_id);
-    $countOrder = $objDataBooking ? count($objDataBooking) : 0;
-} else
-    $countOrder = 0;
 
 get_header();
 get_template_part('nav');
@@ -24,10 +19,18 @@ get_template_part('nav');
         var room_id = <?php echo $roomID; ?>;
         var show_payment = <?php echo $showPayment ? "true"  : "false"; ?>;
         var web_url = '<?php echo network_site_url('/'); ?>';
-        var count_order = <?php echo $countOrder;?>;
     </script>
     <script type="text/javascript"
             src="<?php bloginfo('template_directory'); ?>/library/js/reservation.js"></script>
+    <script type="text/javascript"
+            src="<?php bloginfo('template_directory'); ?>/library/js/multi-dates-picker/js/jquery-ui-1.11.1.js"></script>
+    <!-- loads mdp -->
+    <script type="text/javascript"
+            src="<?php bloginfo('template_directory'); ?>/library/js/multi-dates-picker/jquery-ui.multidatespicker.js"></script>
+
+    <link rel="stylesheet" type="text/css"
+          href="<?php bloginfo('template_directory'); ?>/library/js/multi-dates-picker/css/mdp.css">
+
     <div class="container" style="padding-top: 50px;">
     <div class="row">
 
@@ -49,30 +52,25 @@ get_template_part('nav');
     <hr class=""/>
 
     <div id="section_select_date">
-        <h2 id="show_count_order">Room <?php echo $countOrder + 1; ?></h2>
+        <h2 id="room_name"><?php echo $roomName; ?></h2>
 
         <div class="col-md-12 alpha">
-            <?php //if ($roomID): ?>
-            <div class="form-group col-md-12">
-                <h4>Room</h4>
-                <input id="room_name" name="room_name" disabled
-                       type="text" maxlength="50" class="form-control col-md-12"
-                       value="<?php echo $roomName; ?>"/>
-            </div>
-            <?php //endif; ?>
-            <div class="form-group col-md-6">
-                <h4>Arrival Date</h4>
+<!--            <div class="form-group col-md-6">-->
+<!--                <h4>Arrival Date</h4>-->
                 <!--                            <label for="check_in_date">Check in date</label>-->
                 <input id="arrival_date" name="arrival_date"
                        value="<?php echo $checkInDate; ?>"
-                       class="form-control datePicker"/>
-            </div>
-            <div class="form-group col-md-6">
-                <h4>Departure Date</h4>
+                       class="form-control datePicker" type="hidden"/>
+<!--            </div>-->
+<!--            <div class="form-group col-md-6">-->
+<!--                <h4>Departure Date</h4>-->
                 <!--                            <label for="check_out_date">Check out date</label>-->
                 <input id="departure_date" name="departure_date"
                        value="<?php echo $checkOutDate; ?>"
-                       class="form-control datePicker"/>
+                       class="form-control datePicker" type="hidden"/>
+<!--            </div>-->
+            <div class="form-group col-md-12">
+                <div id="calendar_room"></div>
             </div>
             <div class="form-group col-md-12">
                 <h4>Adults</h4>
@@ -92,16 +90,20 @@ get_template_part('nav');
                 </div>
             </div>
             <div class="margin-bottom-10 col-md-12">
-                <?php if ($roomID): ?>
+                <?php //if ($roomID): ?>
                     <div class="col-md-4"
                          style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
-                        <button onclick="window.location.href='<?php echo network_site_url('/'); ?>reservation'"
+<!--                        <button onclick="window.location.href='--><?php //echo network_site_url('/'); ?><!--reservation'"-->
+<!--                                class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">-->
+<!--                            Cancel-->
+<!--                        </button>-->
+                        <button onclick="room_id=0;scrollToTop();showSelectRoom();"
                                 class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">
                             Cancel
                         </button>
                     </div>
                     <div class="col-md-1"></div>
-                <?php endif; ?>
+                <?php //endif; ?>
                 <div class="col-md-4"
                      style="text-align: center; padding: 10px 0 10px 0; color: #fff; ">
                     <button onclick="return step1Click();"
@@ -407,22 +409,24 @@ get_template_part('nav');
     </div>
     </div>
     </div>
-    <script>
-        $(document).ready(function () {
+<script>
 
-            getOrder();
+
+    $(document).ready(function () {
+        getOrder();
 //    getRoom();
-            if (show_payment) {
-                showPayment();
-            } else if (room_id) {
-                $('#list_room').hide();
-                $('#section_select_date').show();
-                $('#section_payment').hide();
-                $('#section_confirm_order').hide();
-            } else {
-                showSelectRoom();
-            }
-        });
-    </script>
+        if (show_payment) {
+            showPayment();
+        } else if (room_id) {
+            setTimeout(function(){
+                buildCalendar(room_id);
+                showSelectDate();
+            }, 1000)
+        } else {
+            showSelectRoom();
+        }
+    });
+    //        var $ = jQuery.noConflict();
+</script>
 
 <?php get_footer(); ?>

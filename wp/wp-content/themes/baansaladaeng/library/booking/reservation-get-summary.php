@@ -41,6 +41,7 @@ if ($arrayOrder) : foreach ($arrayOrder as $key => $value):
     $total += $needAirportPickup ? 1200 : 0;
     $totalFormat = number_format($total);
     $subTotal += $total;*/
+    $roomID = @$value->room_id;
     $price = @$value->price;
     $timeDiff = abs(strtotime($value->check_out_date) -
         strtotime($value->check_in_date));
@@ -49,12 +50,14 @@ if ($arrayOrder) : foreach ($arrayOrder as $key => $value):
     $total = ($numberDays) * $price;
     $needAirportPickup = @$value->need_airport_pickup;
 
-    $strRoomName = $key + 1 . ". " . $value->room_name . " | ";
+    $strRoomName = $key + 1 . ". " . $value->room_name;
+    $getLink = get_permalink($roomID);
+    $strRoomName = "<a href='$getLink' target='_blank'>$strRoomName</a>";
+    $strRoomName .= " | ";
     $strRoomName .= $needAirportPickup ? "<i>Need Airport Pickup(Yes)</i>" : "<i>Need Airport Pickup(No)</i>";
     $arrayRoomName[] = $strRoomName;
     $arrayArrivalDate[] = convertMonth($value->check_in_date) . " - " .
         convertMonth($value->check_out_date) . " No. of night: $numberDays";
-    $roomID = @$value->room_id;
     $roomName = @$value->room_name;
     $checkInDate = "";
     $checkOutDate = "";

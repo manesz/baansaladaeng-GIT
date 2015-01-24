@@ -1,5 +1,8 @@
+var array_booking_room = [];
+
 $(document).on("click", '#btn_list_room_back', function () {
-    showSelectDate();
+    if (room_id)
+        showSelectDate();
     return false;
 });
 
@@ -56,19 +59,60 @@ $(document).on("submit", "#payment_post", function (e) {
     return false;
 });
 
+function addDateToArray(date, roomID) {
+    var array_date = array_booking_room[roomID];
+    if (typeof array_date != 'undefined') {
+        var idx = array_date.indexOf(date);
+    } else {
+        array_date = [];
+        var idx = -1;
+    }
+//    var delValue = idx >= 0 ? true : false;
+    var new_array_date = [];
+    if (idx >= 0) {
+        for (var $i = 0; $i < array_date.length; $i++) {
+            if (array_date[$i] != date) {
+                new_array_date[new_array_date.length] = array_date[$i];
+            }
+        }
+        array_date = new_array_date;
+    } else {
+        array_date[array_date.length] = date;
+    }
+    array_date.sort();
+    array_booking_room[roomID] = array_date;
+}
+
+function buildCalendar(roomID) {
+    var arrayOldBooking = array_old_booking_room[roomID];
+    var $calendar_room = jQuery.noConflict()('#calendar_room');
+    $calendar_room.multiDatesPicker('destroy');
+    $calendar_room.multiDatesPicker({
+        dateFormat: "yy-mm-dd",
+        minDate: 0,
+        numberOfMonths: [6,2],
+        addDates: arrayOldBooking,
+        addDisabledDates: arrayOldBooking,
+        onSelect: function (dateText, inst) {
+            addDateToArray(dateText, roomID);
+        }
+    });
+}
+
 function chooseRoom(id, name) {
     removeClassActive();
     $("#linkSelectDate").addClass('active');
     room_id = id;
     $("#room_id").val(id);
-    $("#room_name").val(name);
+    $("#room_name").text(name);
 
     $('#list_room').hide();
     $('#section_payment').hide();
     $('#section_confirm_order').hide();
     $('#section_select_date').fadeIn();
-    $('#arrival_date').focus();
+//    $('#arrival_date').focus();
     scrollToTop();
+    buildCalendar(id);
 }
 
 function showSelectRoom() {
@@ -82,7 +126,7 @@ function showSelectRoom() {
 
 function showSelectDate() {
     removeClassActive();
-    $("#linkSelectRoom").addClass('active');
+    $("#linkSelectDate").addClass('active');
     $('#list_room').hide();
     $('#section_payment').hide();
     $('#section_confirm_order').hide();
@@ -204,7 +248,7 @@ function validateFormPayment(elm) {
 }
 
 function step1Click() {
-    var arrivalDate = $("#arrival_date");
+    /*var arrivalDate = $("#arrival_date");
     var departureDate = $("#departure_date");
     if (arrivalDate.val() == "") {
         showModalMessage("Please select \"Arrival Date\"", false, true);
@@ -234,13 +278,17 @@ function step1Click() {
         showModalMessage("Please select \"Departure Date\"", false, true);
         departureDate.select();
         return false;
-    }
+    }*/
     if (!room_id) {
         showModalMessage("Please select rooms.", false, true);
         showSelectRoom();
         return false;
     }
     if (room_id) {
+        if (typeof array_booking_room[room_id] == 'undefined') {
+            showModalMessage('Please select date.', false, true);
+            return false;
+        }
         checkDateRoom(room_id);
     }
     return false;
@@ -296,14 +344,33 @@ function addOrder(roomID) {
             url: url_post,
             cache: false,
             dataType: 'json',
+//            data: {
+//                booking_post: 'true',
+//                reservation_post: 'add_order',
+//                room_id: roomID,
+//                arrival_date: $("#arrival_date").val(),
+//                departure_date: $("#departure_date").val(),
+//                adults: $("#adult").val(),
+//                need_airport_pickup: $("#need_airport_pickup").val()
+//            },
+//            data: {
+//                booking_post: 'true',
+//                reservation_post: 'add_order',
+//                room_id: roomID,
+//                arrival_date: $("#arrival_date").val(),
+//                departure_date: $("#departure_date").val(),
+//                adults: $("#adult").val(),
+//                need_airport_pickup: $("#need_airport_pickup").val(),
+//                array_booking: array_date_select[roomID]
+//            },
             data: {
                 booking_post: 'true',
-                reservation_post: 'add_order',
+                reservation_post: 'add_array_booking',
                 room_id: roomID,
-                arrival_date: $("#arrival_date").val(),
-                departure_date: $("#departure_date").val(),
+                room_name: $("#room_name").text(),
                 adults: $("#adult").val(),
-                need_airport_pickup: $("#need_airport_pickup").val()
+                need_airport_pickup: $("#need_airport_pickup").val(),
+                array_booking: array_booking_room[roomID]
             },
             success: function (data) {
                 hideImgLoading();
@@ -311,6 +378,7 @@ function addOrder(roomID) {
                     $('#section_select_date').hide();
                     $('#section_confirm_order').hide();
                     getOrder();
+                    getRoom();
                     clearSelectRoom();
                     showSelectRoom();
 //                    showPayment();
@@ -383,8 +451,8 @@ function getOrder() {
 //    });
 
     $.get(url_post, {
-            booking_post: 'true',
-            reservation_post: 'get_order'
+        booking_post: 'true',
+        reservation_post: 'get_order'
     },function (data) {
         $("#reservation_order").html(data).fadeIn();
         if (count_order > 0) {
@@ -392,7 +460,7 @@ function getOrder() {
         } else {
             $("#payment_info").hide();
         }
-        $("#show_count_order").html("Room " + count_order);
+        //$("#show_count_order").html("Room " + count_order);
     }).fail(function (result) {
         showModalMessage(result.responseText, 'error', true);
         hideImgLoading();
@@ -467,8 +535,10 @@ function deleteOrder(bookingId) {
                 },
                 success: function (data) {
                     hideImgLoading();
-                    if (data == 'success')
+                    if (data == 'success'){
                         getOrder();
+                        getRoom();
+                    }
                     else showModalMessage(data, 'error', true);
                     check_delete_room = false;
                 },
@@ -555,7 +625,7 @@ function setPickup(bookingId, elm) {
     return true;
 }
 
-function removeClassActive(){
+function removeClassActive() {
     $(".btn_reservation_nav").each(function () {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
@@ -564,14 +634,20 @@ function removeClassActive(){
 }
 
 $(document).on("click", ".btn_reservation_nav", function (e) {
-    switch (this.id){
-        case "linkSelectRoom": showSelectRoom();
+    switch (this.id) {
+        case "linkSelectRoom":
+            showSelectRoom();
             break;
-        case "linkSelectDate":showSelectDate();
+        case "linkSelectDate":
+            if (room_id)
+                showSelectDate();
+            else return false;
             break;
-        case "linkPayment":showPayment();
+        case "linkPayment":
+            showPayment();
             break;
-        case "linkConfirm":return false;
+        case "linkConfirm":
+            return false;
             break;
     }
     removeClassActive();

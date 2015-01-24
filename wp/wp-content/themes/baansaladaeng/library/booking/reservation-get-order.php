@@ -62,9 +62,13 @@ if (!$arrayOrder) {
 
         ?>
         <li class="text-left" style="margin-top: 20px; padding: 10px; border-bottom: 1px #999 dashed;">
-            <h5 class="pull-left" style="margin-top: 0px; font-weight: bold;"><?php echo $roomName; ?></h5>
-            <span class="pull-right"><a href="#" style="color: blue;"
-                                        onclick="deleteOrder(<?php echo $value->booking_id; ?>);return false;">Delete</a></span>
+            <h5 class="pull-left" style="margin-top: 0px; font-weight: bold;">
+                <a href="<?php echo get_permalink($roomID);?>" target="_blank"><?php echo $roomName; ?></a>
+            </h5>
+            <span class="pull-right">
+                <a href="#" style="color: blue;"
+                                        onclick="deleteOrder(<?php echo $value->booking_id; ?>);return false;">Delete</a>
+            </span>
             <hr/>
             <table style="width: 100%">
                 <tr>
