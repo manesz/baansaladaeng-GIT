@@ -14,6 +14,7 @@ $payment_id = empty($arrayOrder) ? 0 : $arrayOrder['payment_id'];
 
 get_header();
 get_template_part('nav');
+
 ?>
     <script>
         var room_id = <?php echo $roomID; ?>;
@@ -35,21 +36,21 @@ get_template_part('nav');
     <div class="row">
 
     <h2 class="margin-bottom-20">Reservation</h2>
-    <hr/>
+<!--    <hr/>-->
     <div class="col-md-9 wow alpha fadeInRight margin-bottom-20" data-wow-delay="1s">
 
     <!--                <h2 class="col-md-12">Select Rooms <span class="font-color-999 font-size-14">Mediterranean Suite</span> </h2>-->
-    <ol class="breadcrumb" style="padding: 15px 0 15px 15px;">
-        <?php //if (!$roomID): ?>
-        <li><span class="btn_reservation_nav" id="linkSelectRoom" href="#">ROOM SELECTION</span></li>
-        <?php //endif; ?>
-        <li><span class="btn_reservation_nav<?php echo $roomID ? " active" : ""; ?>"
-                  id="linkSelectDate" href="#">SELECT DATES</span>
-        </li>
-        <li><span class="btn_reservation_nav" id="linkPayment" href="#">PAYMENT</span></li>
-        <li><span class="btn_reservation_nav" id="linkConfirm" href="#">CONFIRM</span></li>
-    </ol>
-    <hr class=""/>
+<!--    <ol class="breadcrumb" style="padding: 15px 0 15px 15px;">-->
+<!--        --><?php ////if (!$roomID): ?>
+<!--        <li><span class="btn_reservation_nav" id="linkSelectRoom" href="#">ROOM SELECTION</span></li>-->
+<!--        --><?php ////endif; ?>
+<!--        <li><span class="btn_reservation_nav--><?php //echo $roomID ? " active" : ""; ?><!--"-->
+<!--                  id="linkSelectDate" href="#">SELECT DATES</span>-->
+<!--        </li>-->
+<!--        <li><span class="btn_reservation_nav" id="linkPayment" href="#">PAYMENT</span></li>-->
+<!--        <li><span class="btn_reservation_nav" id="linkConfirm" href="#">CONFIRM</span></li>-->
+<!--    </ol>-->
+<!--    <hr class=""/>-->
 
     <div id="section_select_date">
         <h2 id="room_name"><?php echo $roomName; ?></h2>

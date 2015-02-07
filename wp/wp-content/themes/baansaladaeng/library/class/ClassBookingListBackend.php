@@ -300,10 +300,29 @@ class Booking_List extends WP_List_Table
         <script type="text/javascript"
                 src="<?php bloginfo('template_directory'); ?>/library/js/booking_edit.js"></script>
 
-        <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/library/css/flip-clock/flipclock.css">
-        <script src="<?php bloginfo('template_directory'); ?>/library/js/flip-clock/flipclock.js"></script>
+<!--        <link rel="stylesheet" href="--><?php //bloginfo('template_directory'); ?><!--/library/css/flip-clock/flipclock.css">-->
+<!--        <script src="--><?php //bloginfo('template_directory'); ?><!--/library/js/flip-clock/flipclock.js"></script>-->
 
         <input type="hidden" value="<?php bloginfo('template_directory'); ?>/library/js/jquery.min.js" id="getjqpath"/>
+
+                <script src="<?php bloginfo('template_directory'); ?>/library/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+        <link rel="stylesheet" href="<?php bloginfo('template_directory'); ?>/library/js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+        <script>
+            $(document).ready(function() {
+                $("#view_payment").fancybox({
+//                    'width'         : '50%',
+//                    'height'        : '50%',
+                    'autoScale'     : false,
+                    'transitionIn'  : 'none',
+                    'transitionOut' : 'none',
+                    'frameWidth': 200, // set the width
+                    'frameHeight': 100, // set the height
+                    'type': 'iframe',
+                    'href': "<?php echo home_url(); ?>/view-p?payment_id=<?php echo $paymentID; ?>"
+                });
+
+            });
+        </script>
         </pre>
         <div class="wrap">
         <form id="frm_booking" method="post" onsubmit="return false;">
@@ -460,16 +479,16 @@ class Booking_List extends WP_List_Table
         </tr>
         <tr class="alternate">
             <td><label for="payment_tel">Tel/Mobile Number :</label></td>
-            <td><input type="text" id="payment_tel" name="payment_tel"
+            <td colspan="3"><input type="text" id="payment_tel" name="payment_tel"
                        value="<?php echo $tel; ?>"/></td>
-            <td><label for="payment_no_of_person">No. of Person :<font color="#FF0000">*</font></label></td>
-            <td><select id="payment_no_of_person" name="payment_no_of_person">
-                    <option value="">---- Select ----</option>
-                    <option <?php echo $no_of_person == 0 ? "selected" : ""; ?> value="0">0</option>
-                    <option <?php echo $no_of_person == 1 ? "selected" : ""; ?> value="1">1</option>
-                    <option <?php echo $no_of_person == 2 ? "selected" : ""; ?> value="2">2</option>
-                </select>
-            </td>
+<!--            <td><label for="payment_no_of_person">No. of Person :<font color="#FF0000">*</font></label></td>-->
+<!--            <td><select id="payment_no_of_person" name="payment_no_of_person">-->
+<!--                    <option value="">---- Select ----</option>-->
+<!--                    <option --><?php //echo $no_of_person == 0 ? "selected" : ""; ?><!-- value="0">0</option>-->
+<!--                    <option --><?php //echo $no_of_person == 1 ? "selected" : ""; ?><!-- value="1">1</option>-->
+<!--                    <option --><?php //echo $no_of_person == 2 ? "selected" : ""; ?><!-- value="2">2</option>-->
+<!--                </select>-->
+<!--            </td>-->
         </tr>
         <tr class="alternate">
             <td><label for="payment_note">Note :</label></td>
@@ -479,62 +498,10 @@ class Booking_List extends WP_List_Table
         </tr>
         <tr class="alternate">
             <td></td>
-            <td colspan="3"><h3>Credit Card Payment</h3></td>
+            <td colspan="3"><h3>Credit Card Payment
+                    <a id="view_payment" href="#">View</a></h3></td>
         </tr>
-        <tr class="alternate">
-            <td><label for="card_type">Card Type :<font color="#FF0000">*</font></label></td>
-            <td>
-                <select id="card_type" name="card_type" class="form-control col-md-12">
-                    <option value="">---- Select Card ----</option>
-                    <option <?php echo $card_type == "Visa" ? "selected" : ""; ?> value="Visa">Visa</option>
-                    <option <?php echo $card_type == "Master Card" ? "selected" : ""; ?> value="Master Card">
-                        Master Card
-                    </option>
-                </select>
-            </td>
-            <td><label for="card_holder_name">Card Holder's Name :<font color="#FF0000">*</font></label></td>
-            <td><input type="text" id="card_holder_name" name="card_holder_name"
-                       value="<?php echo $card_holder_name; ?>"/></td>
-        </tr>
-        <tr class="alternate">
-            <td><label for="card_number">Card No. :<font color="#FF0000">*</font></label></td>
-            <td>
-                <input type="text" id="card_number" name="card_number"
-                       value="<?php echo $card_number; ?>"/>
-            </td>
-            <td><label for="tree_digit_id">3-Digit ID# :<font color="#FF0000">*</font></label></td>
-            <td><input type="text" id="tree_digit_id" name="tree_digit_id"
-                       value="<?php echo $tree_digit_id; ?>" maxlength="3"/></td>
-        </tr>
-        <tr class="alternate">
-            <td><label for="card_number">Card Expiry Date :<font color="#FF0000">*</font></label></td>
-            <td colspan="3">
-                <?php
-                $expCardExp = explode("/", $card_expiry_date);
-                $card_expiry_date1 = $expCardExp[0];
-                $card_expiry_date2 = $expCardExp[1];
-                ?>
-                <select id="card_expiry_date1" name="card_expiry_date1">
-                    <option value="">-- Month --</option>
-                    <?php for ($i = 1; $i <= 12; $i++):
-                        $strMonthCardExp = strlen($i) == 1 ? "0$i" : $i;
-                        ?>
-                        <option <?php echo $card_expiry_date1 == $strMonthCardExp ? "selected" : ""; ?>
-                            value="<?php echo $strMonthCardExp ?>"><?php echo $i; ?></option>
-                    <?php endfor; ?>
-                </select>&nbsp;/&nbsp;
-                <select id="card_expiry_date2" name="card_expiry_date2">
-                    <option value="">-- Year --</option>
-                    <?php for ($i = date_i18n('Y'); $i <= date_i18n("Y") + 20; $i++): ?>
-                        <option value="<?php
-                        $strY = substr($i, 2);
-                        echo $strY = strlen($strY) == 1 ? "0$strY" : $strY; ?>"
-                            <?php echo $card_expiry_date2 == $strY ? "selected" : ""; ?>
-                            ><?php echo $i; ?></option>
-                    <?php endfor; ?>
-                </select>
-            </td>
-        </tr>
+
         <tr>
         <?php /* ?>
         <tr class="alternate">
@@ -595,6 +562,11 @@ class Booking_List extends WP_List_Table
         </form>
         </div>
     <?php
+    }
+
+    function viewPayment()
+    {
+
     }
 
 } //class

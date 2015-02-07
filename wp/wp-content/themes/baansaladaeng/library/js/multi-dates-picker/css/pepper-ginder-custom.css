@@ -66,9 +66,20 @@
 
 /* Interaction states
 ----------------------------------*/
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #a9a089; background: #f8f7f6 url(images/ui-bg_fine-grain_10_f8f7f6_60x60.png) 50% 50% repeat; font-weight: bold; color: #654b24; }
+.ui-state-default a, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border: 1px solid #a9a089;
+    /*background: #f8f7f6 url(images/ui-bg_fine-grain_10_f8f7f6_60x60.png) 50% 50% repeat;*/
+    font-weight: bold;
+    color: #654b24;
+}
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #654b24; text-decoration: none; }
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { border: 1px solid #654b24; background: #654b24 url(images/ui-bg_fine-grain_65_654b24_60x60.png) 50% 50% repeat; font-weight: bold; color: #ffffff; }
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+    border: 1px solid #654b24;
+    /*background: #654b24 url(images/ui-bg_fine-grain_65_654b24_60x60.png) 50% 50% repeat;*/
+    background-color: #48AA47;
+    font-weight: bold;
+    color: #ffffff;
+}
 .ui-state-hover a, .ui-state-hover a:hover { color: #ffffff; text-decoration: none; }
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #d9d6c4; background: #eceadf url(images/ui-bg_fine-grain_15_eceadf_60x60.png) 50% 50% repeat; font-weight: bold; color: #140f06; }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #140f06; text-decoration: none; }
@@ -76,7 +87,11 @@
 
 /* Interaction Cues
 ----------------------------------*/
-.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {border: 1px solid #743620; background: #d3c05a url(images/ui-bg_fine-grain_15_d3c05a_60x60.png) 50% 50% repeat; color: #3a3427; }
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {
+    border: 1px solid #743620;
+    background: #d3c05a url(images/ui-bg_fine-grain_15_d3c05a_60x60.png) 50% 50% repeat;
+    color: #3a3427;
+}
 .ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a { color: #3a3427; }
 .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {border: 1px solid #681818; background: #b83400 url(images/ui-bg_fine-grain_68_b83400_60x60.png) 50% 50% repeat; color: #ffffff; }
 .ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a { color: #ffffff; }
@@ -84,6 +99,11 @@
 .ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary { font-weight: bold; }
 .ui-priority-secondary, .ui-widget-content .ui-priority-secondary,  .ui-widget-header .ui-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
 .ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled { opacity: .35; filter:Alpha(Opacity=35); background-image: none; }
+
+.ui-state-highlight span {
+    background-color: red !important;
+    color: white !important;
+}
 
 /* Icons
 ----------------------------------*/
@@ -501,7 +521,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  *
  * http://docs.jquery.com/UI/Datepicker#theming
  */
-.ui-datepicker { width: 17em; padding: .2em .2em 0; }
+.ui-datepicker { /*width: 17em;*/ padding: .2em .2em 0; }
 .ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; }
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; }
 .ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover { top: 1px; }

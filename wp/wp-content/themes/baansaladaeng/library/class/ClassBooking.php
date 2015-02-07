@@ -8,6 +8,7 @@ class Booking
     private $wpdb;
     private $tableBooking = "ics_booking";
     private $tablePayment = "ics_payment";
+    private $tableUser = "ics_user";
     private $tablePost = "wp_posts";
     public $pickupPrice = 1200;
 
@@ -28,7 +29,6 @@ class Booking
             SELECT
               a.*,
               b.`id` AS booking_id,
-              a.`id` AS payment_id,
               b.*,
               c.post_title AS room_name,
               a.create_time AS pm_create_time
@@ -51,6 +51,120 @@ class Booking
         ";
         $myrows = $this->wpdb->get_results($sql);
         return $myrows;
+    }
+
+    function authenViewPayment($post)
+    {
+        $userName = empty($post['p_user_name']) ? false : $post['p_user_name'];
+        $password = empty($post['p_pass']) ? false : $post['p_pass'];
+        $password = $password ? md5($password . $userName . 99) : '';
+        $sql = "
+            SELECT
+              *
+            FROM
+              `$this->tableUser`
+            WHERE 1
+              AND `publish` = 1
+              AND user_name = '$userName'
+              AND password = '$password'
+        ";
+        $myrows = $this->wpdb->get_results($sql);
+        if (count($myrows) > 0){
+            if ($myrows[0]->user_name == $userName)
+                return true;
+        }
+        return false;
+    }
+
+    function getPayment($payment_id = 0)
+    {
+        $strAnd = $payment_id ? "AND a.id = $payment_id" : "";
+        $sql = "
+            SELECT
+              a.*
+            FROM
+              `$this->tablePayment` a
+            WHERE 1
+              AND a.`publish` = 1
+              $strAnd
+        ";
+        $myrows = $this->wpdb->get_results($sql);
+        return $myrows;
+    }
+
+    function buildHtmlPayment($payment_id)
+    {
+        $objPayment = $this->getPayment($payment_id);
+        extract((array)$objPayment[0]);
+        ob_start();
+        ?>
+        <table class="wp-list-table widefat" cellspacing="0" width="100%">
+            <tbody id="the-list-edit">
+            <tr class="alternate">
+                <td><label for="card_type">Card Type :</label></td>
+                <td>
+                    <select id="card_type" name="card_type" class="form-control col-md-12">
+                        <option value="">---- Select Card ----</option>
+                        <option <?php echo $card_type == "Visa" ? "selected" : ""; ?> value="Visa">Visa</option>
+                        <option <?php echo $card_type == "Master Card" ? "selected" : ""; ?> value="Master Card">
+                            Master Card
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr class="alternate">
+
+                <td><label for="card_holder_name">Card Holder's Name :</label></td>
+                <td><input type="text" id="card_holder_name" name="card_holder_name"
+                           value="<?php echo $card_holder_name; ?>"/></td>
+            </tr>
+            <tr class="alternate">
+                <td><label for="card_number">Card No. :</label></td>
+                <td>
+                    <input type="text" id="card_number" name="card_number"
+                           value="<?php echo $card_number; ?>"/>
+                </td>
+            </tr>
+            <tr class="alternate">
+                <td><label for="tree_digit_id">3-Digit ID# :</label></td>
+                <td><input type="text" id="tree_digit_id" name="tree_digit_id"
+                           value="<?php echo $tree_digit_id; ?>" maxlength="3"/></td>
+            </tr>
+            <tr class="alternate">
+                <td><label for="card_number">Card Expiry Date :</label></td>
+                <td>
+                    <?php
+                    $expCardExp = explode("/", $card_expiry_date);
+                    $card_expiry_date1 = $expCardExp[0];
+                    $card_expiry_date2 = $expCardExp[1];
+                    ?>
+                    <select id="card_expiry_date1" name="card_expiry_date1">
+                        <option value="">-- Month --</option>
+                        <?php for ($i = 1; $i <= 12; $i++):
+                            $strMonthCardExp = strlen($i) == 1 ? "0$i" : $i;
+                            ?>
+                            <option <?php echo $card_expiry_date1 == $strMonthCardExp ? "selected" : ""; ?>
+                                value="<?php echo $strMonthCardExp ?>"><?php echo $i; ?></option>
+                        <?php endfor; ?>
+                    </select>&nbsp;/&nbsp;
+                    <select id="card_expiry_date2" name="card_expiry_date2">
+                        <option value="">-- Year --</option>
+                        <?php for ($i = date_i18n('Y'); $i <= date_i18n("Y") + 20; $i++): ?>
+                            <option value="<?php
+                            $strY = substr($i, 2);
+                            echo $strY = strlen($strY) == 1 ? "0$strY" : $strY; ?>"
+                                <?php echo $card_expiry_date2 == $strY ? "selected" : ""; ?>
+                                ><?php echo $i; ?></option>
+                        <?php endfor; ?>
+                    </select>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <?php
+        $html = ob_get_contents();
+        ob_end_clean();
+        return $html;
     }
 
     public function checkRoomByDate($check_in, $check_out, $room_id = 0)
@@ -167,8 +281,8 @@ class Booking
         $departureDate = @$data['departure_date'];
         $payment_id = @$data['payment_id'];
         $price = @$data['price'];
-        $needAirportPickup = empty($data['need_airport_pickup'])? 0 : $data['need_airport_pickup'];
-        $adults = empty($data['adults'])? 1 : $data['adults'];
+        $needAirportPickup = empty($data['need_airport_pickup']) ? 0 : $data['need_airport_pickup'];
+        $adults = empty($data['adults']) ? 1 : $data['adults'];
         $result = $this->checkRoomByDate($arrivalDate,
             $departureDate, $roomID);
         if (!$result) {
@@ -236,7 +350,6 @@ class Booking
         extract($data);
         $date_of_birth = "$payment_date_of_birth_3-$payment_date_of_birth_2-$payment_date_of_birth_1";
         $estimated_arrival_time = "$payment_est_arrival1:$payment_est_arrival2:$payment_est_arrival3";
-        $card_expiry_date = "$card_expiry_date1/$card_expiry_date2";
         $paidTime = @$paid ? date_i18n('Y-m-d H:i:s') : null;
         $result = $this->wpdb->update(
             $this->tablePayment,
@@ -251,11 +364,6 @@ class Booking
                 'estimated_arrival_time' => @$estimated_arrival_time,
                 'tel' => @$payment_tel,
                 'note' => @$payment_note,
-                'card_type' => @$card_type,
-                'card_holder_name' => @$card_holder_name,
-                'card_number' => @$card_number,
-                'tree_digit_id' => @$tree_digit_id,
-                'card_expiry_date' => @$card_expiry_date,
                 'update_time' => date_i18n('Y-m-d H:i:s'),
                 'paid_time' => $paidTime,
 
@@ -266,11 +374,6 @@ class Booking
             ),
             array('id' => $payment_id),
             array(
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%s',
                 '%s',
                 '%s',
                 '%s',
@@ -575,8 +678,8 @@ class Booking
         if (!@$post['array_booking'] || !@$post['room_id'])
             return false;
         $result = $this->returnMessage('Noting select date.', true);
-        $need_airport_pickup = empty($post['need_airport_pickup'])? 0: $post['need_airport_pickup'];
-        $adult = empty($post['adult'])? 0: $post['adult'];
+        $need_airport_pickup = empty($post['need_airport_pickup']) ? 0 : $post['need_airport_pickup'];
+        $adult = empty($post['adult']) ? 0 : $post['adult'];
         if ($post['array_booking']) {
             /*$newGroupDate = $this->groupArrayDate($post['array_booking']);
 

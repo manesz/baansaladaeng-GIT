@@ -12,6 +12,8 @@ $paymentID = empty($sessionGet['payment_id']) ? 0 : $sessionGet['payment_id'];
 $arrayOrder = $paymentID ? $objClassBooking->bookingList($paymentID) : null;
 $subTotal = 0;
 $arrayRoomName = array();
+$arrayNeedAirPortPickup = array();
+$arrayNoOfNight = array();
 $arrayArrivalDate = array();
 if ($arrayOrder) : foreach ($arrayOrder as $key => $value):
     /*$needAirportPickup = @$value['need_airport_pickup'];
@@ -53,11 +55,13 @@ if ($arrayOrder) : foreach ($arrayOrder as $key => $value):
     $strRoomName = $key + 1 . ". " . $value->room_name;
     $getLink = get_permalink($roomID);
     $strRoomName = "<a href='$getLink' target='_blank'>$strRoomName</a>";
-    $strRoomName .= " | ";
-    $strRoomName .= $needAirportPickup ? "<i>Need Airport Pickup(Yes)</i>" : "<i>Need Airport Pickup(No)</i>";
+//    $strRoomName .= " | ";
+//    $strRoomName .= $needAirportPickup ? "<i>Need Airport Pickup(Yes)</i>" : "<i>Need Airport Pickup(No)</i>";
     $arrayRoomName[] = $strRoomName;
+    $arrayNeedAirPortPickup[] = $needAirportPickup? "Yes": "No";
+    $arrayNoOfNight[] = $numberDays;
     $arrayArrivalDate[] = convertMonth($value->check_in_date) . " - " .
-        convertMonth($value->check_out_date) . " No. of night: $numberDays";
+        convertMonth($value->check_out_date);//. " No. of night: $numberDays";
     $roomName = @$value->room_name;
     $checkInDate = "";
     $checkOutDate = "";
@@ -79,7 +83,17 @@ endif; ?>
         </td>
     </tr>
     <tr class="confirm_summary_order">
+        <td>Need Airport Pickup:</td>
+        <td>
+            <?php echo $arrayRoomName ? implode('<br/>', $arrayRoomName) : "No data"; ?>
+        </td>
+    </tr>
+    <tr class="confirm_summary_order">
         <td>Date:</td>
+        <td><?php echo $arrayArrivalDate ? implode('<br/>', $arrayArrivalDate) : "No data"; ?></td>
+    </tr>
+    <tr class="confirm_summary_order">
+        <td>No. of night:</td>
         <td><?php echo $arrayArrivalDate ? implode('<br/>', $arrayArrivalDate) : "No data"; ?></td>
     </tr>
     <tr class="confirm_summary_order">

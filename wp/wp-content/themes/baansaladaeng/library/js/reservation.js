@@ -381,6 +381,7 @@ function addOrder(roomID) {
                     getRoom();
                     clearSelectRoom();
                     showSelectRoom();
+                    scrollToTop();
 //                    showPayment();
 //                    if (room_id) {
 //                        window.location.href = web_url + "reservation";
