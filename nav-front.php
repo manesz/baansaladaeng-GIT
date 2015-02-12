@@ -11,7 +11,7 @@
                 <nav class="top-nav col-md-8">
                     <ul class="top-nav">
                         <li><a href="category.php" class="">ROOM</a></li>
-                        <li><a href="#services" class="">RESERVATION</a></li>
+                        <li><a href="booking-page.php" class="">RESERVATION</a></li>
                         <li><a href="promotion.php" class="">PROMITION</a></li>
                         <li><a href="long-stay.php" class="">LONG STAY</a></li>
                         <li><a href="gallery.php" class="">GALLERY</a></li>

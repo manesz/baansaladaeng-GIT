@@ -62,28 +62,15 @@ if (!$arrayOrder) {
 
         ?>
         <li class="text-left" style="margin-top: 20px; padding: 10px; border-bottom: 1px #999 dashed;">
-            <!--            <h5 class="pull-left" style="margin-top: 0px; font-weight: bold;">-->
-            <!--                <a href="--><?php //echo get_permalink($roomID);?><!--" target="_blank">-->
-            <?php //echo $roomName; ?><!--</a>-->
-            <!--            </h5>-->
-            <!--            <span class="pull-right">-->
-            <!--                <a href="#" style="color: blue;"-->
-            <!--                                        onclick="deleteOrder(-->
-            <?php //echo $value->booking_id; ?><!--);return false;">Delete</a>-->
-            <!--            </span>-->
-            <!--            <hr/>-->
+            <h5 class="pull-left" style="margin-top: 0px; font-weight: bold;">
+                <a href="<?php echo get_permalink($roomID);?>" target="_blank"><?php echo $roomName; ?></a>
+            </h5>
+            <span class="pull-right">
+                <a href="#" style="color: blue;"
+                                        onclick="deleteOrder(<?php echo $value->booking_id; ?>);return false;">Delete</a>
+            </span>
+            <hr/>
             <table style="width: 100%">
-                <tr>
-                    <td style="width: 80%"><h5 class="pull-left" style="margin-top: 0px; font-weight: bold;">
-                            <a href="<?php echo get_permalink($roomID); ?>" target="_blank"><?php echo $roomName; ?></a>
-                        </h5>
-                    </td>
-                    <td style="width: 20%" valign="top">
-                        <span class="pull-right"><a href="#" style="color: blue;"
-                       onclick="deleteOrder(<?php echo $value->booking_id; ?>);return false;">Delete</a>
-                        </span>
-                    </td>
-                </tr>
                 <tr>
                     <td style="width: 80%">Arrival Date :</td>
                     <td style="width: 20%"><?php echo date_i18n('d/m/y', strtotime($arrivalDate)); ?></td>
@@ -93,30 +80,25 @@ if (!$arrayOrder) {
                     <td style="width: 20%"><?php echo date_i18n('d/m/y', strtotime($departureDate)); ?></td>
                 </tr>
                 <tr>
-                    <td style="width: 80%">Price :</td>
-                    <td style="width: 20%"><?php echo $priceFormat; ?> ฿</td>
-                </tr>
-                <tr>
-                    <td style="width: 80%">No. of night :</td>
-                    <td style="width: 20%"><?php echo $numberDays; ?></td>
-                </tr>
-                <tr>
                     <td style="width: 80%">Adults :</td>
                     <td style="width: 20%">
                         <select onchange="setAdults(<?php echo $value->booking_id; ?>, this);">
-                            <option value="1" <?php echo @$value->adults == 1 ? "selected" : ""; ?>>1</option>
-                            <option value="2" <?php echo @$value->adults == 2 ? "selected" : ""; ?>>2</option>
+                            <option value="1" <?php echo @$value->adults==1? "selected":""; ?>>1</option>
+                            <option value="2" <?php echo @$value->adults==2? "selected":""; ?>>2</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
+                    <td style="width: 80%">Price :</td>
+                    <td style="width: 20%"><?php echo $priceFormat; ?> ฿</td>
+                </tr>
+                <tr>
                     <td style="width: 80%">
-                        Need Airport Pickup</br>(THB 1,200 one way) :
-                    </td>
+                        Need Airport Pickup</br>(THB 1,200 one way) :</td>
                     <td style="width: 20%">
                         <select onchange="setPickup(<?php echo $value->booking_id; ?>, this);">
-                            <option value="0" <?php echo !$needAirportPickup ? "selected" : ""; ?>>No</option>
-                            <option value="1" <?php echo $needAirportPickup ? "selected" : ""; ?>>Yes</option>
+                            <option value="0" <?php echo !$needAirportPickup? "selected":""; ?>>No</option>
+                            <option value="1" <?php echo $needAirportPickup? "selected":""; ?>>Yes</option>
                         </select>
                     </td>
                 </tr>
@@ -124,10 +106,9 @@ if (!$arrayOrder) {
                     <td style="width: 80%; font-weight: bold;">TOTAL :</td>
                     <td style="width: 20%; font-weight: bold;"><?php echo $totalFormat; ?> ฿</td>
                 </tr>
-                <!--                <tr>-->
-                <!--                    <td colspan="" style="width: 100%;">Note: Booking -->
-                <?php //echo $numberDays; ?><!-- nights</td>-->
-                <!--                </tr>-->
+                <tr>
+                    <td colspan="" style="width: 100%;">Note: Booking <?php echo $numberDays; ?> nights</td>
+                </tr>
             </table>
         </li>
     <?php endforeach; endif; ?>

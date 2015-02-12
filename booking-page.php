@@ -143,7 +143,7 @@
                             <div class="col-md-9 alpha omega"><textarea id="formPaymentNote" name="formPaymentNote" class="form-control col-md-12" rows="10"></textarea></div>
                         </div>
                         <div class="col-md-12 margin-bottom-10 alpha">
-                            <button type="submit" class="col-md-12 btn btn-success btn-lg" style="border-radius: 0;">SUBMIT</button>
+                            <button type="submit" class="col-md-12 btn btn-success btn-lg" style="border-radius: 0;" value="SUBMIT">SUBMIT</button>
                         </div>
 
                     </div>

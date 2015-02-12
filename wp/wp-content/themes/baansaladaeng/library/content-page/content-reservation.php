@@ -52,7 +52,7 @@ get_template_part('nav');
 <!--    </ol>-->
 <!--    <hr class=""/>-->
 
-    <div id="section_select_date">
+    <div id="section_select_date" style="display: none;">
         <h2 id="room_name"><?php echo $roomName; ?></h2>
 
         <div class="col-md-12 alpha">
@@ -119,7 +119,7 @@ get_template_part('nav');
     <div id="list_room"
          style="display: none"><?php require_once(ABSPATH . "wp-content/themes/baansaladaeng/library/booking/reservation-get-room.php"); ?></div>
 
-    <div id="section_payment" class="form-group">
+    <div id="section_payment" class="form-group" style="display: none;">
         <form id="payment_post">
             <div class="col-md-12">
 
@@ -259,7 +259,7 @@ get_template_part('nav');
         </form>
     </div>
 
-    <div id="section_confirm_order">
+    <div id="section_confirm_order" style="display: none;">
 
         <h4>Summary Order:</h4>
         <hr/>

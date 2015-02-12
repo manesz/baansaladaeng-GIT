@@ -27,7 +27,7 @@
                         <td style="width: 20%">1,249 THB</td>
                         <td style="width: 20%">1,249 THB</td>
                         <td style="width: 20%">1,249 THB</td>
-                        <td style="width: 20%"><a href="booking-page.php"><button class="col-md-12 alpha omega btn-service wow fadeIn" data-wow-delay="0.4s">RESERVATION</button></a></td>
+                        <td class="no-padding" style="width: 20%"><a href="booking-page.php"><button class="col-md-12 alpha omega btn-service wow fadeIn" data-wow-delay="0.4s">RESERVATION</button></a></td>
                     </tr>
                     <?php endfor; ?>
                 </table>

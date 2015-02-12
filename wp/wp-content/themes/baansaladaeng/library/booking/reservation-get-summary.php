@@ -57,11 +57,14 @@ if ($arrayOrder) : foreach ($arrayOrder as $key => $value):
     $strRoomName = "<a href='$getLink' target='_blank'>$strRoomName</a>";
 //    $strRoomName .= " | ";
 //    $strRoomName .= $needAirportPickup ? "<i>Need Airport Pickup(Yes)</i>" : "<i>Need Airport Pickup(No)</i>";
+    $countArray = count($arrayRoomName) + 1;
     $arrayRoomName[] = $strRoomName;
-    $arrayNeedAirPortPickup[] = $needAirportPickup? "Yes": "No";
-    $arrayNoOfNight[] = $numberDays;
+    $arrayNeedAirPortPickup[] = $needAirportPickup ? "$countArray. <span class='font-color-4BB748'>Yes</span>" :
+        "$countArray. <span class='active'>No</span>";
+    $arrayNoOfNight[] = "$countArray. $numberDays night";
     $arrayArrivalDate[] = convertMonth($value->check_in_date) . " - " .
-        convertMonth($value->check_out_date);//. " No. of night: $numberDays";
+        convertMonth($value->check_out_date);
+    //. " No. of night: $numberDays";
     $roomName = @$value->room_name;
     $checkInDate = "";
     $checkOutDate = "";
@@ -85,7 +88,7 @@ endif; ?>
     <tr class="confirm_summary_order">
         <td>Need Airport Pickup:</td>
         <td>
-            <?php echo $arrayRoomName ? implode('<br/>', $arrayRoomName) : "No data"; ?>
+            <?php echo $arrayNeedAirPortPickup ? implode('<br/>', $arrayNeedAirPortPickup) : "No data"; ?>
         </td>
     </tr>
     <tr class="confirm_summary_order">
@@ -94,7 +97,7 @@ endif; ?>
     </tr>
     <tr class="confirm_summary_order">
         <td>No. of night:</td>
-        <td><?php echo $arrayArrivalDate ? implode('<br/>', $arrayArrivalDate) : "No data"; ?></td>
+        <td><?php echo $arrayNoOfNight ? implode('<br/>', $arrayNoOfNight) : "No data"; ?></td>
     </tr>
     <tr class="confirm_summary_order">
         <td>Sub Total:</td>
@@ -102,10 +105,10 @@ endif; ?>
     </tr>
 </table>
 <script>
-<?php if (!$subTotal):?>
-$("#payment_post").hide();
-<?php else: ?>
-$("#payment_post").show();
-setSummaryConfirm();
-<?php endif; ?>
+    <?php if (!$subTotal):?>
+    $("#payment_post").hide();
+    <?php else: ?>
+    $("#payment_post").show();
+    setSummaryConfirm();
+    <?php endif; ?>
 </script>

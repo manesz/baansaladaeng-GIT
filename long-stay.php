@@ -19,12 +19,12 @@
                             Designer: Nattawut Lamlertwittaya<br/>
                             Price: 1300 THB/night (Incl Breakfast)
                         </p>
-                        <p class="font-12" style="height: 65px;">
+                        <p class="font-12" style="height: 60px;">
                             Opposites attract.  Black and white in perfect harmony.  Clean lines keep everything simple in this room without sacrificing the comfort of course.
                         </p>
                         <div class="col-md-8 alpha" style=""><h3 style="margin-top: 0px; padding-top: 10px;">PRICE : 1,300 BAHT</h3></div>
-                        <div class="col-md-4 col-xs-12 text-center" style="">
-                            <a href="booking-page.php" class="col-md-12 col-xs-12"><button class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">RESERVATION</button></a>
+                        <div class="col-md-4 col-xs-12 text-center omega" style="">
+                            <a href="booking-page.php" class="col-md-12 col-xs-12 omega"><button class="col-md-12 col-xs-12 alpha omega btn-service wow fadeIn animated">RESERVATION</button></a>
                         </div>
                     </div><div class="clearfix"> </div>
                 </div><div class="clearfix"> </div>
